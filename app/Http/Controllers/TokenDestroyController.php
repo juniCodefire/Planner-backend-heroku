@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 use App\User;
@@ -15,22 +14,28 @@ class TokenDestroyController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
-    public function tokenDestroy() {
+    public function tokenDestroy(User $user) {
     // Do a validation for the input 
         //Perform a Cron Jobs on this controller cron-jobs.com
-        $user = Auth::user();
 
-            $regenerateNewToken = Str::random(60);
+            $allUsers = $user->all();
 
-            $tokenNew = hash('sha256', $regenerateNewToken);
+            foreach ($allUsers as $allUser) {
+
+              $regenerateNewToken = Str::random(60);
+
+               $tokenNew = hash('sha256', $regenerateNewToken);
+
+               $allUser->api_token = $tokenNew;
+
+               $allUser->save();
             
-            $user->api_token = $tokenNew;
+            }
+                 
+            return response()->json(['data' => ['success' => true, 'message' => 'Token Updated' ]], 200);
 
-            $user->save();
+            
+
     }
 }

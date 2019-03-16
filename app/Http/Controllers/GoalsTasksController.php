@@ -26,7 +26,7 @@ class GoalsTasksController extends Controller
     }
 
     public function index(ViewPolicy $viewpolicy, $goal_id) {
-
+         $user = Auth::user();
          $check_id = Goal::where('id', $goal_id)->exists();
 
          if ($check_id) {
@@ -59,7 +59,7 @@ class GoalsTasksController extends Controller
 
 
     public function show(ViewPolicy $viewpolicy, $goal_id, $task_id) {
-
+      $user = Auth::user();
       $check_id = Goal::where('id', $goal_id)->exists();
 
       $task_check_id = Task::where('id', $task_id)->exists();
@@ -93,7 +93,7 @@ class GoalsTasksController extends Controller
 
      public function store(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, Task $task, $goal_id) {
 
-      $user = Auth::user();
+      Auth::user();
       $detail = $viewpolicy->userPassage($goal_id); 
       $goal = Goal::where('id', $goal_id)->exists();
 
@@ -158,6 +158,7 @@ class GoalsTasksController extends Controller
     }
 
     public function update(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, $goal_id, $task_id) {
+      $user = Auth::user();
       $detail = $viewpolicy->userPassage($goal_id);       
       $goal = Goal::where('id', $goal_id)->exists();
 
@@ -224,5 +225,29 @@ class GoalsTasksController extends Controller
      } 
 
     }
+
+  public function destroy(ViewPolicy $viewpolicy, $task_id, $goal_id) {
+      Auth::user();
+      $detail = $viewpolicy->userPassage($goal_id);   
+
+      $goal = Goal::where('id', $goal_id)->exists();
+
+      if ($goal && $detail) {
+
+           $check_task = Task::where('id', $task_id)->exists();  
+           if ($check_task) {
+
+              $data = Task::findOrfail($task_id);
+
+              $data->delete();
+
+              return response()->json(['data' => [ 'success' => true, 'message' => 'deleted' ]], 200);
+           }
+
+      }else{
+
+         return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
+      }
+  }
 
 }

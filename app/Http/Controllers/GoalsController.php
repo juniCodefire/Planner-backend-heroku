@@ -35,7 +35,7 @@ class GoalsController extends Controller
     }
 
     public function show(Goal $goal, ViewPolicy $viewpolicy, $goal_id) {
-
+         Auth::user();
          $check_id = Goal::where('id', $goal_id)->exists();
 
          if ($check_id) {
@@ -142,6 +142,7 @@ class GoalsController extends Controller
     } 
 
     public function destroy(Goal $goal, ViewPolicy $viewpolicy, $goal_id) {
+         Auth::user();
          $check_id = Goal::where('id', $goal_id)->exists();
 
          if ($check_id) {
