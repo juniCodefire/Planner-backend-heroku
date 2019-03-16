@@ -39,7 +39,7 @@ class ProfileController extends Controller
             $this->validate($request, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$id,
-                'phone_number' => 'required|min:10|numeric|phone',
+                'phone_number' => 'required|min:10|numeric',
                 'password' => '|min:6|confirmed',
                 'account_type' => 'required'
             ]);
