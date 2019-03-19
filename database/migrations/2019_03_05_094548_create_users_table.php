@@ -17,18 +17,23 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password_recover_token', 80)
-            ->unique()
-            ->nullable()
-            ->default(null);
             $table->string('phone_number');
             $table->string('account_type');
             $table->string('user_image')->default(null);
             $table->string('password');
+            $table->string('verify_code', 80)
+            ->unique()
+            ->nullable()
+            ->default(null);
             $table->string('api_token', 80)
             ->unique()
             ->nullable()
             ->default(null);
+            $table->string('confirm_token', 80)
+            ->unique()
+            ->nullable()
+            ->default(null);
+            $table->enum('status', array('off','on'));
             $table->timestamps();
         });
     }

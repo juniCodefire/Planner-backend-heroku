@@ -65,7 +65,7 @@ class GoalsController extends Controller
        
        $attributes = $this->validate($request, [
     		'title'       => 'required',
-    		'description' => 'required|min:5',
+    		'description' => 'required|min:6',
             'begin_date'  => 'required',
             'due_date'    => 'required',
     		'level'       => 'required'

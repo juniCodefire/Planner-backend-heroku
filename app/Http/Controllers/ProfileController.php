@@ -20,7 +20,7 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    public function dashboard() {
+    public function index() {
 
         $user = Auth::user();
 
@@ -59,7 +59,7 @@ class ProfileController extends Controller
             $saved = $user->save();
 
             if ($saved) {
-                return response()->json(['data' => ['success' => true, 'message' => 'User Updated!', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'token' => 'Bearer ' .$token ]], 200);
+                return response()->json(['data' => ['success' => true, 'message' => 'User Updated!', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'token' => 'Bearer ' .$token ]], 201);
             }else{
                 return response()->json(['data' => ['error' => false, "message" => 'Error, Try Again!']], 401);
             }
@@ -89,4 +89,5 @@ class ProfileController extends Controller
         }
 
     }
+
 }

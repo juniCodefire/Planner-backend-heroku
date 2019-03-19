@@ -22,6 +22,8 @@ class CreateTasksTable extends Migration
             $table->string('due_date');
             $table->boolean('task_status')->default(false);
             $table->timestamps();
+
+            $table->foreign('goal_id')->references('id')->on('goals')->onDelete('cascade');
         });
     }
 

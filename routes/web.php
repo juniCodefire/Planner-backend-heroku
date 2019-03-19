@@ -21,12 +21,20 @@ $router->post('api/register', 'RegistrationController@store');
 $router->post('api/login', 'LoginController@login');
 //Post request for the login
 $router->get('api/tokendestroy', 'TokenDestroyController@tokenDestroy');
-//User Dashboard Routes
+
+$router->get('api/confirmation/{token}', 'ConfirmationController@confirmUser');
+
+$router->post('api/verify/email', 'VerifyTokenController@validateUser');
+
+$router->put('api/reset/password', 'ConfirmationController@resetPassword');
+
+
+//User Profile Routes
 //Get request to show authourize dashboard
 
 $router->group(['prefix' => 'api'], function () use ($router) {
 
-    $router->get('profile', 'ProfileController@dashboard');
+    $router->get('profile', 'ProfileController@index');
 
     $router->put('profile/edit', 'ProfileController@update');
 

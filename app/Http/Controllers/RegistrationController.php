@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeNewUser;
 
 Use App\User;
 
@@ -32,31 +34,39 @@ class RegistrationController extends Controller
 
         $token = hash('sha256', $generateRandomString);
         //Generatate a token for the password recvery process
-        $generateRecoveryToken = Str::random(60);
+        $generateVerifyToken = Str::random(60);
 
-        $password_recover_token = hash('sha256', $generateRecoveryToken);
+        $verify_token = hash('adler32', $generateVerifyToken);
+
+        //generate a ramdom api token for user confirmation
+        $generateRandomConfirm = Str::random(60);
+
+        $confirm_token = hash('sha256', $generateRandomConfirm);
         
         //insert the details into the user class and into the model class
 
             $user->name = ucwords($request->input('name'));
             $user->email = $request->input('email');
-            $user->password_recover_token = $password_recover_token;
             $user->phone_number = $request->input('phone_number');
             $user->password = Hash::make($request->input('password'));
             $user->account_type = ucfirst($request->input('account_type'));
 
-
+            $user->verify_code = $verify_token;
             $user->user_image = "user.jpg";
             $user->api_token = $token;
+            $user->confirm_token = $confirm_token;
 
-            $info = $user->save();
 
+                 try{
+                     Mail::to($user->email)->send(new WelcomeNewUser($user)); 
+                  } catch (Exception $ex) {
 
-            if ($info) {
-               return response()->json(['data' => ['success' => true, 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'token' => 'Bearer '. $token]], 201);
-            }else{
-                return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
-            }  	
+                     return response()->json(['data' =>['success' => true, 'message' => "Try again"]], 500);
+
+                  }
+                  $info = $user->save();
+                   return response()->json(['data' => ['success' => true, 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/']], 201);
+
         
     }
 }

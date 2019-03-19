@@ -59,7 +59,9 @@ class GoalsTasksController extends Controller
 
 
     public function show(ViewPolicy $viewpolicy, $goal_id, $task_id) {
+
       $user = Auth::user();
+      
       $check_id = Goal::where('id', $goal_id)->exists();
 
       $task_check_id = Task::where('id', $task_id)->exists();

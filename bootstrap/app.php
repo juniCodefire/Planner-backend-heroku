@@ -27,6 +27,12 @@ $app->withFacades();
 
 $app->withEloquent();
 
+//**************************This Involves mail Sending*************************
+
+$app->withFacades(true, [
+    'Illuminate\Support\Facades\Mail' => 'Mail',
+]);
+
 //***********************For Image Upload**************************************
 
 class_alias('JD\Cloudder\Facades\Cloudder', 'Cloudder');
@@ -91,6 +97,9 @@ $app->middleware([
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
+
+$app->configure('mail');
+$app->register(Illuminate\Mail\MailServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
