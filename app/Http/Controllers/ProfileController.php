@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Cloudder;
 use App\User;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\ConfirmationLink;
 
 class ProfileController extends Controller
