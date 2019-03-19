@@ -49,7 +49,7 @@ class ProfileController extends Controller
             if ($user->email != $request->input('email')) {
 
                 try{
-                    Mail::to($user->email)->send(new ConfirmationLink($user));
+                    Mail::to($request->input('email'))->send(new ConfirmationLink($user));
 
                     $email = "A verfication code has been sent to ".$user->email."!";
 
@@ -70,7 +70,7 @@ class ProfileController extends Controller
                $password = Hash::make($password);
                $user->password = $password;
             }
-            $user->status == "off";
+            $user->status = "off";
             $saved = $user->save();
 
             if ($saved) {
