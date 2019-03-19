@@ -28,9 +28,13 @@ class ConfirmationController extends Controller
 
 	    	if ($user) {
 
-	            $data_user = User::where('confirm_token', $token)->first();
+				$data_user = User::where('confirm_token', $token)->first();
+				 //generate a ramdom api token for user confirmation
+				$generateRandomConfirm = Str::random(60);
 
-		    	$data_user->confirm_token = "0";
+				$confirm_token = hash('sha256', $generateRandomConfirm);
+
+		    	$data_user->confirm_token = $confirm_token;
 
 		    	$data_user->status = "on";
 

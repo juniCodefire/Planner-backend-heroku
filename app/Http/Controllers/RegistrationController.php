@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeNewUser;
+use App\Mail\ConfirmationLink;
 
 Use App\User;
 
@@ -58,7 +58,7 @@ class RegistrationController extends Controller
 
 
                  try{
-                     Mail::to($user->email)->send(new WelcomeNewUser($user)); 
+                     Mail::to($user->email)->send(new ConfirmationLink($user)); 
                   } catch (Exception $ex) {
 
                      return response()->json(['data' =>['success' => true, 'message' => "Try again"]], 500);
