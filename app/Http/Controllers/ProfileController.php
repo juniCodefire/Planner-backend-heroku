@@ -64,14 +64,13 @@ class ProfileController extends Controller
             $user->email = $request->input('email');
             $user->phone_number = $request->input('phone_number');
             $user->account_type = $request->input('account_type');
-
-            $password = Hash::make($request->input('password'));
+            $password = $request->input('password');
             //check if they did any password update
             if (!empty($password)) {              
-               
+               $password = Hash::make($password);
                $user->password = $password;
             }
-
+            $user->status == "off";
             $saved = $user->save();
 
             if ($saved) {
