@@ -58,6 +58,7 @@ class ProfileController extends Controller
                      return response()->json(['data' => ['error' => false, 'message' => 'Try again']], 401);
 
                  }
+                 $user->status = "off";
             }
 
             $user->name = $request->input('name');
@@ -70,7 +71,7 @@ class ProfileController extends Controller
                $password = Hash::make($password);
                $user->password = $password;
             }
-            $user->status = "off";
+            
             $saved = $user->save();
 
             if ($saved) {
