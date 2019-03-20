@@ -60,11 +60,18 @@ class RegistrationController extends Controller
                      Mail::to($user->email)->send(new ConfirmationLink($user)); 
                   } catch (Exception $ex) {
 
-                     return response()->json(['data' =>['success' => true, 'message' => "Try again"]], 500);
+                     return response()->json(['data' =>['error' => false, 'message' => "Try again"]], 500);
 
                   }
+                 
                   $info = $user->save();
-                   return response()->json(['data' => ['success' => true, 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/']], 201);
+
+                  $splitemail = $user->email;
+                  $emai_link = explode("@",$splitemail);
+
+                  $emai_link = "www.".$emai_link[1];
+
+                   return response()->json(['data' => ['success' => true, 'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'email_link' => $emai_link]], 201);
 
         
     }

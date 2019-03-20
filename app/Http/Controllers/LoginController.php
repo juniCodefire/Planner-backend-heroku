@@ -54,11 +54,11 @@ class LoginController extends Controller
 
                      return response()->json(['data' =>['success' => true, 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'token' => 'Bearer '. $token]], 200);
                 }else{
-                     return response()->json(['data' =>['error' => false, 'messagee' => "Not Confirmed"]], 401); 
+                     return response()->json(['data' =>['error' => false, 'message' => "Not Confirmed"]], 401); 
 
                 }                     	
         }else{
-        	return response()->json(['data' =>['error' => false, 'messagee' => "Invalid Credential"]], 401);
+        	return response()->json(['data' =>['error' => false, 'message' => "Invalid Credential"]], 401);
         }
 
     }

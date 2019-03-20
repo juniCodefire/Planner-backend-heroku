@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e104b2e06f8a39d53b24c8f802e83cb5",
+    "content-hash": "a5f43c91760f7493344fec23970aa1a2",
     "packages": [
         {
             "name": "cloudinary/cloudinary_php",
@@ -1631,6 +1631,68 @@
                 "lumen"
             ],
             "time": "2018-12-20T14:00:34+00:00"
+        },
+        {
+            "name": "mattketmo/email-checker",
+            "version": "v1.5.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MattKetmo/EmailChecker.git",
+                "reference": "3b1afb8a1d439eefed687fecf3340967cdb7c106"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MattKetmo/EmailChecker/zipball/3b1afb8a1d439eefed687fecf3340967cdb7c106",
+                "reference": "3b1afb8a1d439eefed687fecf3340967cdb7c106",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "^1.9",
+                "knplabs/gaufrette": "^0.1",
+                "phpunit/phpunit": "^4.8",
+                "symfony/validator": "^2.1"
+            },
+            "suggest": {
+                "knplabs/gaufrette": "Use filesystem abstraction layer to read data",
+                "symfony/validator": "Add validation constraints"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "EmailChecker\\Laravel\\EmailCheckerServiceProvider"
+                    ],
+                    "aliases": {
+                        "EmailChecker": "EmailChecker\\Laravel\\EmailCheckerFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EmailChecker\\": "src/EmailChecker"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthieu Moquet",
+                    "email": "matthieu@moquet.net"
+                }
+            ],
+            "description": "Throwaway email detection library",
+            "keywords": [
+                "check",
+                "disposable",
+                "email",
+                "throwaway"
+            ],
+            "time": "2018-08-29T06:39:00+00:00"
         },
         {
             "name": "monolog/monolog",
