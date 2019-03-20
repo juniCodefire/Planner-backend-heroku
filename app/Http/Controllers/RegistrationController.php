@@ -26,7 +26,6 @@ class RegistrationController extends Controller
     		'email' => 'required|email|unique:users',
     		'phone_number' => 'required|min:10|numeric',
     		'password' => 'required|min:6|confirmed',
-            'account_type' => 'required'
     	]);
 
     	//generate a ramdom api token for user recognition
