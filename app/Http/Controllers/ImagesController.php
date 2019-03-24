@@ -23,17 +23,16 @@ class ImagesController extends Controller
         $user = Auth::user();
 
     	$this->validate($request, [
-    		'user_image' => 'required',
+    		'user_image' => 'required|image',
     	]);
 
-        //Get the extension of the image
-        $extension = strtolower($request->file('user_image')->extension());
-        //Get the allow extentions
-        $allowed_ext = array("png", "jpg", "jpeg");
-        //Get the Image Size
-        $file_size = filesize($request->file('user_image'));
-
         		if ($request->hasFile('user_image') && $request->file('user_image')->isValid()){
+					 //Get the extension of the image
+						$extension = strtolower($request->file('user_image')->extension());
+						//Get the allow extentions
+						$allowed_ext = array("png", "jpg", "jpeg");
+						//Get the Image Size
+						$file_size = filesize($request->file('user_image'));
 
         			if (in_array($extension, $allowed_ext)) {
 
@@ -84,7 +83,9 @@ class ImagesController extends Controller
 				}else{
 					return response()->json(['data' => ['error'=> false, 'message' => 'Invalid format(Use jpg,jpeg,png)!']], 400);
 				}
-        	}
+        	}else{
+					return response()->json(['data' => ['error'=> false, 'message' => 'Empty File Input!']], 401);
+			}
 
     }
 }

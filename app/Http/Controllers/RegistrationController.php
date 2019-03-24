@@ -71,7 +71,7 @@ class RegistrationController extends Controller
 
                   $emai_link = "www.".$emai_link[1];
 
-                   return response()->json(['data' => ['success' => true, 'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'email_link' => $emai_link]], 201);
+                   return response()->json(['data' => ['success' => true, 'message' => 'Registration Successful, A confirmation link has been sent to '.$user->email.'', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'email_link' => $emai_link]], 201);
 
         
     }
