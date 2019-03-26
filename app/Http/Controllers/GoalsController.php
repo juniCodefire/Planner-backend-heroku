@@ -71,7 +71,7 @@ class GoalsController extends Controller
     		'level'       => 'required'
     	]);  
 
-       $check_title = Goal::where('owner_id', $user->id)->where('title', $request->input('title'))->exists();
+        $check_title = Goal::where('owner_id', $user->id)->where('title', $request->input('title'))->where('id', '!=', $goal_id)->exists();
 
         if($check_title) {
 

@@ -195,17 +195,13 @@ class GoalsTasksController extends Controller
            return response()->json(['data' => ['error' => false, 'message' => 'Same Goal Title']], 401);
         }
 
-        $check_title = Task::where('goal_id', $goal_id)->where('task_title', $task_title)->exists();
+        $check_title = Task::where('goal_id', $goal_id)->where('task_title', $task_title)->where('id', '!=', $task_id)->exists();
 
-        $task_check = Task::where('id', $task_id)->first();
-
-
-        if($check_title && $task_title != $task_check->task_title) {
+        if($check_title) {
 
            return response()->json(['data' => ['error' => false, 'message' => 'Title already exist']], 401);
 
         }
-
               $update = Task::findOrfail($task_id);
 
               $update->goal_id     =  $goal_id;
