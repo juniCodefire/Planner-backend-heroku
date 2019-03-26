@@ -71,7 +71,7 @@ class GoalsController extends Controller
     		'level'       => 'required'
     	]);  
 
-        $check_title = Goal::where('owner_id', $user->id)->where('title', $request->input('title'))->where('id', '!=', $goal_id)->exists();
+       $check_title = Goal::where('owner_id', $user->id)->where('title', $request->input('title'))->exists();
 
         if($check_title) {
 
@@ -114,7 +114,7 @@ class GoalsController extends Controller
                   'due_date'    => 'required'
                 ]); 
 
-                $check_title = Goal::where('owner_id', $user->id)->where('title', $request->input('title'))->first();
+                 $check_title = Goal::where('owner_id', $user->id)->where('title', $request->input('title'))->where('id', '!=', $goal_id)->first();
 
                   if($check_title) {
                         return response()->json(['data' => ['error' => false, 'message' => 'Title already exist']], 401);
