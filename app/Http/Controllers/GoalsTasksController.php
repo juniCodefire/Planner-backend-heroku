@@ -11,6 +11,7 @@ use App\Goal;
 use App\Task;
 use App\Policies\ViewPolicy;
 use App\Policies\TaskPolicy;
+Use App\Activities;
 
 
 class GoalsTasksController extends Controller
@@ -93,9 +94,9 @@ class GoalsTasksController extends Controller
 
     }
 
-     public function store(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, Task $task, $goal_id) {
+     public function store(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, Task $task, $goal_id, Activities $activities) {
 
-      Auth::user();
+      $user = Auth::user();
       $detail = $viewpolicy->userPassage($goal_id); 
       $goal = Goal::where('id', $goal_id)->exists();
 
@@ -148,6 +149,11 @@ class GoalsTasksController extends Controller
               $saved = $task->save();
 
                 if ($saved) {
+
+                   $user_id = $user->id;
+                    $info = "New task (".$task->task_title.") of Goal (".$goalData->title.") is created";
+                    $this->activitiesupdate($activities, $info, $user_id);
+
                    return response()->json(['data' => ['success' => true, 'task' => $task]], 201);
                 }else{
                     return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 419); 
@@ -159,7 +165,7 @@ class GoalsTasksController extends Controller
 
     }
 
-    public function update(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, $goal_id, $task_id) {
+    public function update(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, $goal_id, $task_id, Activities $activities) {
       $user = Auth::user();
       $detail = $viewpolicy->userPassage($goal_id);       
       $goal = Goal::where('id', $goal_id)->exists();
@@ -196,12 +202,16 @@ class GoalsTasksController extends Controller
         }
 
         $check_title = Task::where('goal_id', $goal_id)->where('task_title', $task_title)->where('id', '!=', $task_id)->exists();
+        $task_act = Task::where('goal_id', $goal_id)->where('id', $task_id)->first();
+
+        $title_activities = $task_act->task_title;
 
         if($check_title) {
 
            return response()->json(['data' => ['error' => false, 'message' => 'Title already exist']], 401);
 
         }
+
               $update = Task::findOrfail($task_id);
 
               $update->goal_id     =  $goal_id;
@@ -214,9 +224,12 @@ class GoalsTasksController extends Controller
               $saved = $update->save();
 
                 if ($saved) {
+                      $user_id = $user->id;
+                      $info = "A Task—(".$title_activities.") of Goal—(".$goalData->title.") is updated to (".$update->task_title.")!";
+                      $this->activitiesupdate($activities, $info, $user_id);
                    return response()->json(['data' => ['success' => true, 'message' => 'Tasks Updated']], 200);
                 }else{
-                    return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 419); 
+                    return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
                 }
      }else{
          return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
@@ -224,8 +237,8 @@ class GoalsTasksController extends Controller
 
     }
 
-  public function destroy(ViewPolicy $viewpolicy, $task_id, $goal_id) {
-      Auth::user();
+  public function destroy(ViewPolicy $viewpolicy, $task_id, $goal_id, Activities $activities) {
+      $user = Auth::user();
       $detail = $viewpolicy->userPassage($goal_id);   
 
       $goal = Goal::where('id', $goal_id)->exists();
@@ -234,10 +247,14 @@ class GoalsTasksController extends Controller
 
            $check_task = Task::where('id', $task_id)->exists();  
            if ($check_task) {
+              $data1 = Task::findOrfail($task_id);
+              $data2 = Goal::findOrfail($goal_id);
 
-              $data = Task::findOrfail($task_id);
+              $user_id = $user->id;
+              $info = "A Task—(".$data1->task_title.") of Goal—(".$data2->title.") is deleted";
+              $this->activitiesupdate($activities, $info, $user_id); 
 
-              $data->delete();
+              $data1->delete();
 
               return response()->json(['data' => [ 'success' => true, 'message' => 'deleted' ]], 200);
            }
@@ -247,5 +264,14 @@ class GoalsTasksController extends Controller
          return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
       }
   }
+   public function activitiesupdate($activities, $info, $user_id) {
+
+         $time =  time();
+         $created_time = date('h:i A — Y-m-d', $time+3600);
+
+         $activities->owner_id = $user_id;
+         $activities->narrative = $info." @ ".$created_time.".";
+         $activities->save();
+    }
 
 }

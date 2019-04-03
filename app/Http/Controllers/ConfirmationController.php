@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
+Use App\Activities;
 use App\User;
 
 
@@ -18,18 +18,21 @@ class ConfirmationController extends Controller
      * @return void
      */
 
-    public function confirmUser($token) {
+    public function confirmUser($token, Activities $activities) {
 
     	if(strlen($token) < 30) {
     		return "<p style='text-align:center'>Invalid Confirmation Token</p>";
     	}else{
+    		$time =  time();
+            $created_time = date('h:i A — Y-m-d', $time+3600);
 
     		$user = User::where('confirm_token', $token)->exists();
 
 	    	if ($user) {
 
-				$data_user = User::where('confirm_token', $token)->first();
-				 //generate a ramdom api token for user confirmation
+	            $data_user = User::where('confirm_token', $token)->first();
+
+	             //generate a ramdom api token for user confirmation
 				$generateRandomConfirm = Str::random(60);
 
 				$confirm_token = hash('sha256', $generateRandomConfirm);
@@ -39,6 +42,10 @@ class ConfirmationController extends Controller
 		    	$data_user->status = "on";
 
 		    	$data_user->save();
+
+		    	 $activities->owner_id = $user->id;
+                 $activities->narrative = "Account successfully confirmed @".$created_time.".";
+                 $activities->save();
 
 		        return "<div style='text-align:center'>Confirmation Successful</div>";
 	    	}else{
@@ -50,12 +57,15 @@ class ConfirmationController extends Controller
     	
     }
 
-    public function resetPassword(Request $request) {
+    public function resetPassword(Request $request, Activities $activities) {
 
     	 $attributes = $this->validate($request, [
     		'verify_code' => 'required',
     		'password' => 'required|min:6|confirmed',
     	]);
+
+    	 $time =  time();
+         $created_time = date('h:i A — Y-m-d', $time+3600);
 
     	 $check_token = User::where('verify_code', $request->input('verify_code'))->exists();
 
@@ -73,6 +83,11 @@ class ConfirmationController extends Controller
 	        $data_user->password = Hash::make($request->input('password'));
 
 		    $data_user->save();
+
+		    $activities->owner_id = $user->id;
+             $activities->narrative = "You just changed your password @".$created_time.".";
+             $activities->save();
+
 
 		    return response()->json(['data' =>['success' => true, 'message' => 'New password Update']], 200);
 

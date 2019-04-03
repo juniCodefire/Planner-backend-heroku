@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Goal;
 use App\Policies\ViewPolicy;
 use Cloudder;
+Use App\Activities;
 
 class ImagesController extends Controller
 {
@@ -18,7 +19,7 @@ class ImagesController extends Controller
         $this->middleware('auth');
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request, Activities $activities)
     {
         $user = Auth::user();
 
@@ -74,6 +75,10 @@ class ImagesController extends Controller
 
 					    $user->save();
 
+					     $user_id = $user->id;
+		                 $info = "New profile image upload";
+		                 $this->activitiesupdate($activities, $info, $user_id);
+
 					    return response()->json(['data' => ['success' => true, 'user_image' => $user_image, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/']], 200);
 
 				    }else{
@@ -87,5 +92,14 @@ class ImagesController extends Controller
 					return response()->json(['data' => ['error'=> false, 'message' => 'Empty File Input!']], 401);
 			}
 
+    }
+     public function activitiesupdate($activities, $info, $user_id) {
+
+         $time =  time();
+         $created_time = date('h:i A — Y-m-d', $time+3600);
+
+         $activities->owner_id = $user_id;
+         $activities->narrative = $info." @ ".$created_time.".";
+         $activities->save();
     }
 }

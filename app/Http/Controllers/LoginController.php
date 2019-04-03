@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeNewUser;
-
+Use App\Activities;
 use App\User;
 
 class LoginController extends Controller
@@ -19,13 +19,16 @@ class LoginController extends Controller
      * @return void
      */
 
-    public function login(Request $request) {
+    public function login(Request $request, Activities $activities) {
     // Do a validation for the input 
         $this->validate($request, [
 
         	'email' => 'required',
         	'password' => 'required'
         ]);
+          $time =  time();
+          $created_time = date('h:i A — Y-m-d', $time+3600);
+
     // store the request into a variable
     //Generatate a token for the password recvery process
         $generateVerifyToken = Str::random(60);
@@ -51,6 +54,10 @@ class LoginController extends Controller
                 if ($user->status == "on") {
 
                     $user->verify_code = $verify_token;
+
+                     $activities->owner_id = $user->id;
+                     $activities->narrative = "Logged in @".$created_time.".";
+                     $activities->save();
 
                      return response()->json(['data' =>['success' => true, 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'token' => 'Bearer '. $token]], 200);
                 }else{

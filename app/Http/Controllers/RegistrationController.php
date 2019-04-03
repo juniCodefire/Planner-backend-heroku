@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ConfirmationLink;
-
+Use App\Activities;
 Use App\User;
 
 
@@ -19,7 +19,7 @@ class RegistrationController extends Controller
      * @return void
      */
 
-    public function store(Request $request, User $user) {
+    public function store(Request $request, User $user, Activities $activities) {
 
     	$attribute = $this->validate($request, [
     		'name' => 'required',
@@ -27,6 +27,9 @@ class RegistrationController extends Controller
     		'phone_number' => 'required|min:10|numeric',
     		'password' => 'required|min:6|confirmed',
     	]);
+
+        $time =  time();
+        $created_time = date('h:i A — Y-m-d', $time+3600);
 
     	//generate a ramdom api token for user recognition
     	$generateRandomString = Str::random(60);
@@ -63,7 +66,7 @@ class RegistrationController extends Controller
                      return response()->json(['data' =>['error' => false, 'message' => "Try again"]], 500);
 
                   }
-                 
+
                   $info = $user->save();
 
                   $splitemail = $user->email;
@@ -71,7 +74,11 @@ class RegistrationController extends Controller
 
                   $emai_link = "www.".$emai_link[1];
 
-                   return response()->json(['data' => ['success' => true, 'message' => 'Registration Successful, A confirmation link has been sent to '.$user->email.'', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'email_link' => $emai_link]], 201);
+                  $activities->owner_id = $user->id;
+                  $activities->narrative = "Registered to GoalSetter App @".$created_time.".";
+                  $activities->save();
+
+                   return response()->json(['data' => ['success' => true, 'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'email_link' => $emai_link]], 201);
 
         
     }

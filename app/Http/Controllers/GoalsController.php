@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+Use App\Activities;
 
 use App\Goal;
 use App\Policies\ViewPolicy;
@@ -59,7 +60,7 @@ class GoalsController extends Controller
          }
         	
      }
-    public function store(Request $request, Goal $goal) {
+    public function store(Request $request, Goal $goal, Activities $activities) {
 
       $user = Auth::user();
        
@@ -90,6 +91,9 @@ class GoalsController extends Controller
               $saved = $goal->save();
 
                 if ($saved) {
+                    $user_id = $user->id;
+                    $info = "New Goal—(".$goal->title.") created";
+                    $this->activitiesupdate($activities, $info, $user_id);
                    return response()->json(['data' => ['success' => true, 'goal' => $goal]], 201);
                 }else{
                     return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
@@ -98,7 +102,7 @@ class GoalsController extends Controller
 
     }
 
-    public function update(Request $request, Goal $goal, ViewPolicy $viewpolicy, $goal_id) {
+    public function update(Request $request, Goal $goal, ViewPolicy $viewpolicy, $goal_id, Activities $activities) {
         $user = Auth::user();
          $check_id = Goal::where('id', $goal_id)->exists();
 
@@ -129,7 +133,13 @@ class GoalsController extends Controller
                         $data->due_date  = $request->input('due_date');
 
                         $data->owner_id   = $user->id;
+
                         $saved = $data->save();
+
+                        $user_id = $user->id;
+                        $info = "A Goal—(".$data->title.") is updated !";
+                        $this->activitiesupdate($activities, $info, $user_id);
+
 
                         return response()->json(['data' => [ 'success' => true, 'goal' => $data]], 200);
                   }
@@ -141,8 +151,8 @@ class GoalsController extends Controller
          }
     } 
 
-    public function destroy(Goal $goal, ViewPolicy $viewpolicy, $goal_id) {
-         Auth::user();
+    public function destroy(Goal $goal, ViewPolicy $viewpolicy, $goal_id, Activities $activities) {
+         $user = Auth::user();
          $check_id = Goal::where('id', $goal_id)->exists();
 
          if ($check_id) {
@@ -151,6 +161,9 @@ class GoalsController extends Controller
              if ($fact) {
                 $data = $goal->findOrfail($goal_id);
 
+                $user_id = $user->id;
+                $info = "A Goal—(".$data->title.") is deleted";
+                $this->activitiesupdate($activities, $info, $user_id);
                 $data->delete();
 
                 return response()->json(['data' => [ 'success' => true, 'message' => 'deleted' ]], 200);
@@ -160,6 +173,16 @@ class GoalsController extends Controller
          }else{
              return response()->json(['data' => [ 'error' => false, 'message' => 'Not Found']], 404);
          }
+    }
+
+    public function activitiesupdate($activities, $info, $user_id) {
+
+         $time =  time();
+         $created_time = date('h:i A — Y-m-d', $time+3600);
+
+         $activities->owner_id = $user_id;
+         $activities->narrative = $info." @ ".$created_time.".";
+         $activities->save();
     }
 
 }

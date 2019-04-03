@@ -32,7 +32,7 @@ $router->put('api/reset/password', 'ConfirmationController@resetPassword');
 //User Profile Routes
 //Get request to show authourize dashboard
 
-$router->group(['prefix' => 'api'], function () use ($router) {
+$router->group(['prefix' => 'api/'], function () use ($router) {
 
     $router->get('profile', 'ProfileController@index');
 
@@ -60,7 +60,7 @@ $router->group(['prefix' => 'api/'], function () use ($router) {
 
 });
 
-$router->group(['prefix' => 'api/goals'], function () use ($router) {
+$router->group(['prefix' => 'api/goals/'], function () use ($router) {
 
     $router->get('{goal_id}/tasks', 'GoalsTasksController@index');
 
@@ -71,5 +71,11 @@ $router->group(['prefix' => 'api/goals'], function () use ($router) {
     $router->put('{goal_id}/tasks/{task_id}/edit', 'GoalsTasksController@update');
 
     $router->delete('{goal_id}/tasks/{task_id}/delete', 'GoalsTasksController@destroy');
+
+});
+
+$router->group(['prefix' => 'api/'], function () use ($router) {
+
+    $router->get('activities', 'ActivitiesController@index');
 
 });

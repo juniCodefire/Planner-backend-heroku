@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\ConfirmationLink;
+use Illuminate\Support\Facades\Mail;
 use Cloudder;
 use App\User;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\ConfirmationLink;
+Use App\Activities;
 
 class ProfileController extends Controller
 {
@@ -30,7 +31,7 @@ class ProfileController extends Controller
 
     }
 
-    public function update(Request $request) {
+    public function update(Request $request, Activities $activities) {
         //Get the Auth Valid User
         $user = Auth::user();
         $id = Auth::id();
@@ -43,8 +44,8 @@ class ProfileController extends Controller
                 'email' => 'required|email|unique:users,email,'.$id,
                 'phone_number' => 'required|min:10|numeric',
                 'password' => '|min:6|confirmed',
-                'account_type' => 'required'
             ]);
+
             $email = "";
             if ($user->email != $request->input('email')) {
 
@@ -58,7 +59,7 @@ class ProfileController extends Controller
                      return response()->json(['data' => ['error' => false, 'message' => 'Try again']], 401);
 
                  }
-                 $user->status = "off";
+                  $user->status = "off";
             }
 
             $user->name = $request->input('name');
@@ -71,10 +72,13 @@ class ProfileController extends Controller
                $password = Hash::make($password);
                $user->password = $password;
             }
-            
             $saved = $user->save();
 
             if ($saved) {
+                $user_id = $user->id;
+                $info = "Your profile account details is updated";
+                $this->activitiesupdate($activities, $info, $user_id);    
+
                 if (empty($email)) {
                     return response()->json(['data' => ['success' => true, 'message' => 'User Updated!', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'token' => 'Bearer ' .$token ]], 201);
                 }else{
@@ -99,7 +103,8 @@ class ProfileController extends Controller
 
             //Check if password match
         if (Hash::check($password, $user->password)) {
-            if ($user->user_image != "user.jpg") {
+
+             if ($user->user_image != "user.jpg") {
 
                 $image_filename = pathinfo($user->user_image, PATHINFO_FILENAME);
 
@@ -109,7 +114,8 @@ class ProfileController extends Controller
 
                     return response()->json(['data' => ['error' => false, 'message' => 'Try again']], 401);
                 }
-            }
+            } 
+    
             $delete = $user->delete();
             if ($delete) {
                return response()->json(['data' => ['success' => true, 'message' => 'User Deleted!' ]], 200);
@@ -119,6 +125,15 @@ class ProfileController extends Controller
             return response()->json(['data' => ['error' => false, 'messagee' => "Invalid Password"]], 401);
         }
 
+    }
+    public function activitiesupdate($activities, $info, $user_id) {
+
+         $time =  time();
+         $created_time = date('h:i A — Y-m-d', $time+3600);
+
+         $activities->owner_id = $user_id;
+         $activities->narrative = $info." @ ".$created_time.".";
+         $activities->save();
     }
 
 }

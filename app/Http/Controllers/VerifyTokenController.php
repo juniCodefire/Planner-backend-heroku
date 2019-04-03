@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationCode;
 
 use App\User;
+Use App\Activities;
 
 class VerifyTokenController extends Controller
 {
@@ -18,7 +19,7 @@ class VerifyTokenController extends Controller
      * @return void
      */
 
-    public function validateUser(Request $request) {
+    public function validateUser(Request $request, Activities $activities) {
     // Do a validation for the input 
         $this->validate($request, [
         	'email' => 'required',
@@ -43,10 +44,23 @@ class VerifyTokenController extends Controller
 
           }
 
+           $user_id = $user->id;
+           $info = "You checked for an email validity and sent a password recovery token";
+           $this->activitiesupdate($activities, $info, $user_id); 
+
           $user->save();
           return response()->json(['data' =>['success' => true, 'message' => "A verfication code has been sent to ".$user->email."!"]], 200);
                  	
 
+    }
+     public function activitiesupdate($activities, $info, $user_id) {
+
+         $time =  time();
+         $created_time = date('h:i A — Y-m-d', $time+3600);
+
+         $activities->owner_id = $user_id;
+         $activities->narrative = $info." @ ".$created_time.".";
+         $activities->save();
     }
 
 }
