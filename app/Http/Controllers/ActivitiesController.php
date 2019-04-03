@@ -23,7 +23,7 @@ class ActivitiesController extends Controller
 
         $user = Auth::user();
 
-        $activities = Activities::where('owner_id', $user->id)->get();
+        $activities = Activities::where('owner_id', $user->id)->orderBy('id', 'desc')->get();
 
         return response()->json(['data' => [ 'success' => true, 'activities' => $activities]], 200);
 
