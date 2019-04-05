@@ -56,6 +56,8 @@ $router->group(['prefix' => 'api/'], function () use ($router) {
 
     $router->put('goals/{goal_id}/edit', 'GoalsController@update');
 
+    $router->put('goals/{goal_id}/status', 'GoalsController@updateGoalStatus');
+
     $router->delete('goals/{goal_id}/delete', 'GoalsController@destroy');
 
 });
@@ -70,6 +72,8 @@ $router->group(['prefix' => 'api/goals/'], function () use ($router) {
 
     $router->put('{goal_id}/tasks/{task_id}/edit', 'GoalsTasksController@update');
 
+    $router->put('{goal_id}/tasks/{task_id}/status', 'GoalsTasksController@updateTaskStatus');
+
     $router->delete('{goal_id}/tasks/{task_id}/delete', 'GoalsTasksController@destroy');
 
 });
@@ -78,4 +82,31 @@ $router->group(['prefix' => 'api/'], function () use ($router) {
 
     $router->get('activities', 'ActivitiesController@index');
 
+    $router->get('count/goals', 'ActivitiesController@goalsCount');
+
+    $router->get('count/tasks', 'ActivitiesController@tasksCount');
+
+    $router->get('count/goal/tasks/{goal_id}', 'ActivitiesController@goalTasksCount');
+
 });
+
+$router->group(['prefix' => 'api/teams'], function () use ($router) {
+
+    $router->get('show', 'TeamsController@index');
+
+    $router->post('create', 'TeamsController@storeTeam');
+
+    $router->put('{team_id}/edit', 'TeamsController@updateTeam');
+
+    $router->delete('{team_id}/delete', 'TeamsController@destroy');
+
+});
+
+$router->group(['prefix' => 'api/teams/member'], function () use ($router) {
+
+    $router->post('search', 'TeamMembersController@searchTeamMember');
+
+});
+
+
+

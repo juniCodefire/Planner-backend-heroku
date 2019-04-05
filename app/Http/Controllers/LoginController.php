@@ -23,7 +23,7 @@ class LoginController extends Controller
     // Do a validation for the input 
         $this->validate($request, [
 
-        	'email' => 'required',
+        	'email' => 'required|email',
         	'password' => 'required'
         ]);
           $time =  time();
@@ -59,7 +59,7 @@ class LoginController extends Controller
                      $activities->narrative = "Logged in @".$created_time.".";
                      $activities->save();
 
-                     return response()->json(['data' =>['success' => true, 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'token' => 'Bearer '. $token]], 200);
+                     return response()->json(['data' =>['success' => true, 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/', 'token' => 'Bearer '. $token]], 200);
                 }else{
                      return response()->json(['data' =>['error' => false, 'message' => "Not Confirmed"]], 401); 
 

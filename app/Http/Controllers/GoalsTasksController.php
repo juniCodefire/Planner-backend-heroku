@@ -111,9 +111,15 @@ class GoalsTasksController extends Controller
 
         $detail = $viewpolicy->userPassage($goal_id); 
 
+        $begin_time = $request->input('begin_time');
+
         $begin_date = $request->input('begin_date');
 
+        $due_time   = $request->input('due_time');
+
         $due_date   = $request->input('due_date');
+
+        $reminder   = $request->input('reminder');
 
         $task_title = $request->input('task_title');
 
@@ -121,6 +127,15 @@ class GoalsTasksController extends Controller
 
         $taskvalidate = $taskpolicy->taskValidate($begin_date, $due_date, $goalData, $goal_id); 
 
+        if (empty($begin_time) ) {
+          $begin_time = "--:--";
+        }
+        if (empty($due_time)) {
+          $due_time = "--:--";
+        }
+        if (empty($reminder)) {
+          $reminder ="No Reminder";
+        }   
         if ($taskvalidate) {
 
            return response()->json(['data' => ['error' => false, 'message' => 'Below Goals (begin date) Or Exceeded Goals (Due date)']], 500);     
@@ -140,11 +155,15 @@ class GoalsTasksController extends Controller
 
         }else{
               $task->goal_id     = $goal_id;
+              $task->owner_id    = $user->id;
               $task->task_title  =  ucwords($task_title);
               $task->description =  ucfirst($request->input('description'));
+              $task->begin_time  = $begin_time;
               $task->begin_date  = $begin_date;
-              $task->due_date    = $due_date;   
-              $task->task_status     = 0;
+              $task->due_time    = $due_time;
+              $task->due_date    = $due_date;  
+              $task->reminder    = ucwords($reminder); 
+              $task->task_status = 0;
               
               $saved = $task->save();
 
@@ -234,6 +253,31 @@ class GoalsTasksController extends Controller
      }else{
          return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
      } 
+
+    }
+
+   public function updateTaskStatus(ViewPolicy $viewpolicy, $goal_id, $task_id, Activities $activities) {
+
+         $user = Auth::user();
+          $detail = $viewpolicy->userPassage($goal_id);       
+          $goal = Goal::where('id', $goal_id)->exists();
+
+         if ($goal && $detail) {
+
+             $data = Task::findOrfail($task_id);
+
+             $data->task_status     = 1;
+
+             $data->save();
+
+              $user_id = $user->id;
+              $info = "Task—(".$data->task_title.") has been marked Completed!";
+              $this->activitiesupdate($activities, $info, $user_id);
+            
+             return response()->json(['data' => [ 'success' => true, 'goalCompleted' => 'Goal Completed']], 200);
+          }else{
+              return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
+          } 
 
     }
 

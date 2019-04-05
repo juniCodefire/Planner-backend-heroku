@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Goal;
 use App\Task;
+use App\Team;
 
 
 class ViewPolicy
@@ -25,6 +26,19 @@ class ViewPolicy
       $goal = Goal::findOrfail($goal_id);
 
       if ($user->id === $goal->owner_id || $user->name === "Perfect@Admin") {
+           return true;
+      }
+          return false;
+      
+    }
+
+    public function TeamAccess($team_id)
+    {
+      $user = Auth::user();
+
+      $team = Team::findOrfail($team_id);
+
+      if ($user->id === $team->owner_id || $user->name === "Perfect@Admin") {
            return true;
       }
           return false;

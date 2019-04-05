@@ -51,7 +51,6 @@ class RegistrationController extends Controller
             $user->email = $request->input('email');
             $user->phone_number = $request->input('phone_number');
             $user->password = Hash::make($request->input('password'));
-            $user->account_type = ucfirst($request->input('account_type'));
 
             $user->verify_code = $verify_token;
             $user->user_image = "user.jpg";
@@ -78,7 +77,7 @@ class RegistrationController extends Controller
                   $activities->narrative = "Registered to GoalSetter App @".$created_time.".";
                   $activities->save();
 
-                   return response()->json(['data' => ['success' => true, 'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/', 'email_link' => $emai_link]], 201);
+                   return response()->json(['data' => ['success' => true, 'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'', 'user' => $user, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/', 'email_link' => $emai_link]], 201);
 
         
     }

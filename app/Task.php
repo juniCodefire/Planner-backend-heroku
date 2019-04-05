@@ -27,7 +27,7 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-       
+       'owner_id',
     ];
 
 

@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_number');
-            $table->string('account_type');
+            $table->enum('team_permit', array('hide','show'));
             $table->string('user_image')->default(null);
             $table->string('password');
             $table->string('verify_code', 80)

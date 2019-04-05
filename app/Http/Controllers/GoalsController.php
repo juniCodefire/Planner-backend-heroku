@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 Use App\Activities;
 
 use App\Goal;
+use App\Task;
 use App\Policies\ViewPolicy;
 
 
@@ -84,7 +85,7 @@ class GoalsController extends Controller
               $goal->title       =  ucwords($request->input('title'));
               $goal->description =  ucfirst($request->input('description'));
               $goal->begin_date  = $request->input('begin_date');
-              $goal->due_date  = $request->input('due_date');  
+              $goal->due_date    = $request->input('due_date');  
               $goal->level       =  ucfirst($request->input('level'));
               $goal->goal_status     = 0;
 
@@ -151,6 +152,45 @@ class GoalsController extends Controller
          }
     } 
 
+    public function updateGoalStatus(Task $task, Goal $goal, $goal_id, ViewPolicy $viewpolicy, Activities $activities) {
+
+         $user = Auth::user();
+
+         $check_id = Goal::where('id', $goal_id)->exists();
+
+         if ($check_id) {
+             $fact = $viewpolicy->userPassage($goal_id);
+             if ($fact) {
+
+                  $data = $goal->findOrfail($goal_id);
+
+                  $data->goal_status = 1;
+
+                  $data->save();
+
+                  $all_task_datas = Task::where('goal_id', $goal_id)->get();
+
+                  foreach ($all_task_datas as $all_task_data) {
+                    
+                       $all_task_data->task_status = 1;
+
+                       $all_task_data->save();
+
+                  }
+
+                  $user_id = $user->id;
+                  $info = "Goal—(".$data->title.") has been marked Completed!";
+                  $this->activitiesupdate($activities, $info, $user_id);
+            
+                 return response()->json(['data' => [ 'success' => true, 'goalCompleted' => 'Goal Completed']], 200);
+             }else {
+                return response()->json(['data' => [ 'error' => false, 'message' => 'Unauthorize Access']], 401);
+             }
+         }else{
+             return response()->json(['data' => [ 'error' => false, 'message' => 'Not Found']], 404);
+         }
+
+    }
     public function destroy(Goal $goal, ViewPolicy $viewpolicy, $goal_id, Activities $activities) {
          $user = Auth::user();
          $check_id = Goal::where('id', $goal_id)->exists();

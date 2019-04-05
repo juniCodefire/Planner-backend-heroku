@@ -35,6 +35,7 @@ class ImagesController extends Controller
 						//Get the Image Size
 						$file_size = filesize($request->file('user_image'));
 
+
         			if (in_array($extension, $allowed_ext)) {
 
         				//Error hadling to control file size
@@ -79,7 +80,7 @@ class ImagesController extends Controller
 		                 $info = "New profile image upload";
 		                 $this->activitiesupdate($activities, $info, $user_id);
 
-					    return response()->json(['data' => ['success' => true, 'user_image' => $user_image, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/v1552380958/']], 200);
+					    return response()->json(['data' => ['success' => true, 'user_image' => $user_image, 'image_link' => 'http://res.cloudinary.com/getfiledata/image/upload/']], 200);
 
 				    }else{
 				    	return response()->json(['data' => ['error'=>false, 'message' => 'There was an error']], 401);

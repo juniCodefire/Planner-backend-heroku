@@ -5,22 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationCode;
 
 use App\User;
 Use App\Activities;
 
-class VerifyTokenController extends Controller
+class TeamMembersController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-    public function validateUser(Request $request, Activities $activities) {
+
+    public function searchTeamMember(Request $request, Activities $activities) {
     // Do a validation for the input 
+       $user = Auth::user();
+
         $this->validate($request, [
         	'email' => 'required|email',
         ]);
@@ -30,28 +36,23 @@ class VerifyTokenController extends Controller
 
      //Query the database with the email giving
 
-       $user = User::where('email', $email)->first();
+       $get_team = User::where('email', $email)->first();
     //Check if rthe user exist
-        if ($user === null) {
-        	return response()->json(['data' =>['error' => false, 'message' => 'Not found']], 404);
+        if ($get_team === null) {
+        	return response()->json(['data' =>['error' => false, 'message' => 'No user found with email']], 404);
         }
-
-        try{
-             Mail::to($user->email)->send(new VerificationCode($user)); 
-          } catch (Exception $ex) {
-
-             return response()->json(['data' =>['success' => true, 'message' => "Try again"]], 500);
-
-          }
-
            $user_id = $user->id;
-           $info = "You checked for an email validity and sent a password recovery token";
+           $info = "You searched for a new team member with email ".$email;
            $this->activitiesupdate($activities, $info, $user_id); 
 
           $user->save();
-          return response()->json(['data' =>['success' => true, 'message' => "A verfication code has been sent to ".$user->email."!"]], 200);
+          return response()->json(['data' =>['success' => true, 'get_team' => $get_team]], 200);
                  	
 
+    }
+
+    public function storetTeamMember() {
+ 
     }
      public function activitiesupdate($activities, $info, $user_id) {
 
@@ -61,6 +62,7 @@ class VerifyTokenController extends Controller
          $activities->owner_id = $user_id;
          $activities->narrative = $info." @ ".$created_time.".";
          $activities->save();
+    }
     }
 
 }
