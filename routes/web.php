@@ -94,6 +94,8 @@ $router->group(['prefix' => 'api/teams'], function () use ($router) {
 
     $router->get('show', 'TeamsController@index');
 
+    $router->get('{team_id}/show', 'TeamsController@showOne');
+
     $router->post('create', 'TeamsController@storeTeam');
 
     $router->put('{team_id}/edit', 'TeamsController@updateTeam');

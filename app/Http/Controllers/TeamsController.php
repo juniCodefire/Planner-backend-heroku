@@ -25,7 +25,7 @@ class TeamsController extends Controller
     }
 
 
-    public function index(Request $request, Team $team) {
+     public function index(Team $team) {
     // Do a validation for the input 
        $user = Auth::user();
 
@@ -35,6 +35,18 @@ class TeamsController extends Controller
                  	
 
     }
+
+     public function showOne($team_id, Team $team) {
+    // Do a validation for the input 
+       $user = Auth::user();
+
+       $show_one_team = $team->where('id', $team_id)->first();
+  
+          return response()->json(['data' =>['success' => true, 'one_team' => $show_one_team]], 200);
+                  
+
+    }
+
 
     public function storeTeam(Team $team, Request $request, Activities $activities) {
        $user = Auth::user();
