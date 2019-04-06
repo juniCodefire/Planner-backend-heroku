@@ -41,7 +41,7 @@ class ActivitiesController extends Controller
 
          $goalsUnCompleted = Goal::where('owner_id', $user->id)->where('goal_status', 0)->count();
 
-         return response()->json(['data' => [ 'success' => true, 'goalsCount' =>  $goalsCount, 'goalsCompleted' => $goalsCompleted , '$goalsUncompleted' => $goalsUnCompleted]], 200);
+         return response()->json(['data' => [ 'success' => true, 'goalsCount' =>  $goalsCount, 'goalsCompleted' => $goalsCompleted , 'goalsUncompleted' => $goalsUnCompleted]], 200);
 
     }
 
@@ -55,7 +55,7 @@ class ActivitiesController extends Controller
 
          $tasksUnCompleted = Task::where('owner_id', $user->id)->where('task_status', 0)->count();
 
-         return response()->json(['data' => [ 'success' => true, 'taskCount' =>  $taskCount, 'tasksCompleted' => $tasksCompleted , '$tasksUncompleted' => $tasksUnCompleted]], 200);
+         return response()->json(['data' => [ 'success' => true, 'taskCount' =>  $taskCount, 'tasksCompleted' => $tasksCompleted , 'tasksUncompleted' => $tasksUnCompleted]], 200);
 
     }
 
@@ -69,7 +69,7 @@ class ActivitiesController extends Controller
 
          $tasksUnCompleted = Task::where('goal_id', $goal_id)->where('task_status', 0)->count();
 
-         return response()->json(['data' => [ 'success' => true, 'goalTaskCount' =>  $goalTaskCount, 'tasksCompleted' => $tasksCompleted , '$tasksUncompleted' => $tasksUnCompleted]], 200);
+         return response()->json(['data' => [ 'success' => true, 'goalTaskCount' =>  $goalTaskCount, 'tasksCompleted' => $tasksCompleted , 'tasksUncompleted' => $tasksUnCompleted]], 200);
 
     }
 

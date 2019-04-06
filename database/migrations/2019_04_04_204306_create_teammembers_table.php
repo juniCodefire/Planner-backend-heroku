@@ -18,10 +18,6 @@ class CreateTeammembersTable extends Migration
             $table->unsignedInteger('team_id');
             $table->string('owner_id');
             $table->string("member_id");
-            $table->string("member_name");
-            $table->string("member_email");
-            $table->string("member_phone");
-            $table->string("member_image");
             $table->timestamps();
 
 

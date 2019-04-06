@@ -28,7 +28,7 @@
 				   			<!-- https://goalsetterapi.herokuapp.com -->
 						<p>Follow this link to confirm you account before you can be able to login...</p>
 
-						<a style=" text-decoration: none;padding: 10px;background: skyblue;color: white;font-weight: bold;"href="https://goalsetterapi.herokuapp.com/api/confirmation/{{$user->confirm_token}}" target="_blank">Click To Confirm...</a> 
+						<a style=" text-decoration: none;padding: 10px;background: skyblue;color: white;font-weight: bold;"href="http://localhost:8000/api/confirmation/{{$user->confirm_token}}" target="_blank">Click To Confirm...</a> 
 				</div>
 
 				<div>

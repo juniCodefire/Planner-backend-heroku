@@ -102,9 +102,17 @@ $router->group(['prefix' => 'api/teams'], function () use ($router) {
 
 });
 
-$router->group(['prefix' => 'api/teams/member'], function () use ($router) {
+$router->group(['prefix' => 'api/teams'], function () use ($router) {
 
-    $router->post('search', 'TeamMembersController@searchTeamMember');
+    $router->get('members/search', 'TeamMembersController@searchTeamMember');
+
+    $router->get('{team_id}/members/show', 'TeamMembersController@getteamMembers');
+
+    $router->get('show/team/makers', 'TeamMembersController@getTeamMakers');
+
+    $router->post('{team_id}/member/{member_id}/add', 'TeamMembersController@addMember');
+
+    $router->delete('teamMember/{teamMember_id}/delete', 'TeamMembersController@destroyTeamMember');
 
 });
 

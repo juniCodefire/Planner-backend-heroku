@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token', 'phone_number', 'verify_code', 'account_type', 'user_image', 'confirm_token', 'status',
+        'name', 'email', 'password', 'team_permit', 'api_token', 'phone_number', 'verify_code', 'account_type', 'user_image', 'confirm_token', 'status',
     ];
 
     /**
@@ -27,6 +27,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password', 'api_token', 'confirm_token', 'status', 'verify_code',
+        'password', 'api_token', 'confirm_token', 'status', 'verify_code','team_permit',
     ];
 }
