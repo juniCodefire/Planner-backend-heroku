@@ -115,7 +115,7 @@ class TeamsController extends Controller
                    $data->save();
 
                    $user_id = $user->id;
-                   $info = "Team—(".$old_team_name.") updated to (".$request->input('team_name').")!";
+                   $info = "Team—(".$old_team_name.") updated to (".$data->team_name.")!";
                    $this->activitiesupdate($activities, $info, $user_id); 
 
                    return response()->json(['data' =>['success' => true, 'team' => $data]], 200);
