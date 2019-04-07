@@ -152,7 +152,7 @@ class GoalsController extends Controller
          }
     } 
 
-    public function updateGoalStatus(Task $task, Goal $goal, $goal_id, ViewPolicy $viewpolicy, Activities $activities) {
+    public function updateGoalStatus(Request $request, Task $task, Goal $goal, $goal_id, ViewPolicy $viewpolicy, Activities $activities) {
 
          $user = Auth::user();
 
