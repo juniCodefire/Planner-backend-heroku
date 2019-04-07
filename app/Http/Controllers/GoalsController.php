@@ -185,7 +185,7 @@ class GoalsController extends Controller
                         $user_id = $user->id;
                         $info = "Goal—(".$data->title.") has been marked Completed!";
                         $this->activitiesupdate($activities, $info, $user_id);
-                        return response()->json(['data' => [ 'success' => true, 'goalCompleted' => 'Goal isCompleted']], 200);
+                        return response()->json(['data' => [ 'success' => true, 'goalCompleted' => 'Goal Completed']], 200);
 
                   }elseif($request->input('goal_status') == 0){
 
@@ -206,7 +206,7 @@ class GoalsController extends Controller
                         $user_id = $user->id;
                         $info = "Goal—(".$data->title.") has been marked UnCompleted with all tasks below current date!";
                         $this->activitiesupdate($activities, $info, $user_id);
-                        return response()->json(['data' => [ 'success' => true, 'goalUnCompleted' => 'Goal is UnCompleted']], 200);
+                        return response()->json(['data' => [ 'success' => true, 'goalUnCompleted' => 'Goal Uncompleted']], 200);
                   }
                  
              }else {
