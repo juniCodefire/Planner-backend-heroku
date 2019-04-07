@@ -171,21 +171,44 @@ class GoalsController extends Controller
 
                   $data->save();
 
-                  $all_task_datas = Task::where('goal_id', $goal_id)->get();
+                 if ($request->input('goal_status') == 1) {
+                     $all_task_datas = Task::where('goal_id', $goal_id)->get();
 
-                  foreach ($all_task_datas as $all_task_data) {
-                    
-                       $all_task_data->task_status = $request->input('goal_status');
+                      foreach ($all_task_datas as $all_task_data) {
+                        
+                           $all_task_data->task_status = $request->input('goal_status');
 
-                       $all_task_data->save();
+                           $all_task_data->save();
 
+                      }
+
+                        $user_id = $user->id;
+                        $info = "Goal—(".$data->title.") has been marked Completed!";
+                        $this->activitiesupdate($activities, $info, $user_id);
+                        return response()->json(['data' => [ 'success' => true, 'goalCompleted' => 'Goal isCompleted']], 200);
+
+                  }elseif($request->input('goal_status') == 0){
+
+                     $time_pass =  time();
+                     $time_check = date('Y-m-d', $time_pass+3600);
+
+                     $all_task_datas = Task::where('goal_id', $goal_id)
+                                        ->where('due_date', '<', $time_check)->get();
+
+                      foreach ($all_task_datas as $all_task_data) {
+                        
+                           $all_task_data->task_status = $request->input('goal_status');
+
+                           $all_task_data->save();
+
+                      }
+
+                        $user_id = $user->id;
+                        $info = "Goal—(".$data->title.") has been marked UnCompleted with all tasks below current date!";
+                        $this->activitiesupdate($activities, $info, $user_id);
+                        return response()->json(['data' => [ 'success' => true, 'goalUnCompleted' => 'Goal is UnCompleted']], 200);
                   }
-
-                  $user_id = $user->id;
-                  $info = "Goal—(".$data->title.") has been marked Completed!";
-                  $this->activitiesupdate($activities, $info, $user_id);
-            
-                 return response()->json(['data' => [ 'success' => true, 'goalCompleted' => 'Goal Completed']], 200);
+                 
              }else {
                 return response()->json(['data' => [ 'error' => false, 'message' => 'Unauthorize Access']], 401);
              }
