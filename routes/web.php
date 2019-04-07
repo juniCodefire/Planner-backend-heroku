@@ -106,7 +106,7 @@ $router->group(['prefix' => 'api/teams'], function () use ($router) {
 
 $router->group(['prefix' => 'api/teams'], function () use ($router) {
 
-    $router->get('members/search', 'TeamMembersController@searchTeamMember');
+    $router->post('members/search', 'TeamMembersController@searchTeamMember');
 
     $router->get('{team_id}/members/show', 'TeamMembersController@getteamMembers');
 
