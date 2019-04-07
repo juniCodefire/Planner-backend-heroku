@@ -160,11 +160,14 @@ class GoalsController extends Controller
 
          if ($check_id) {
              $fact = $viewpolicy->userPassage($goal_id);
-             if ($fact) {
+            if ($fact) {
+                  $this->validate($request, [
+                     'goal_status'       => 'required'
+                  ]); 
 
                   $data = $goal->findOrfail($goal_id);
 
-                  $data->goal_status = 1;
+                  $data->goal_status = $request->input('goal_status');
 
                   $data->save();
 
@@ -172,7 +175,7 @@ class GoalsController extends Controller
 
                   foreach ($all_task_datas as $all_task_data) {
                     
-                       $all_task_data->task_status = 1;
+                       $all_task_data->task_status = $request->input('goal_status');
 
                        $all_task_data->save();
 
