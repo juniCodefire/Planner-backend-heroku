@@ -63,24 +63,19 @@ class TeamsController extends Controller
            return response()->json(['data' => ['error' => false, 'message' => 'Team name already exist']], 401);
 
         }else{
-              $team_name = $request->input('team_name');
-         ucfirst($team_name);
 
-         if ($team_name == "Team") {
-            return response()->json(['data' => ['error' => false, 'message' => 'Name—(Team) cannot be use, choose another name']], 401);
-         }else{
-             $team->owner_id = $user->id;
-             $team->team_name = ucwords("Team ".$team_name);
+         $team_name = $request->input('team_name');
 
-             $team->save();
+         $team->owner_id = $user->id;
+         $team->team_name = ucwords($team_name);
 
-             $user_id = $user->id;
-             $info = "You created a new team with name ".$team_name;
-             $this->activitiesupdate($activities, $info, $user_id); 
+         $team->save();
 
-             return response()->json(['data' =>['success' => true, 'team' => $team]], 201);
-         }
+         $user_id = $user->id;
+         $info = "You created a new team with name ".$team_name;
+         $this->activitiesupdate($activities, $info, $user_id); 
 
+         return response()->json(['data' =>['success' => true, 'team' => $team]], 201);
 
        }
     }
@@ -112,20 +107,15 @@ class TeamsController extends Controller
 
                   }else{
 
-                    ucfirst($request->input('team_name'));
-                    if ($request->input('team_name') == "Team") {
-                      return response()->json(['data' => ['error' => false, 'message' => 'Name—(Team) cannot be use, choose another name']], 401);
-                    }
+                   $data = Team::findOrfail($team_id);
 
-                    $data = Team::findOrfail($team_id);
-
-                    $data->owner_id = $user->id;
-                    $data->team_name = ucwords("Team ".$request->input('team_name'));
+                   $data->owner_id = $user->id;
+                   $data->team_name = ucwords($request->input('team_name'));
 
                    $data->save();
 
                    $user_id = $user->id;
-                   $info = "Team—(".$old_team_name.") updated to (".$data->team_name.")!";
+                   $info = "Team—(".$old_team_name.") updated to (".$request->input('team_name').")!";
                    $this->activitiesupdate($activities, $info, $user_id); 
 
                    return response()->json(['data' =>['success' => true, 'team' => $data]], 200);
