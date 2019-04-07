@@ -63,23 +63,24 @@ class TeamsController extends Controller
            return response()->json(['data' => ['error' => false, 'message' => 'Team name already exist']], 401);
 
         }else{
-            $team_name = $request->input('team_name');
-            ucfirst($team_name);
+              $team_name = $request->input('team_name');
+         ucfirst($team_name);
 
-            if ($team_name == "Team") {
-                return response()->json(['data' => ['error' => false, 'message' => 'Name—(Team) cannot be use, choose another name']], 401);
-            }
+         if ($team_name == "Team") {
+            return response()->json(['data' => ['error' => false, 'message' => 'Name—(Team) cannot be use, choose another name']], 401);
+         }else{
+             $team->owner_id = $user->id;
+             $team->team_name = ucwords("Team ".$team_name);
 
-            $team->owner_id = $user->id;
-            $team->team_name = ucwords("Team ".$team_name);
+             $team->save();
 
-         $team->save();
+             $user_id = $user->id;
+             $info = "You created a new team with name ".$team_name;
+             $this->activitiesupdate($activities, $info, $user_id); 
 
-         $user_id = $user->id;
-         $info = "You created a new team with name ".$team_name;
-         $this->activitiesupdate($activities, $info, $user_id); 
+             return response()->json(['data' =>['success' => true, 'team' => $team]], 201);
+         }
 
-         return response()->json(['data' =>['success' => true, 'team' => $team]], 201);
 
        }
     }
