@@ -108,8 +108,14 @@ class TeamMembersController extends Controller
 
 
 
-    public function addMember(Request $request, Activities $activities, $team_id, $member_id, TeamMembers $teamMembers) {
+    public function addMember(Request $request, Activities $activities, $team_id, TeamMembers $teamMembers) {
          $user = Auth::user();
+
+         $this->validate($request, [
+          'member_id' => 'required',
+         ]);
+
+         $member_id = $request->input('member_id');
 
           $check_team_id = Team::where('id', $team_id)
                                  ->where('owner_id', $user->id)->exists(); 
