@@ -31,6 +31,7 @@ class VerifyTokenController extends Controller
      //Query the database with the email giving
 
        $user = User::where('email', $email)->first();
+
     //Check if rthe user exist
         if ($user === null) {
         	return response()->json(['data' =>['error' => false, 'message' => 'Not found']], 404);
