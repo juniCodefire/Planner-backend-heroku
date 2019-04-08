@@ -147,7 +147,7 @@ class TeamMembersController extends Controller
               return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access']], 401);
          }
     }
-     public function destroyTeamMember($teamMember_id, Activities $activities) {
+     public function destroyTeamMember($member_id, Activities $activities) {
               $user = Auth::user();
 
               $member_exist = TeamMembers::where('id', $teamMember_id)

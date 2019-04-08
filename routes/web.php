@@ -114,7 +114,7 @@ $router->group(['prefix' => 'api/teams'], function () use ($router) {
 
     $router->post('{team_id}/member/add', 'TeamMembersController@addMember');
 
-    $router->delete('teamMember/{teamMember_id}/delete', 'TeamMembersController@destroyTeamMember');
+    $router->delete('member/{member_id}/delete', 'TeamMembersController@destroyTeamMember');
 
 });
 
