@@ -150,12 +150,12 @@ class TeamMembersController extends Controller
      public function destroyTeamMember($member_id, Activities $activities) {
               $user = Auth::user();
 
-              $member_exist = TeamMembers::where('id', $teamMember_id)
+              $member_exist = TeamMembers::where('id', $member_id)
                                                 ->exists(); 
 
               if ($member_exist) {
 
-                      $data = TeamMembers::findOrfail($teamMember_id);
+                      $data = TeamMembers::findOrfail($member_id);
 
                       $team_info = Team::findOrfail($data->team_id);
 
