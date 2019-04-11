@@ -124,11 +124,11 @@ $router->group(['prefix' => 'api/teams'], function () use ($router) {
 
 });
 
-$router->group(['prefix' => 'api/assign'], function () use ($router) {
+$router->group(['prefix' => 'api/'], function () use ($router) {
 
-    $router->put('task', 'AssignTaskController@assignTask');
+    $router->put('task/assign', 'AssignTaskController@assignTask');
 
-    $router->put('task/remove', 'AssignTaskController@removeTask');
+    $router->put('task/revert', 'AssignTaskController@removeTask');
 
     $router->get('show/assigned/task/to', 'AssignTaskController@showAssignedTo');
 

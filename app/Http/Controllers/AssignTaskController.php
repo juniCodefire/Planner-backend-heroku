@@ -77,8 +77,7 @@ class AssignTaskController extends Controller
                 'task_id'  =>   'required'
             ]); 
 
-        $task_assign = Task::where('id', $request->input('task_id'))
-                        ->where('owner_id', $user->id)->first();
+        $task_assign = Task::where('id', $request->input('task_id'))->first();
 
               $task_assign->assigned_id = $request->input('member_id');
  
@@ -98,26 +97,18 @@ class AssignTaskController extends Controller
                     $this->activitiesupdate_2($activities_2, $info_2, $user_id_2);         
 
                  return response()->json(['data' => ['success' => true, 'message' => 'Successfully assigned a task to team member']], 200);
-              }else{
-                  return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
               }
     }
 
     public function removeTask(Request $request, Activities $activities,  Activities $activities_2) {
       $user = Auth::user();
            $this->validate($request, [
-                'member_id'  => 'required',
                 'task_id'  =>   'required'
             ]); 
 
-        $task_remove = Task::where('id', $request->input('task_id'))
-                        ->where('owner_id', $user->id)->where('assigned_id', $request->input('member_id'))->first();
-
-              $task_remove->assigned_id = null;
+        $task_remove = Task::where('id', $request->input('task_id'))->first();
  
-              $saved = $task_remove->save();
-
-            if ($saved) {
+            
                   $member_data = User::where('id', $request->input('member_id'))
                                    ->first();
                                    
@@ -128,11 +119,13 @@ class AssignTaskController extends Controller
                     $user_id_2 = $request->input('member_id');
                     $info_2 = $user->name." remove a Task—(".$task_remove->titles.") assigned to you";
                     $this->activitiesupdate_2($activities_2, $info_2, $user_id_2); 
-                   
+
+                    $task_remove->assigned_id = null;
+
+                     $saved = $task_remove->save();
+
+
                  return response()->json(['data' => ['success' => true, 'message' => 'Successlly removed assigned task from team member']], 200);
-              }else{
-                  return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
-              }
     }
 
    public function activitiesupdate($activities, $info, $user_id) {
