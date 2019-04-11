@@ -109,14 +109,13 @@ class AssignTaskController extends Controller
         $task_remove = Task::where('id', $request->input('task_id'))->first();
  
             
-                  $member_data = User::where('id',  $task_remove->assigned_id)
-                                   ->first();
+                  $member_data = User::where('id',  $task_remove->assigned_id)->first();
                                    
                     $user_id = $user->id;
                     $info = "You remove a Task—(".$task_remove->titles.") from a member—(".$member_data->name.")";
                     $this->activitiesupdate($activities, $info, $user_id);
 
-                    $user_id_2 = $request->input('member_id');
+                    $user_id_2 = $task_remove->assigned_id;
                     $info_2 = $user->name." remove a Task—(".$task_remove->titles.") assigned to you";
                     $this->activitiesupdate_2($activities_2, $info_2, $user_id_2); 
 
