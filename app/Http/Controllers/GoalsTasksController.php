@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 use App\Goal;
 use App\Task;
+use App\User;
 use App\Policies\ViewPolicy;
 use App\Policies\TaskPolicy;
 Use App\Activities;
