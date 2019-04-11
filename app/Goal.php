@@ -27,7 +27,7 @@ class Goal extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'goal_token',
+        'goal_token','owner_id', 
     ];
 
 

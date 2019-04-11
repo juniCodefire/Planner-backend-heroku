@@ -98,10 +98,6 @@ class TeamMembersController extends Controller
                         ->where('name', 'LIKE', "%{$search_term}%") 
                         ->get();
     //Check if rthe user exist
-           $user_id = $user->id;
-           $info = "You searched for a new team member with name ".$search_term;
-           $this->activitiesupdate($activities, $info, $user_id); 
-
           $user->save();
           return response()->json(['data' =>['success' => true, 'add_members' => $get_member]], 200);               	
     }
@@ -138,7 +134,7 @@ class TeamMembersController extends Controller
 
                   $member_data = User::where('id',  $member_id)->first();
                   $user_id = $user->id;
-                  $info = "Added Team Memeber—(".$member_data->name.") to Team—(".$team_info->team_name.")";
+                  $info = "You added a Team Memeber—(".$member_data->name.") to Team—(".$team_info->team_name.")";
                   $this->activitiesupdate($activities, $info, $user_id); 
 
                   return response()->json(['data' =>['success' => true, 'message' => 'Member added to Team—('.$team_info->team_name.')', 'teamMembers' => $teamMembers]], 200);
@@ -165,7 +161,7 @@ class TeamMembersController extends Controller
                           $member_data = User::where('id',  $data->member_id)->first();
 
                           $user_id = $user->id;
-                          $info = "Deleted a Team Memeber—(".$member_data->name.") from Team—(".$team_info->team_name.")";
+                          $info = "you deleted a Team Memeber—(".$member_data->name.") from Team—(".$team_info->team_name.")";
                           $this->activitiesupdate($activities, $info, $user_id);
 
                       }elseif($user->id != $data->owner_id){
@@ -173,7 +169,7 @@ class TeamMembersController extends Controller
                           $member_data = User::where('id',  $data->owner_id)->first();
 
                           $user_id = $user->id;
-                          $info = "Deleted a Team Memeber—(".$member_data->name.") from Team—(".$team_info->team_name.")";
+                          $info = "you deleted a Team Memeber—(".$member_data->name.") from Team—(".$team_info->team_name.")";
                           $this->activitiesupdate($activities, $info, $user_id); 
                       }
 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Goal;
 use App\Task;
+use App\Team;
+use App\TeamMembers;
 use App\Activities;
 
 class ActivitiesController extends Controller
@@ -72,5 +74,35 @@ class ActivitiesController extends Controller
          return response()->json(['data' => [ 'success' => true, 'goalTaskCount' =>  $goalTaskCount, 'tasksCompleted' => $tasksCompleted , 'tasksUncompleted' => $tasksUnCompleted]], 200);
 
     }
+
+public function allTeamMemberCount() {
+
+         $user = Auth::user(); 
+
+         $totalTeam = Team::where('owner_id', $user->id)->count();
+
+         $totalTeamMember = TeamMembers::where('owner_id', $user->id)->count();
+
+         return response()->json(['data' => [ 'success' => true, 'totalTeam ' =>  $totalTeam, 'totalTeamMember' => $totalTeamMember]], 200);
+
+    }
+
+public function allSigleTeamMemberCount($team_id) {
+
+         $user = Auth::user(); 
+
+         $totalMembers = TeamMembers::where('owner_id', $user->id)->where('team_id', $team_id)->count();
+
+         return response()->json(['data' => [ 'success' => true, 'totalMembers' => $totalMembers,]], 200);
+
+    }
+public function assignedTaskCount() {
+        $user = Auth::user(); 
+
+         $totalMembers = Task::where('owner_id', $user->id)->where('assigned_id', '!=', null)->count();
+
+         return response()->json(['data' => [ 'success' => true, 'totalMembers' => $totalMembers]], 200);
+}
+
 
 }

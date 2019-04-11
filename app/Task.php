@@ -18,7 +18,7 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-         'goal_id', 'title', 'description', 'start_time', 'start_date', 'end_time', 'end_date', 'completed',
+         'goal_id', 'title', 'description', 'begin_time', 'begin_date', 'due_time', 'due_date', 'completed',
     ];
 
     /**
@@ -27,7 +27,7 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-       'owner_id',
+       'owner_id','begin_time',
     ];
 
 

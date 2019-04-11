@@ -99,13 +99,14 @@ class GoalsTasksController extends Controller
       $user = Auth::user();
       $detail = $viewpolicy->userPassage($goal_id); 
       $goal = Goal::where('id', $goal_id)->exists();
-
+      $now_time =  time();
       if ($goal && $detail) {
 
            $this->validate($request, [
                 'task_title'  => 'required',
                 'description' => 'required|min:5',
-                'begin_date'  => 'required',
+                'begin_time'  => 'required',
+                'due_time'    => 'required',
                 'due_date'    => 'required'
             ]); 
 
@@ -113,7 +114,7 @@ class GoalsTasksController extends Controller
 
         $begin_time = $request->input('begin_time');
 
-        $begin_date = $request->input('begin_date');
+        $begin_date = date('Y-m-d', $now_time+3600);
 
         $due_time   = $request->input('due_time');
 
@@ -125,20 +126,14 @@ class GoalsTasksController extends Controller
 
         $goalData = Goal::where('id', $goal_id)->first();
 
-        $taskvalidate = $taskpolicy->taskValidate($begin_date, $due_date, $goalData, $goal_id); 
+        $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData); 
 
-        if (empty($begin_time) ) {
-          $begin_time = "--:--";
-        }
-        if (empty($due_time)) {
-          $due_time = "--:--";
-        }
         if (empty($reminder)) {
-          $reminder ="No Reminder";
+          $reminder ="nr";
         }   
         if ($taskvalidate) {
 
-           return response()->json(['data' => ['error' => false, 'message' => 'Below Goals (begin date) Or Exceeded Goals (Due date)']], 500);     
+           return response()->json(['data' => ['error' => false, 'message' => 'your due date cannot exceed goal due date']], 401);     
           
         }      
 
@@ -170,7 +165,7 @@ class GoalsTasksController extends Controller
                 if ($saved) {
 
                    $user_id = $user->id;
-                    $info = "New task (".$task->task_title.") of Goal (".$goalData->title.") is created";
+                    $info = "You created a new Task—(".$task->task_title.") from Goal—(".$goalData->title.")";
                     $this->activitiesupdate($activities, $info, $user_id);
 
                    return response()->json(['data' => ['success' => true, 'task' => $task]], 201);
@@ -194,11 +189,10 @@ class GoalsTasksController extends Controller
            $this->validate($request, [
                 'task_title'  => 'required',
                 'description' => 'required|min:5',
-                'begin_date'  => 'required',
+                'begin_time'  => 'required',
+                'due_time'    => 'required',
                 'due_date'    => 'required'
             ]); 
-
-        $begin_date = $request->input('begin_date');
 
         $due_date   = $request->input('due_date');
 
@@ -207,17 +201,17 @@ class GoalsTasksController extends Controller
 
         $goalData = Goal::where('id', $goal_id)->first();
 
-        $taskvalidate = $taskpolicy->taskValidate($begin_date, $due_date, $goalData, $goal_id); 
+        $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData); 
 
         if ($taskvalidate) {
 
-           return response()->json(['data' => ['error' => false, 'message' => 'Below Goals (begin date) Or Exceeded Goals (Due date)']], 500);     
+           return response()->json(['data' => ['error' => false, 'message' => 'your due date cannot exceed goal due date']], 401);     
           
         }      
 
         if ($task_title === $goalData->title) {
 
-           return response()->json(['data' => ['error' => false, 'message' => 'Same Goal Title']], 401);
+           return response()->json(['data' => ['error' => false, 'message' => 'Cannot have thesame goal title']], 401);
         }
 
         $check_title = Task::where('goal_id', $goal_id)->where('task_title', $task_title)->where('id', '!=', $task_id)->exists();
@@ -236,17 +230,19 @@ class GoalsTasksController extends Controller
               $update->goal_id     =  $goal_id;
               $update->task_title  =  ucwords($task_title);
               $update->description =  ucfirst($request->input('description'));
-              $update->begin_date  =  $begin_date;
               $update->due_date    =  $due_date;   
+              $task->begin_time  = $begin_time;
+              $task->due_time    = $due_time;
+              $task->reminder    = ucwords($reminder); 
               $update->task_status = 0;
               
               $saved = $update->save();
 
                 if ($saved) {
                       $user_id = $user->id;
-                      $info = "A Task—(".$title_activities.") of Goal—(".$goalData->title.") is updated to (".$update->task_title.")!";
+                      $info = "You updated a Task——(".$title_activities.") from Goal—(".$goalData->title.") to (".$update->task_title.")!";
                       $this->activitiesupdate($activities, $info, $user_id);
-                   return response()->json(['data' => ['success' => true, 'message' => 'Tasks Updated']], 200);
+                   return response()->json(['data' => ['success' => true, 'message' => 'Sccessfully Updated tasks']], 200);
                 }else{
                     return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
                 }

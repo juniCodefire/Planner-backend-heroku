@@ -68,7 +68,6 @@ class GoalsController extends Controller
        $attributes = $this->validate($request, [
     		'title'       => 'required',
     		'description' => 'required|min:6',
-            'begin_date'  => 'required',
             'due_date'    => 'required',
     		'level'       => 'required'
     	]);  
@@ -84,7 +83,7 @@ class GoalsController extends Controller
               $goal->owner_id    = $user->id;  
               $goal->title       =  ucwords($request->input('title'));
               $goal->description =  ucfirst($request->input('description'));
-              $goal->begin_date  = $request->input('begin_date');
+              $goal->begin_date  = date('Y-m-d', $time+3600);;
               $goal->due_date    = $request->input('due_date');  
               $goal->level       =  ucfirst($request->input('level'));
               $goal->goal_status     = 0;
@@ -93,7 +92,7 @@ class GoalsController extends Controller
 
                 if ($saved) {
                     $user_id = $user->id;
-                    $info = "New Goal—(".$goal->title.") created";
+                    $info = "You created a New Goal—(".$goal->title.")";
                     $this->activitiesupdate($activities, $info, $user_id);
                    return response()->json(['data' => ['success' => true, 'goal' => $goal]], 201);
                 }else{
@@ -115,7 +114,6 @@ class GoalsController extends Controller
                   'title'       => 'required',
                   'description' => 'required|min:5',
                   'level'       => 'required',
-                  'begin_date'  => 'required',
                   'due_date'    => 'required'
                 ]); 
 
@@ -130,7 +128,6 @@ class GoalsController extends Controller
                         $data->title       = $request->input('title');
                         $data->description = $request->input('description');
                         $data->level       = $request->input('level');
-                        $data->begin_date  = $request->input('begin_date');
                         $data->due_date  = $request->input('due_date');
 
                         $data->owner_id   = $user->id;
@@ -138,7 +135,7 @@ class GoalsController extends Controller
                         $saved = $data->save();
 
                         $user_id = $user->id;
-                        $info = "A Goal—(".$data->title.") is updated !";
+                        $info = "you updated a Goal—(".$data->title.")";
                         $this->activitiesupdate($activities, $info, $user_id);
 
 
@@ -157,10 +154,10 @@ class GoalsController extends Controller
          $user = Auth::user();
 
          $check_id = Goal::where('id', $goal_id)->exists();
-
+         $now_time =  time();
          if ($check_id) {
              $fact = $viewpolicy->userPassage($goal_id);
-            if ($fact) {
+             if ($fact) {
                   $this->validate($request, [
                      'goal_status'       => 'required'
                   ]); 
@@ -171,7 +168,7 @@ class GoalsController extends Controller
 
                   $data->save();
 
-                 if ($request->input('goal_status') == 1) {
+                  if ($request->input('goal_status') == 1) {
                      $all_task_datas = Task::where('goal_id', $goal_id)->get();
 
                       foreach ($all_task_datas as $all_task_data) {
@@ -190,7 +187,7 @@ class GoalsController extends Controller
                   }elseif($request->input('goal_status') == 0){
 
                      $time_pass =  time();
-                     $time_check = date('Y-m-d', $time_pass+3600);
+                     $time_check = date('Y-m-d', $now_time+3600);
 
                      $all_task_datas = Task::where('goal_id', $goal_id)
                                         ->where('due_date', '<', $time_check)->get();
@@ -206,7 +203,7 @@ class GoalsController extends Controller
                         $user_id = $user->id;
                         $info = "Goal—(".$data->title.") has been marked UnCompleted with all tasks below current date!";
                         $this->activitiesupdate($activities, $info, $user_id);
-                        return response()->json(['data' => [ 'success' => true, 'goalUnCompleted' => 'Goal Uncompleted']], 200);
+                        return response()->json(['data' => [ 'success' => true, 'goalUnCompleted' => 'Goal UnCompleted']], 200);
                   }
                  
              }else {

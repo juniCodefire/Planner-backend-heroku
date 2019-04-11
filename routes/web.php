@@ -88,6 +88,12 @@ $router->group(['prefix' => 'api/'], function () use ($router) {
 
     $router->get('count/goal/tasks/{goal_id}', 'ActivitiesController@goalTasksCount');
 
+    $router->get('count/members', 'ActivitiesController@allTeamMemberCount');
+
+    $router->get('count/members/{team_id}', 'ActivitiesController@allSigleTeamMemberCount');
+    
+    $router->get('count/assigned/members', 'ActivitiesController@assignedTaskCount');
+
 });
 
 $router->group(['prefix' => 'api/teams'], function () use ($router) {
@@ -118,5 +124,16 @@ $router->group(['prefix' => 'api/teams'], function () use ($router) {
 
 });
 
+$router->group(['prefix' => 'api/assign'], function () use ($router) {
 
+    $router->put('task', 'AssignTaskController@assignTask');
+
+    $router->put('task/remove', 'AssignTaskController@removeTask');
+
+    $router->get('show/assigned/task/to', 'AssignTaskController@showAssignedTo');
+
+    $router->get('show/assigned/task/from', 'AssignTaskController@showAssignedFrom');
+
+
+});
 
