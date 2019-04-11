@@ -109,7 +109,7 @@ class AssignTaskController extends Controller
         $task_remove = Task::where('id', $request->input('task_id'))->first();
  
             
-                  $member_data = User::where('id', $request->input('member_id'))
+                  $member_data = User::where('id',  $task_remove->assigned_id)
                                    ->first();
                                    
                     $user_id = $user->id;
