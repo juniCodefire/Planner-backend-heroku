@@ -89,14 +89,14 @@ class AssignTaskController extends Controller
                                    ->first();
                                    
                     $user_id = $user->id;
-                    $info = "You just assigned a task to—(".$member_data->name.")";
+                    $info = "You assigned a task to—(".$member_data->name.")";
                     $this->activitiesupdate($activities, $info, $user_id);
 
                     $user_id_2 = $request->input('member_id');
                     $info_2 = "A Task has been assigned to you from (".$user->name.")";
                     $this->activitiesupdate_2($activities_2, $info_2, $user_id_2);         
 
-                 return response()->json(['data' => ['success' => true, 'message' => 'Successfully assigned a task to team member']], 200);
+                 return response()->json(['data' => ['success' => true, 'message' => 'You have succesfully assigned a task to ('.$member_data->name.')']], 200);
               }
     }
 
@@ -112,7 +112,7 @@ class AssignTaskController extends Controller
                   $member_data = User::where('id',  $task_remove->assigned_id)->first();
                                    
                     $user_id = $user->id;
-                    $info = "You remove a Task—(".$task_remove->titles.") from a member—(".$member_data->name.")";
+                    $info = "You reverted a Task—(".$task_remove->titles.") from a member—(".$member_data->name.")";
                     $this->activitiesupdate($activities, $info, $user_id);
 
                     $user_id_2 = $task_remove->assigned_id;
@@ -124,7 +124,7 @@ class AssignTaskController extends Controller
                      $saved = $task_remove->save();
 
 
-                 return response()->json(['data' => ['success' => true, 'message' => 'Successlly removed assigned task from team member']], 200);
+                 return response()->json(['data' => ['success' => true, 'message' => 'You have successfully reverted assigned task from ('.$member_data->name.')' ]], 200);
     }
 
    public function activitiesupdate($activities, $info, $user_id) {
