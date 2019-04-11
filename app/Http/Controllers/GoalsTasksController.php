@@ -41,8 +41,21 @@ class GoalsTasksController extends Controller
                 if ($check_tasks) {
 
                      $user_tasks = Task::where('goal_id', $goal_id)->get();   
+                     $all_task =  array(); 
+                     foreach ($user_tasks as $user_task) {
 
-                     return response()->json(['data' => [ 'success' => true, 'user_tasks' => $user_tasks]], 200);
+                              if ($user_task->assigned_id != null) {
+                                $task_member = User::where('id',  $get_data->assigned_id)->first();
+                                
+                               }else{
+                                   $task_member = "";
+                               }
+
+                              $packages = array($task_member, $user_task);
+
+                              array_push($all_task, $packages);
+                     }
+                     return response()->json(['data' => [ 'success' => true, 'user_tasks' => $all_task]], 200);
 
                 }else{
                      return response()->json(['data' => [ 'success' => true, 'message' => "No Recent Task"]], 200);
