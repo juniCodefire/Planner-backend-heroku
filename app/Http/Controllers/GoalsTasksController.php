@@ -39,13 +39,13 @@ class GoalsTasksController extends Controller
                      $check_tasks = Task::where('goal_id', $goal_id)->exists(); 
 
                 if ($check_tasks) {
-
-                     $user_tasks = Task::where('goal_id', $goal_id)->get();   
                      $all_task =  array(); 
+                     $user_tasks = Task::where('goal_id', $goal_id)->get();   
+                     
                      foreach ($user_tasks as $user_task) {
 
                               if ($user_task->assigned_id != null) {
-                                $task_member = User::where('id',  $get_data->assigned_id)->first();
+                                $task_member = User::where('id', $user_task->assigned_id)->first();
                                 
                                }else{
                                    $task_member = "";
