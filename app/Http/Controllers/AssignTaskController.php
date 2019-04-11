@@ -124,7 +124,7 @@ class AssignTaskController extends Controller
                      $saved = $task_remove->save();
 
 
-                 return response()->json(['data' => ['success' => true, 'message' => 'You have successfully reverted assigned task from ('.$member_data->name.')' ]], 200);
+                 return response()->json(['data' => ['success' => true, 'message' => 'You have successfully reverted a task from ('.$member_data->name.')' ]], 200);
     }
 
    public function activitiesupdate($activities, $info, $user_id) {
