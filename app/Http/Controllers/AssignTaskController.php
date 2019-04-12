@@ -28,11 +28,9 @@ class AssignTaskController extends Controller
 
          $assign_to =  array(); 
 
-          $get_datas = Task::where('owner_id', $user->id)->get();
+          $get_datas = Task::where('owner_id', $user->id)->where('assigned_id', '!=', null)->get();
 
             foreach ($get_datas as $get_data) {
-
-               if ($get_data->assigned_id != null) {
                     $task_member = User::where('id',  $get_data->assigned_id)->first();
 
                     $goal_data = Goal::where('id',  $get_data->goal_id)->first();
@@ -40,7 +38,6 @@ class AssignTaskController extends Controller
                     $packages = array($task_member, $goal_data, $get_data );
 
                     array_push($assign_to, $packages);
-               }
 
             }
            return response()->json(['data' =>['success' => true, 
@@ -57,8 +54,7 @@ class AssignTaskController extends Controller
           $get_datas = Task::where('assigned_id', $user->id)->get();
 
             foreach ($get_datas as $get_data) {
-                 
-             if ($get_data->assigned_id != null) {
+
                  $task_member = User::where('id',  $get_data->owner_id)->first();
 
                  $goal_data = Goal::where('id',  $get_data->goal_id)->first();
@@ -66,7 +62,6 @@ class AssignTaskController extends Controller
                  $packages = array($task_member, $goal_data, $get_data );
 
                  array_push($assign_from, $packages);
-             }
                 
             }
            return response()->json(['data' =>['success' => true, 
