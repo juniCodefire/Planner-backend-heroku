@@ -282,14 +282,11 @@ class GoalsTasksController extends Controller
           $task_status = $request->input('task_status');
 
          if ($goal && $detail) {
-            $goal = Goal::where('id', $goal_id)->fisrt();
+            $goal = Goal::where('id', $goal_id)->first();
 
-            if ($goal->goal_status == "1") {
-                return response()->json(['data' => [ 'success' => true, 'message' => 'Goal has been marked completed']], 401);
-            }
              $data = Task::findOrfail($task_id);
 
-             if ($task_status == "0" ||  $task_status == "1") {
+             if ($task_status == 0 ||  $task_status == 1) {
                 $data->task_status = $task_status;
 
                  $data->save();
@@ -297,6 +294,10 @@ class GoalsTasksController extends Controller
                   $user_id = $user->id;
               $info = "Task—(".$data->task_title.") has been marked Completed!";
               $this->activitiesupdate($activities, $info, $user_id);
+
+                if ($goal->goal_status == 1) {
+                   $goal->goal_status = 0;
+                  }
             
              return response()->json(['data' => [ 'success' => true, 'taskCompleted' => 'Task Completed']], 200);
              }else{
