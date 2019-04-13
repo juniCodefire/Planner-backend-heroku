@@ -283,7 +283,7 @@ class GoalsTasksController extends Controller
 
              $data = Task::findOrfail($task_id);
 
-             $data->task_status     = 1;
+             $data->task_status = 1;
 
              $data->save();
 
@@ -291,7 +291,7 @@ class GoalsTasksController extends Controller
               $info = "Task—(".$data->task_title.") has been marked Completed!";
               $this->activitiesupdate($activities, $info, $user_id);
             
-             return response()->json(['data' => [ 'success' => true, 'goalCompleted' => 'Goal Completed']], 200);
+             return response()->json(['data' => [ 'success' => true, 'taskCompleted' => 'Task Completed']], 200);
           }else{
               return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
           } 
