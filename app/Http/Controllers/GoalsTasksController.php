@@ -280,24 +280,28 @@ class GoalsTasksController extends Controller
           $detail = $viewpolicy->userPassage($goal_id);       
           $goal = Goal::where('id', $goal_id)->exists();
 
-          $task_status = $request->input('description');
-          if ($task_status != "0" ||  $task_status != "1") {
-            return response()->json(['data' => [ 'success' => true, 'message' => 'Invalid Credentials']], 401);
-          }
+          $task_status = $request->input('task_status');
 
          if ($goal && $detail) {
 
              $data = Task::findOrfail($task_id);
 
-             $data->task_status = $task_status;
+             if ($task_status == "0" ||  $task_status == "1") {
+                $data->task_status = $task_status;
 
-             $data->save();
+                 $data->save();
 
-              $user_id = $user->id;
+                  $user_id = $user->id;
               $info = "Task—(".$data->task_title.") has been marked Completed!";
               $this->activitiesupdate($activities, $info, $user_id);
             
              return response()->json(['data' => [ 'success' => true, 'taskCompleted' => 'Task Completed']], 200);
+             }else{
+                 return response()->json(['data' => [ 'success' => true, 'message' => 'Invalid Credentials']], 401);
+             }
+             
+
+             
           }else{
               return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
           } 
