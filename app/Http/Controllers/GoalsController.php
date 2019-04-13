@@ -162,8 +162,10 @@ class GoalsController extends Controller
                      'goal_status'       => 'required'
                   ]); 
 
-                  $data = $goal->findOrfail($goal_id);
+                   $data = $goal->findOrfail($goal_id);
+                    $data->goal_status = $request->input('goal_status');
 
+                    $data->save();
                   if ($request->input('goal_status') == 1) {
                      $all_task_datas = Task::where('goal_id', $goal_id)->get();
 
@@ -174,9 +176,7 @@ class GoalsController extends Controller
                            $all_task_data->save();
 
                       }
-                      $data->goal_status = $request->input('goal_status');
-
-                      $data->save();
+                     
                         $user_id = $user->id;
                         $info = "Goal—(".$data->title.") has been marked Completed!";
                         $this->activitiesupdate($activities, $info, $user_id);
@@ -186,16 +186,15 @@ class GoalsController extends Controller
 
                      $time_pass =  time();
                      $time_check = date('Y-m-d', $now_time+3600);
-                     $time_check   = date('Y-m-d', strtotime($time_check));
+                     $time_value   = date('Y-m-d', strtotime($time_check));
 
-                     $all_task_datas = Task::where('goal_id', $goal_id)
-                                             ->get();
+                     $all_task_datas = Task::where('goal_id', $goal_id)->get();
 
                       foreach ($all_task_datas as $all_task_data) {
                         
-                        $goal_due_date   = date('Y-m-d',strtotime($all_task_datas->due_date));
+                        $goal_due_date   = date('Y-m-d',strtotime($all_task_data->due_date));
 
-                        if ($time_check > $goal_due_date ) {
+                        if ($time_value > $goal_due_date) {
 
                            $all_task_data->task_status = $request->input('goal_status');
 
@@ -203,9 +202,6 @@ class GoalsController extends Controller
                         }
 
                       }
-                        $data->goal_status = $request->input('goal_status');
-
-                        $data->save();
                         $user_id = $user->id;
                         $info = "Goal—(".$data->title.") has been marked UnCompleted with all tasks below current date!";
                         $this->activitiesupdate($activities, $info, $user_id);
