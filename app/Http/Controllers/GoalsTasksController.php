@@ -126,11 +126,11 @@ class GoalsTasksController extends Controller
 
         $detail = $viewpolicy->userPassage($goal_id); 
 
-        $begin_time = $request->input('begin_time');
+        $begin_time =  date('h:i A', strtotime($request->input('begin_time')));
+
+        $due_time   = date('h:i A', strtotime($request->input('due_time')));
 
         $begin_date = date('Y-m-d', $now_time+3600);
-
-        $due_time   = $request->input('due_time');
 
         $due_date   = $request->input('due_date');
 
@@ -207,9 +207,10 @@ class GoalsTasksController extends Controller
                 'due_time'    => 'required',
                 'due_date'    => 'required',
             ]); 
-        $begin_time = $request->input('begin_time');
+       
+        $begin_time =  date('h:i A', strtotime($request->input('begin_time')));
 
-        $due_time   = $request->input('due_time');
+        $due_time   = date('h:i A', strtotime($request->input('due_time')));
 
         $due_date   = $request->input('due_date');
 
