@@ -297,6 +297,7 @@ class GoalsTasksController extends Controller
 
                 if ($goal->goal_status == 1) {
                    $goal->goal_status = 0;
+                   $goal->save();
                   }
             
              return response()->json(['data' => [ 'success' => true, 'taskCompleted' => 'Task Completed']], 200);
