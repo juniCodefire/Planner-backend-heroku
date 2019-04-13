@@ -273,15 +273,14 @@ class GoalsTasksController extends Controller
 
     }
 
-   public function updateTaskStatus(Request $request, ViewPolicy $viewpolicy, $goal_id, $task_id, Activities $activities) {
+   public function updateTaskStatus(Request $request, $goal_id, $task_id, Activities $activities) {
 
-          $user = Auth::user();
-         $detail = $viewpolicy->userPassage($goal_id);       
+          $user = Auth::user();     
           $goal = Goal::where('id', $goal_id)->exists();  
 
           $task_status = $request->input('task_status');
 
-         if ($goal && $detail) {
+         if ($goal) {
             $goal = Goal::where('id', $goal_id)->first();
 
              $data = Task::findOrfail($task_id);
