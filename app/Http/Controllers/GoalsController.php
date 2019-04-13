@@ -194,7 +194,7 @@ class GoalsController extends Controller
                         
                         $goal_due_date   = date('Y-m-d',strtotime($all_task_data->due_date));
 
-                        if ($time_value > $goal_due_date) {
+                        if ($goal_due_date > $time_value) {
 
                            $all_task_data->task_status = $request->input('goal_status');
 
