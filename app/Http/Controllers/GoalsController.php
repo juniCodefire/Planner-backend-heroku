@@ -186,15 +186,21 @@ class GoalsController extends Controller
 
                      $time_pass =  time();
                      $time_check = date('Y-m-d', $now_time+3600);
+                     $time_check   = date('Y-m-d', strtotime($time_check));
 
                      $all_task_datas = Task::where('goal_id', $goal_id)
-                                        ->where('due_date', '>', $time_check)->get();
+                                             ->get();
 
                       foreach ($all_task_datas as $all_task_data) {
                         
+                        $goal_due_date   = date('Y-m-d',strtotime($all_task_datas->due_date));
+
+                        if ($time_check > $goal_due_date ) {
+
                            $all_task_data->task_status = $request->input('goal_status');
 
                            $all_task_data->save();
+                        }
 
                       }
                         $data->goal_status = $request->input('goal_status');
