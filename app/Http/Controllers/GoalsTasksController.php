@@ -143,7 +143,7 @@ class GoalsTasksController extends Controller
         $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData); 
 
         if (empty($reminder)) {
-          $reminder ="nr";
+          $reminder ="No Reminder";
         }   
         if ($taskvalidate) {
 
@@ -205,14 +205,22 @@ class GoalsTasksController extends Controller
                 'description' => 'required|min:5',
                 'begin_time'  => 'required',
                 'due_time'    => 'required',
-                'due_date'    => 'required'
+                'due_date'    => 'required',
             ]); 
+        $begin_time = $request->input('begin_time');
+
+        $due_time   = $request->input('due_time');
 
         $due_date   = $request->input('due_date');
 
+        $reminder   = $request->input('reminder');
+
         $task_title = $request->input('task_title');
 
-
+        if (empty($reminder)) {
+            $reminder = "No Reminder";
+        }
+        
         $goalData = Goal::where('id', $goal_id)->first();
 
         $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData); 
