@@ -218,10 +218,6 @@ class GoalsTasksController extends Controller
 
         $task_title = $request->input('task_title');
 
-        if (empty($reminder)) {
-            $reminder = "No Reminder";
-        }
-        
         $goalData = Goal::where('id', $goal_id)->first();
 
         $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData); 
@@ -254,10 +250,12 @@ class GoalsTasksController extends Controller
               $update->task_title  =  ucwords($task_title);
               $update->description =  ucfirst($request->input('description'));
               $update->due_date    =  $due_date;   
-              $task->begin_time  = $begin_time;
-              $task->due_time    = $due_time;
-              $task->reminder    = ucwords($reminder); 
-              $update->task_status = 0;
+              $update->begin_time  = $begin_time;
+              $update->due_time    = $due_time;
+
+               if (!empty($reminder)) {
+                $update->reminder    = ucwords($reminder); 
+                }
               
               $saved = $update->save();
 
