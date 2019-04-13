@@ -275,15 +275,21 @@ class GoalsTasksController extends Controller
 
    public function updateTaskStatus(ViewPolicy $viewpolicy, $goal_id, $task_id, Activities $activities) {
 
+
          $user = Auth::user();
           $detail = $viewpolicy->userPassage($goal_id);       
           $goal = Goal::where('id', $goal_id)->exists();
+
+          $task_status = $request->input('description');
+          if ($task_status != "0" ||  $task_status != "1") {
+            return response()->json(['data' => [ 'success' => true, 'message' => 'Invalid Credentials']], 401);
+          }
 
          if ($goal && $detail) {
 
              $data = Task::findOrfail($task_id);
 
-             $data->task_status = 1;
+             $data->task_status = $task_status;
 
              $data->save();
 
