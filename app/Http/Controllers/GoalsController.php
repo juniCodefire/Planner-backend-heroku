@@ -164,10 +164,6 @@ class GoalsController extends Controller
 
                   $data = $goal->findOrfail($goal_id);
 
-                  $data->goal_status = $request->input('goal_status');
-
-                  $data->save();
-
                   if ($request->input('goal_status') == 1) {
                      $all_task_datas = Task::where('goal_id', $goal_id)->get();
 
@@ -178,7 +174,9 @@ class GoalsController extends Controller
                            $all_task_data->save();
 
                       }
+                      $data->goal_status = $request->input('goal_status');
 
+                      $data->save();
                         $user_id = $user->id;
                         $info = "Goal—(".$data->title.") has been marked Completed!";
                         $this->activitiesupdate($activities, $info, $user_id);
@@ -190,7 +188,7 @@ class GoalsController extends Controller
                      $time_check = date('Y-m-d', $now_time+3600);
 
                      $all_task_datas = Task::where('goal_id', $goal_id)
-                                        ->where('due_date', '<', $time_check)->get();
+                                        ->where('due_date', '>', $time_check)->get();
 
                       foreach ($all_task_datas as $all_task_data) {
                         
@@ -199,10 +197,13 @@ class GoalsController extends Controller
                            $all_task_data->save();
 
                       }
+                        $data->goal_status = $request->input('goal_status');
 
+                        $data->save();
                         $user_id = $user->id;
                         $info = "Goal—(".$data->title.") has been marked UnCompleted with all tasks below current date!";
                         $this->activitiesupdate($activities, $info, $user_id);
+                       
                         return response()->json(['data' => [ 'success' => true, 'goalUnCompleted' => 'Goal UnCompleted']], 200);
                   }
                  
