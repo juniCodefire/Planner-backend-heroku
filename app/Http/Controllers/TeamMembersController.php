@@ -79,7 +79,17 @@ class TeamMembersController extends Controller
 
                  $team_name = Team::where('id',  $get_data->team_id)->first();
 
-                 $package = array($team_member, $team_name, $get_data);
+                    if ($team_member->isOnline()) {
+                        $presence = [
+                            'onlinePresence' => true
+                        ];
+                    }else{
+                        $presence = [
+                            'onlinePresence' => false
+                        ];
+                    }
+
+                 $package = array($team_member, $team_name, $get_data, $presence);
                  array_push($team_members, $package);
 
                  
