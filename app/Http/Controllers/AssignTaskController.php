@@ -35,7 +35,18 @@ class AssignTaskController extends Controller
 
                     $goal_data = Goal::where('id',  $get_data->goal_id)->first();
 
-                    $packages = array($task_member, $goal_data, $get_data );
+                     if ($task_member->isOnline()) {
+                        $presence = [
+                            'onlinePresence' => true
+                        ];
+                    }else{
+                        $presence = [
+                            'onlinePresence' => false
+                        ];
+                    }
+
+
+                    $packages = array($task_member, $goal_data, $get_data, $presence);
 
                     array_push($assign_to, $packages);
 
@@ -59,7 +70,18 @@ class AssignTaskController extends Controller
 
                  $goal_data = Goal::where('id',  $get_data->goal_id)->first();
 
-                 $packages = array($task_member, $goal_data, $get_data );
+                  if ($task_member->isOnline()) {
+                        $presence = [
+                            'onlinePresence' => true
+                        ];
+                    }else{
+                        $presence = [
+                            'onlinePresence' => false
+                        ];
+                    }
+
+
+                 $packages = array($task_member, $goal_data, $get_data, $presence);
 
                  array_push($assign_from, $packages);
                 
