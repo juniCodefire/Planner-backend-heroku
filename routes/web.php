@@ -94,7 +94,7 @@ $router->group(['prefix' => 'api/'], function () use ($router) {
     
     $router->get('count/assigned/members', 'ActivitiesController@assignedTaskCount');
 
-    // $router>get('refresh/chat/status', 'ActivitiesController@refreshChatStatus');
+    $router->get('refresh/chat/status', 'ActivitiesController@refreshChatStatus');
 
 });
 
