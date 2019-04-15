@@ -104,14 +104,14 @@ public function assignedTaskCount() {
          return response()->json(['data' => [ 'success' => true, 'totalMembers' => $totalMembers]], 200);
 }
 
-public function refreshChatStatus($member_id) {
+// public function refreshChatStatus($member_id) {
     
-         $members = User::where('id', $member_id)->first();
-         if ($members->isOnline()) {
-            $presence = true;
-        }else{
-            $presence = false;
-        }
-         return response()->json(['data' => [ 'success' => true, 'onlinePresence' => $presence]], 200);
-}
+//          $members = User::where('id', $member_id)->first();
+//          if ($members->isOnline()) {
+//             $presence = true;
+//         }else{
+//             $presence = false;
+//         }
+//          return response()->json(['data' => [ 'success' => true, 'onlinePresence' => $presence]], 200);
+// }
 }
