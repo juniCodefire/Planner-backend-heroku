@@ -71,7 +71,7 @@ class GoalsController extends Controller
             'due_date'    => 'required',
     		'level'       => 'required'
     	]);  
-  $now_time = time();
+      $now_time =  time();
        $check_title = Goal::where('owner_id', $user->id)->where('title', $request->input('title'))->exists();
 
         if($check_title) {

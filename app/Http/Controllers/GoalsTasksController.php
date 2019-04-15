@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 use App\Goal;
 use App\Task;
+use App\User;
 use App\Policies\ViewPolicy;
 use App\Policies\TaskPolicy;
 Use App\Activities;
@@ -26,7 +27,7 @@ class GoalsTasksController extends Controller
         $this->middleware('auth');
     }
 
-   public function index(ViewPolicy $viewpolicy, $goal_id) {
+    public function index(ViewPolicy $viewpolicy, $goal_id) {
          $user = Auth::user();
          $check_id = Goal::where('id', $goal_id)->exists();
 
@@ -70,6 +71,7 @@ class GoalsTasksController extends Controller
               return response()->json(['data' => [ 'error' => false, 'message' => "Not Found"]], 404);
          }
     }
+
 
     public function show(ViewPolicy $viewpolicy, $goal_id, $task_id) {
 
@@ -271,7 +273,7 @@ class GoalsTasksController extends Controller
 
     }
 
-  public function updateTaskStatus(Request $request, $goal_id, $task_id, Activities $activities) {
+   public function updateTaskStatus(Request $request, $goal_id, $task_id, Activities $activities) {
 
           $user = Auth::user();     
           $goal = Goal::where('id', $goal_id)->exists();  
@@ -301,7 +303,7 @@ class GoalsTasksController extends Controller
              }else{
                  return response()->json(['data' => [ 'success' => true, 'message' => 'Invalid Credentials']], 401);
              }
-
+         
           }else{
               return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
           } 

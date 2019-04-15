@@ -17,7 +17,7 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-     protected $fillable = [
+    protected $fillable = [
          'goal_id', 'title', 'description', 'begin_time', 'begin_date', 'due_time', 'due_date', 'reminder', 'completed',
     ];
 

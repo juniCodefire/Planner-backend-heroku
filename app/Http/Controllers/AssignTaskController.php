@@ -28,27 +28,17 @@ class AssignTaskController extends Controller
 
          $assign_to =  array(); 
 
-          $get_datas = Task::where('owner_id', $user->id)->get();
+          $get_datas = Task::where('owner_id', $user->id)->where('assigned_id', '!=', null)->get();
 
             foreach ($get_datas as $get_data) {
+                    $task_member = User::where('id',  $get_data->assigned_id)->first();
 
-                 $task_member = User::where('id',  $get_data->assigned_id)->first();
+                    $goal_data = Goal::where('id',  $get_data->goal_id)->first();
 
-                 $goal_data = Goal::where('id',  $get_data->goal_id)->first();
-                   if ($task_member->isOnline()) {
-                        $presence = [
-                            'onlinePresence' => true
-                        ];
-                    }else{
-                        $presence = [
-                            'onlinePresence' => false
-                        ];
-                    }
+                    $packages = array($task_member, $goal_data, $get_data );
 
-                 $packages = array($task_member,$presence, $goal_data, $get_data);
+                    array_push($assign_to, $packages);
 
-                 array_push($assign_to, $packages);
-                
             }
            return response()->json(['data' =>['success' => true, 
                             'assign_to' => $assign_to]], 200);   
@@ -68,16 +58,8 @@ class AssignTaskController extends Controller
                  $task_member = User::where('id',  $get_data->owner_id)->first();
 
                  $goal_data = Goal::where('id',  $get_data->goal_id)->first();
-                 if ($task_member->isOnline()) {
-                        $presence = [
-                            'onlinePresence' => true
-                        ];
-                    }else{
-                        $presence = [
-                            'onlinePresence' => false
-                        ];
-                    }
-                 $packages = array($task_member,$presence, $goal_data, $get_data );
+
+                 $packages = array($task_member, $goal_data, $get_data );
 
                  array_push($assign_from, $packages);
                 
@@ -94,8 +76,7 @@ class AssignTaskController extends Controller
                 'task_id'  =>   'required'
             ]); 
 
-        $task_assign = Task::where('id', $request->input('task_id'))
-                        ->where('owner_id', $user->id)->first();
+        $task_assign = Task::where('id', $request->input('task_id'))->first();
 
               $task_assign->assigned_id = $request->input('member_id');
  
@@ -107,49 +88,42 @@ class AssignTaskController extends Controller
                                    ->first();
                                    
                     $user_id = $user->id;
-                    $info = "You just assigned a task to—(".$member_data->name.")";
+                    $info = "You assigned a task to—(".$member_data->name.")";
                     $this->activitiesupdate($activities, $info, $user_id);
 
                     $user_id_2 = $request->input('member_id');
                     $info_2 = "A Task has been assigned to you from (".$user->name.")";
                     $this->activitiesupdate_2($activities_2, $info_2, $user_id_2);         
 
-                 return response()->json(['data' => ['success' => true, 'message' => 'Successfully assigned a task to team member']], 200);
-              }else{
-                  return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
+                 return response()->json(['data' => ['success' => true, 'message' => 'You assigned a task to ('.$member_data->name.')']], 200);
               }
     }
 
     public function removeTask(Request $request, Activities $activities,  Activities $activities_2) {
       $user = Auth::user();
            $this->validate($request, [
-                'member_id'  => 'required',
                 'task_id'  =>   'required'
             ]); 
 
-        $task_remove = Task::where('id', $request->input('task_id'))
-                        ->where('owner_id', $user->id)->where('assigned_id', $request->input('member_id'))->first();
-
-              $task_remove->assigned_id = null;
+        $task_remove = Task::where('id', $request->input('task_id'))->first();
  
-              $saved = $task_remove->save();
-
-            if ($saved) {
-                  $member_data = User::where('id', $request->input('member_id'))
-                                   ->first();
+            
+                  $member_data = User::where('id',  $task_remove->assigned_id)->first();
                                    
                     $user_id = $user->id;
-                    $info = "You remove a Task—(".$task_remove->titles.") from a member—(".$member_data->name.")";
+                    $info = "You reverted a Task—(".$task_remove->titles.") from a member—(".$member_data->name.")";
                     $this->activitiesupdate($activities, $info, $user_id);
 
-                    $user_id_2 = $request->input('member_id');
+                    $user_id_2 = $task_remove->assigned_id;
                     $info_2 = $user->name." remove a Task—(".$task_remove->titles.") assigned to you";
                     $this->activitiesupdate_2($activities_2, $info_2, $user_id_2); 
-                   
-                 return response()->json(['data' => ['success' => true, 'message' => 'Successlly removed assigned task from team member']], 200);
-              }else{
-                  return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
-              }
+
+                    $task_remove->assigned_id = null;
+
+                     $saved = $task_remove->save();
+
+
+                 return response()->json(['data' => ['success' => true, 'message' => 'You reverted a task from ('.$member_data->name.')' ]], 200);
     }
 
    public function activitiesupdate($activities, $info, $user_id) {

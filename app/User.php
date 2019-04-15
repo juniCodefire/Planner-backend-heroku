@@ -7,7 +7,6 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Cache;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -30,8 +29,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password', 'api_token', 'confirm_token', 'status', 'verify_code','team_permit',
     ];
-
-    public function isOnline() {
-        return Cache::has('useronline'. $this->id);
-    }
 }
