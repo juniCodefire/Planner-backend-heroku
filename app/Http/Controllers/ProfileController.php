@@ -36,7 +36,6 @@ class ProfileController extends Controller
         $user = Auth::user();
         $id = Auth::id();
 
-
         $token = $user->api_token;
 
             $this->validate($request, [
@@ -136,3 +135,21 @@ class ProfileController extends Controller
     }
 
 }
+
+//  $users = User::all();
+//         $userDatas = array();
+//         foreach ($users as $user) {
+
+//              if ($user->isOnline()) {
+//                 $presence = [
+//                     'onlinePresence' => true
+//                 ];
+//             }else{
+//                 $presence = [
+//                     'onlinePresence' => false
+//                 ];
+//             }
+//             $package = array($user, $presence);
+//             array_push($userDatas, $package);
+//         }
+      

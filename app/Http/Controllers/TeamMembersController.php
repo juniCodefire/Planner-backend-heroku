@@ -39,11 +39,18 @@ class TeamMembersController extends Controller
             foreach ($get_datas as $get_data) {
 
                  $team_member = User::where('id',  $get_data->member_id)->first();
-
-                 $package = array($team_member, $get_data);
+                   if ($team_member->isOnline()) {
+                        $presence = [
+                            'onlinePresence' => true
+                        ];
+                    }else{
+                        $presence = [
+                            'onlinePresence' => false
+                        ];
+                    }
+                 $package = array($team_member, $get_data, $presence);
                  array_push($team_members, $package);
             }
-
 
            return response()->json(['data' =>['success' => true, 'team_memebers' => $team_members]], 200);   
 
@@ -68,14 +75,19 @@ class TeamMembersController extends Controller
                  $team_member = User::where('id',  $get_data->owner_id)->first();
 
                  $team_name = Team::where('id',  $get_data->team_id)->first();
-
-                 $package = array($team_member, $team_name, $get_data);
+                 if ($team_member->isOnline()) {
+                        $presence = [
+                            'onlinePresence' => true
+                        ];
+                    }else{
+                        $presence = [
+                            'onlinePresence' => false
+                        ];
+                    }
+                 $package = array($team_member, $presence, $team_name, $get_data);
                  array_push($team_members, $package);
-
-                 
+               
             }
-
-
            return response()->json(['data' =>['success' => true, 
                             'team_members' => $team_members]], 200);   
 
