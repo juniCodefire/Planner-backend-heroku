@@ -33,7 +33,7 @@ class LoginController extends Controller
     //Generatate a token for the password recvery process
         $generateVerifyToken = Str::random(60);
 
-        $verify_token =  hash('adler32',  $generateVerifyToken);
+        $verify_token =  hash('adler32', $generateVerifyToken);
 
         $email = $request->input('email');
         $password = $request->input('password');
