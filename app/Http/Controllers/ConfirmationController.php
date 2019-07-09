@@ -84,7 +84,7 @@ class ConfirmationController extends Controller
 
 		    $data_user->save();
 
-		    $activities->owner_id = $user->id;
+		    $activities->owner_id = $data_user->id;
              $activities->narrative = "You just changed your password @".$created_time.".";
              $activities->save();
 
