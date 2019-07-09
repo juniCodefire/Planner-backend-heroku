@@ -76,7 +76,7 @@ class ConfirmationController extends Controller
     	 	//Generatate a token for the password recvery process
 	        $generateVerifyToken = Str::random(60);
 
-	        $verify_token = hash('sha256', $generateVerifyToken);
+	        $verify_token = hash('adler32', $generateVerifyToken);
 
 	        $data_user->verify_code = $verify_token;
 

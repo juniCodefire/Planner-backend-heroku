@@ -33,7 +33,7 @@ class LoginController extends Controller
     //Generatate a token for the password recvery process
         $generateVerifyToken = Str::random(60);
 
-        $verify_token =  45;
+        $verify_token =  hash('adler32', $generateVerifyToken);
 
         $email = $request->input('email');
         $password = $request->input('password');
@@ -54,6 +54,7 @@ class LoginController extends Controller
                 if ($user->status == "on") {
 
                     $user->verify_code = $verify_token;
+                    $user->save();
 
                      $activities->owner_id = $user->id;
                      $activities->narrative = "Logged in @".$created_time.".";
