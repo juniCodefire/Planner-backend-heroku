@@ -1,10 +1,10 @@
 
-<section style="width: 80%;margin: auto;height:600px; box-shadow: 0 0 10px #343a40; color: #e6e6e6;">
-	<div id="head_1" style="background: #e6e6e6; height: 80px;">
-		<h2 style="margin: 0;padding: 25px;color: grey; background: #e6e6e6;font-family:sans-serif;font-weight: bold;">Plannerr</h2>
+<section style="width: 80%;margin: auto;height:600px; box-shadow: 0 0 10px ##e6e6e6; color: #e6e6e6;">
+	<div id="head_1" style="background: #343a40; height: 80px;">
+		<h2 style="margin: 0;padding: 25px; color: #e6e6e6; background: #343a40; font-family:sans-serif;font-weight: bold;">Plannerr</h2>
 	</div>
 
-	<div id="box" style="width: 95%; margin: auto; color:343a40;"><br>
+	<div id="box" style="width: 95%; margin: auto; color:#343a40;"><br>
 		<h4>Dear {{$user->name}}</h4>
 		<div>
 				<div id="first_block">
