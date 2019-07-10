@@ -1,10 +1,10 @@
 
-<section style="width: 80%;margin: auto;height:600px;box-shadow: 0 0 10px #e6e6e6;color: grey;">
+<section style="width: 80%;margin: auto;height:600px; box-shadow: 0 0 10px #e6e6e6; color: grey;">
 	<div id="head_1" style="background: #e6e6e6; height: 80px;">
 		<h2 style="margin: 0;padding: 25px;color: grey; background: #e6e6e6;font-family:sans-serif;font-weight: bold;">Plannerr</h2>
 	</div>
 
-	<div id="box" style="width: 95%; margin: auto;"><br>
+	<div id="box" style="width: 95%; margin: auto; color:343a40;"><br>
 		<h4>Dear {{$user->name}}</h4>
 		<div>
 				<div id="first_block">
@@ -15,9 +15,9 @@
 
 				   <h4>Password Verification Code</h4>
 						<p>Use verification code to get a new password...</p>
-						<a style=" text-decoration: none;padding: 10px;background: 343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?verify_code={{$user->verify_code}}" target="_blank">
+						<a style=" text-decoration: none;background: 343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?verify_code={{$user->verify_code}}" target="_blank">
 						<li style="list-style: none;display: inline-block;">
-						<p style=" text-decoration: none;padding: 10px;background: skyblue;color: white;font-weight: bold;"></p>
+						<p style=" text-decoration: none;padding: 10px;background: 343a40;color: white;font-weight: bold;">Reset Password</p>
 						</li>Account Activation</a> 
 						
 
