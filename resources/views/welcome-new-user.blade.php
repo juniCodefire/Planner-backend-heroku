@@ -1,10 +1,10 @@
 
 <section style="width: 80%;margin: auto;height:700px;box-shadow: 0 0 10px #e6e6e6;color: grey;">
 	<div id="head_1" style="background: #e6e6e6; height: 80px;">
-		<h2 style="margin: 0;padding: 25px;color: 343a40;background: #e6e6e6;font-family:sans-serif;font-weight: bold;">Plannerr</h2>
+		<h2 style="margin: 0;padding: 25px; color: #e6e6e6; background: #343a40;font-family:sans-serif;font-weight: bold;">Plannerr</h2>
 	</div>
 
-	<div id="box" style="width: 95%; margin: auto;"><br>
+	<div id="box" style="width: 95%; margin: auto; color:grey;"><br>
 		<h4>Dear {{$user->name}}</h4>
 		<div>
 				<div>
@@ -27,7 +27,7 @@
 				   <h4>Confirm Account</h4>
 						<p>Follow this link to activate you account before you can be able to login...</p>
 
-						<a style=" text-decoration: none;padding: 10px;background: 343a40;color: white;font-weight: bold;"href="https://plannerr-fbf4a.firebaseapp.com/confirmation-account.html?confirm_token={{$user->confirm_token}}" target="_blank">Account Activation</a> 
+						<a style=" text-decoration: none;padding: 10px;background: #343a40;color: white;font-weight: bold;"href="https://plannerr-fbf4a.firebaseapp.com/confirmation-account.html?confirm_token={{$user->confirm_token}}" target="_blank">Account Activation</a> 
 				</div>
 
 				<div>
@@ -36,12 +36,12 @@
 
 						<p>If you need any help or assistance, you can access our support resources below.</p><br>
 
-						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/knowledgebase" target="_blank">Knowledgebase</a></li>
+						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/knowledgebase" target="_blank">Knowledgebase</a></li>
 
-						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/support" target="_blank">Submit a Ticket</a></li>
+						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/support" target="_blank">Submit a Ticket</a></li>
 
 
-						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/download" target="_blank">Download App</a></li>
+						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/download" target="_blank">Download App</a></li>
 
 						<br><br>
 						https://plannerr-fbf4a.firebaseapp.com
