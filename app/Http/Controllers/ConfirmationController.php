@@ -21,7 +21,7 @@ class ConfirmationController extends Controller
     public function confirmUser($token, Activities $activities) {
 
     	if(strlen($token) < 30) {
-    		return "<p style='text-align:center'>Invalid Confirmation Token</p>";
+			 return response()->json(['data' =>['error' => false, 'message' => 'Invalid Confirmation Token']], 401);
     	}else{
     		$time =  time();
             $created_time = date('h:i A — Y-m-d', $time+3600);
@@ -47,10 +47,9 @@ class ConfirmationController extends Controller
                  $activities->narrative = "Account successfully confirmed @".$created_time.".";
                  $activities->save();
 
-		        return "<div style='text-align:center'>Confirmation Successful</div>";
+				 return response()->json(['data' =>['success' => true, 'message' => 'New password Update']], 201);
 	    	}else{
-
-	    		return "<div style='text-align:center'>Invalid Confirmation Token Or Already Confirmed, Try To Login</div>";
+				 return response()->json(['data' =>['error' => false, 'message' => 'Invalid Confirmation Token Or Already Confirmed, Try To Login']], 403);
 	    	}
     	}
 
@@ -84,7 +83,7 @@ class ConfirmationController extends Controller
 
 		    $data_user->save();
 
-		    $activities->owner_id = $data_user->id;
+		     $activities->owner_id = $data_user->id;
              $activities->narrative = "You just changed your password @".$created_time.".";
              $activities->save();
 

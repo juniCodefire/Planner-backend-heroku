@@ -1,7 +1,7 @@
 
 <section style="width: 80%;margin: auto;height:600px;box-shadow: 0 0 10px #e6e6e6;color: grey;">
 	<div id="head_1" style="background: #e6e6e6; height: 80px;">
-		<h2 style="margin: 0;padding: 25px;color: skyblue;background: #e6e6e6;font-family:sans-serif;font-weight: bold;">GoalSetter</h2>
+		<h2 style="margin: 0;padding: 25px;color: grey; background: #e6e6e6;font-family:sans-serif;font-weight: bold;">Plannerr</h2>
 	</div>
 
 	<div id="box" style="width: 95%; margin: auto;"><br>
@@ -14,9 +14,11 @@
 				<div id="third_block">
 
 				   <h4>Password Verification Code</h4>
-				   			<!-- https://goalsetterapi.herokuapp.com -->
 						<p>Use verification code to get a new password...</p>
-						<li style="list-style: none;display: inline-block;"><p style=" text-decoration: none;padding: 10px;background: skyblue;color: white;font-weight: bold;">{{$user->verify_code}}</p></li>
+						<a style=" text-decoration: none;padding: 10px;background: 343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?verify_code={{$user->verify_code}}" target="_blank">
+						<li style="list-style: none;display: inline-block;">
+						<p style=" text-decoration: none;padding: 10px;background: skyblue;color: white;font-weight: bold;"></p>
+						</li>Account Activation</a> 
 						
 
 				</div>
@@ -27,7 +29,7 @@
 
 						<p>If this email was not authourize by you, please kindy delete ...</p><br>
 
-						Regards GoalSetter Team.
+						Regards Plannerr Team.
 				 </div>
 		</div>
     </div>
