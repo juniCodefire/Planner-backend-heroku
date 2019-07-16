@@ -15,11 +15,11 @@
 
 				   <h4>Password Verification Code</h4>
 						<p>Use verification code to get a new password...</p>
-						<a style=" text-decoration: none;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?verify_code={{$user->verify_code}}" target="_blank">
+						<a style=" text-decoration: none;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?email={{$user->email}}&verify_code={{$user->verify_code}}" target="_blank">
 						<li style="list-style: none;display: inline-block;">
 						<p style=" text-decoration: none;padding: 10px;background: #343a40;color: white;font-weight: bold;">Reset Password</p>
-						</li>Account Activation</a> 
-						
+						</li>Account Activation</a>
+
 
 				</div>
 
