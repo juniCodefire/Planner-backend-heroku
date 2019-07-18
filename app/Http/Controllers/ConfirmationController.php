@@ -31,7 +31,8 @@ class ConfirmationController extends Controller
 	    	if ($user) {
 
 	            $data_user = User::where('confirm_token', $token)->first();
-
+              //Get the user token from the database
+              $token =  $data_user->api_token;
 	             //generate a ramdom api token for user confirmation
 				$generateRandomConfirm = Str::random(60);
 
@@ -47,13 +48,13 @@ class ConfirmationController extends Controller
                  $activities->narrative = "Account successfully confirmed @".$created_time.".";
                  $activities->save();
 
-				 return response()->json(['data' =>['success' => true, 'message' => 'New password Update']], 201);
+				 return response()->json(['data' =>['success' => true, 'message' => 'New password Update', 'user' =>  $data_user, 'token' => $token]], 201);
 	    	}else{
 				 return response()->json(['data' =>['error' => false, 'message' => 'Invalid Confirmation Token Or Already Confirmed, Try To Login']], 403);
 	    	}
     	}
 
-    	
+
     }
 
     public function resetPassword(Request $request, Activities $activities) {

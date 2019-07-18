@@ -27,7 +27,7 @@
 				   <h4>Confirm Account</h4>
 						<p>Follow this link to activate you account before you can be able to login...</p>
 
-						<a style=" text-decoration: none;padding: 10px;background: #343a40;color: white;font-weight: bold;"href="https://plannerr-fbf4a.firebaseapp.com/confirmation-account.html?confirm_token={{$user->confirm_token}}" target="_blank">Account Activation</a> 
+						<a style=" text-decoration: none;padding: 10px;background: #343a40;color: white;font-weight: bold;"href="https://plannerr-fbf4a.firebaseapp.com/dashboard/dashboard.html?confirm_token={{$user->confirm_token}}" target="_blank">Account Activation</a> 
 				</div>
 
 				<div>
@@ -50,4 +50,3 @@
     </div>
 </section>
 </html>
-
