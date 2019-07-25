@@ -58,7 +58,7 @@ class UserSignUpController extends Controller
                $emai_link = "www.".$emai_link[1];
                $user->save();
 
-              // Mail::to($user->email)->send(new ConfirmationLink($user));
+               Mail::to($user->email)->send(new ConfirmationLink($user));
                DB::commit();
                return response()->json(['data' => ['success' => true,
                                                       'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'',
