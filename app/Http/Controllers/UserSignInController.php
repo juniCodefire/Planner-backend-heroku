@@ -18,7 +18,7 @@ class UserSignInController extends Controller
      * @return void
      */
 
-    public function check(Request $request, Activities $activities) {
+    public function check(Request $request) {
     // Do a validation for the input
         $this->validate($request, [
         	'email_or_username'    => 'required',
@@ -31,7 +31,7 @@ class UserSignInController extends Controller
         $password             = $request->input('password');
 
        //Query the database with the email giving
-         $user = User::where('email', $email_or_username)orWhere('username', $email_or_username)->first();
+         $user = User::where('email', $email_or_username)->sorWhere('username', $email_or_username)->first();
        //Check if rthe user exist
         if ($user === null) {
         	return response()->json(['data' =>['error' => false, 'message' => 'Not found']], 404);
