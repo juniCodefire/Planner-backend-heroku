@@ -40,8 +40,8 @@ class UserSignUpController extends Controller
         }
 
         //insert the details into the user class and into the model class
-         DB::beginTransaction();
-         try{
+         // DB::beginTransaction();
+         // try{
             $user->name = ucwords($request->input('name'));
             $user->username = $username;
             $user->email = $request->input('email');
@@ -53,23 +53,28 @@ class UserSignUpController extends Controller
             $user->api_token = $token;
             $user->confirm_token = $confirm_token;
 
-               Mail::to($user->email)->send(new ConfirmationLink($user));
-               $split_email = $user->email;
-               $emai_link = explode("@",$split_email);
-               $emai_link = "www.".$emai_link[1];
+               $mailler = Mail::to($user->email)->send(new ConfirmationLink($user));
+               if ($mailler) {
+                 $split_email = $user->email;
+                 $emai_link = explode("@",$split_email);
+                 $emai_link = "www.".$emai_link[1];
 
-               $info = $user->save();
-               DB::commit();
-               return response()->json(['data' => ['success' => true,
-                                                      'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'',
-                                                      'user' => $user,
-                                                      'email_link' => $emai_link]], 201);
+                 $info = $user->save();
+                 // DB::commit();
+                 return response()->json(['data' => ['success' => true,
+                                                        'message' => 'Registrtion Successful, A confirmation link has been sent to '.$user->email.'',
+                                                        'user' => $user,
+                                                        'email_link' => $emai_link]], 201);
+               }else {
+                        return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again"]], 401);
+               }
 
-            } catch (\Exception $e) {
-               DB::rollBack();
-               return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again"]], 501);
 
-            }
+            // // } catch (\Exception $e) {
+            //    DB::rollBack();
+
+
+            // }
 
     }
     public function validateRequest($request) {
