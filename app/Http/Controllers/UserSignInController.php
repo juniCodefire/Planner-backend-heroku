@@ -27,11 +27,11 @@ class UserSignInController extends Controller
         //Generatate a token for the password recvery process
         $generateVerifyToken  = Str::random(60);
         $verify_token         =  hash('adler32', $generateVerifyToken);
-        $email_Or_username    = $request->input('email_or_username');
+        $email_or_username    = $request->input('email_or_username');
         $password             = $request->input('password');
 
        //Query the database with the email giving
-         $user = User::where('email', $email_or_username)->sorWhere('username', $email_or_username)->first();
+         $user = User::where('email', $email_or_username)->orWhere('username', $email_or_username)->first();
        //Check if rthe user exist
         if ($user === null) {
         	return response()->json(['data' =>['error' => false, 'message' => 'Not found']], 404);
