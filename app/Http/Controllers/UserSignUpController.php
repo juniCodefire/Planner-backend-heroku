@@ -67,7 +67,7 @@ class UserSignUpController extends Controller
 
             } catch (\Exception $e) {
                DB::rollBack();
-               return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again"]], 401);
+               return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again"]], 501);
 
             }
 
@@ -77,7 +77,7 @@ class UserSignUpController extends Controller
        'name' => 'required',
        'email' => 'required|email|unique:users',
        'phone_number' => 'required|min:10|numeric',
-       'password' => 'required|min:8'
+       'password' => 'required|min:8',
      ];
      $messages = [
     'required' => ':attribute is required',
