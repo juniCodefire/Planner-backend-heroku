@@ -30,8 +30,12 @@ class UserSignInController extends Controller
         $email_or_username    = $request->input('email_or_username');
         $password             = $request->input('password');
 
+        if (!stripos($email_or_username, '@')) {
+            $email_or_username =  '@'.$email_or_username;
+        }
+
        //Query the database with the email giving
-         $user = User::where('email', $email_or_username)->orWhere('username', $email_or_username)->first();
+         $user = User::where('email', '=', $email_or_username)->orWhere('username', '=', $email_or_username)->first();
        //Check if rthe user exist
         if ($user === null) {
         	return response()->json(['data' =>['error' => false, 'message' => 'Not found']], 404);

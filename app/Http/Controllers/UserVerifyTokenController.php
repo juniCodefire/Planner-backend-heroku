@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationCode;
 use App\User;
+
+use Illuminate\Support\Facades\DB;
 
 class UserVerifyTokenController extends Controller
 {
@@ -17,26 +20,25 @@ class UserVerifyTokenController extends Controller
      */
 
     public function validateUser(Request $request) {
-        // Do a validation for the input
+    // Do a validation for the input
         $this->validate($request, [
         	'email' => 'required|email',
         ]);
         $email = $request->input('email');
-        //Query the database with the email giving
-        $user = User::where('email', $email)->first();
-        //Check if rthe user exist
+     //Query the database with the email giving
+       $user = User::where('email', $email)->first();
+    //Check if rthe user exist
         if ($user === null) {
-        	return response()->json(['data' =>['error' => false, 'message' => 'Not found']], 404);
+        	return response()->json(['data' =>['error' => false, 'message' => 'Email not found in our record!']], 404);
         }
-
+        DB::beginTransaction();
         try{
              Mail::to($user->email)->send(new VerificationCode($user));
-             $user->save();
+             DB::commit();
              return response()->json(['data' =>['success' => true, 'message' => "A verfication code has been sent to ".$user->email."!"]], 200);
-          } catch (Exception $ex) {
-             return response()->json(['data' =>['success' => true, 'message' => "Try again"]], 500);
+          } catch (\Exception $e) {
+             DB::rollBack();
+             return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again".$e]], 504);
           }
-
     }
-
 }
