@@ -47,7 +47,7 @@ return [
     |
     */
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'juniworld2017@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'goalsetterapp@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Plannerr'),
     ],
     /*
