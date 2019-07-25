@@ -38,7 +38,7 @@ class UserVerifyTokenController extends Controller
              return response()->json(['data' =>['success' => true, 'message' => "A verfication code has been sent to ".$user->email."!"]], 200);
           } catch (\Exception $e) {
              DB::rollBack();
-             return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again".$e]], 504);
+             return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again".$e]], 401);
           }
     }
 }

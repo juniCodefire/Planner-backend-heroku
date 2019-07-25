@@ -53,7 +53,7 @@ class UserSignUpController extends Controller
             $user->api_token = $token;
             $user->confirm_token = $confirm_token;
 
-               // Mail::to($user->email)->send(new ConfirmationLink($user));
+               Mail::to($user->email)->send(new ConfirmationLink($user));
                $split_email = $user->email;
                $emai_link = explode("@",$split_email);
                $emai_link = "www.".$emai_link[1];
