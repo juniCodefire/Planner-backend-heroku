@@ -16,17 +16,17 @@ $router->get('/', function () use ($router) {
 });
 
 //Post request for regstration
-$router->post('api/register', 'RegistrationController@store');
+$router->post('api/signup', 'UserSignUpController@store');
 //Post request for the login
-$router->post('api/login', 'LoginController@login');
+$router->post('api/signin', 'UserSignInController@check');
 //Post request for the login
 $router->get('api/tokendestroy', 'TokenDestroyController@tokenDestroy');
 
-$router->get('api/confirmation/{token}', 'ConfirmationController@confirmUser');
+$router->get('api/confirmation/{confirmtoken}', 'UserConfirmationController@confirm');
 
-$router->post('api/verify/email', 'VerifyTokenController@validateUser');
+$router->post('api/verify/email', 'UserVerifyTokenController@validateUser');
 
-$router->put('api/reset/password', 'ConfirmationController@resetPassword');
+$router->put('api/reset/password', 'UserConfirmationController@resetPassword');
 
 
 //User Profile Routes
@@ -91,7 +91,7 @@ $router->group(['prefix' => 'api/'], function () use ($router) {
     $router->get('count/members', 'ActivitiesController@allTeamMemberCount');
 
     $router->get('count/members/{team_id}', 'ActivitiesController@allSigleTeamMemberCount');
-    
+
     $router->get('count/assigned/members', 'ActivitiesController@assignedTaskCount');
 
     $router->get('refresh/chat/status/{member_id}', 'ActivitiesController@refreshChatStatus');
@@ -138,4 +138,3 @@ $router->group(['prefix' => 'api/'], function () use ($router) {
 
 
 });
-

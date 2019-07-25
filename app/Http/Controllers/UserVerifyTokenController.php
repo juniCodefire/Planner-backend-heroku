@@ -6,12 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\VerificationCode;
-
 use App\User;
-Use App\Activities;
 
-class VerifyTokenController extends Controller
+class UserVerifyTokenController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -19,16 +16,16 @@ class VerifyTokenController extends Controller
      * @return void
      */
 
-    public function validateUser(Request $request, Activities $activities) {
-    // Do a validation for the input 
+    public function validateUser(Request $request) {
+        // Do a validation for the input
         $this->validate($request, [
         	'email' => 'required|email',
         ]);
-    // store the request into a variable
+        // store the request into a variable
 
         $email = $request->input('email');
 
-     //Query the database with the email giving
+       //Query the database with the email giving
 
        $user = User::where('email', $email)->first();
     //Check if rthe user exist
@@ -37,7 +34,7 @@ class VerifyTokenController extends Controller
         }
 
         try{
-             Mail::to($user->email)->send(new VerificationCode($user)); 
+             Mail::to($user->email)->send(new VerificationCode($user));
           } catch (Exception $ex) {
 
              return response()->json(['data' =>['success' => true, 'message' => "Try again"]], 500);
@@ -46,11 +43,11 @@ class VerifyTokenController extends Controller
 
            $user_id = $user->id;
            $info = "You checked for an email validity and sent a password recovery token";
-           $this->activitiesupdate($activities, $info, $user_id); 
+           $this->activitiesupdate($activities, $info, $user_id);
 
           $user->save();
           return response()->json(['data' =>['success' => true, 'message' => "A verfication code has been sent to ".$user->email."!"]], 200);
-                 	
+
 
     }
      public function activitiesupdate($activities, $info, $user_id) {
