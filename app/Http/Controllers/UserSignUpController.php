@@ -53,7 +53,7 @@ class UserSignUpController extends Controller
             $user->api_token = $token;
             $user->confirm_token = $confirm_token;
 
-               Mail::to($user->email)->send(new ConfirmationLink($user));
+               // Mail::to($user->email)->send(new ConfirmationLink($user));
                $split_email = $user->email;
                $emai_link = explode("@",$split_email);
                $emai_link = "www.".$emai_link[1];
@@ -67,7 +67,7 @@ class UserSignUpController extends Controller
 
             } catch (\Exception $e) {
                DB::rollBack();
-               return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again"]], 504);
+               return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again"]], 401);
 
             }
 
@@ -77,7 +77,7 @@ class UserSignUpController extends Controller
        'name' => 'required',
        'email' => 'required|email|unique:users',
        'phone_number' => 'required|min:10|numeric',
-       'password' => 'required|min:8',
+       'password' => 'required|min:8'
      ];
      $messages = [
     'required' => ':attribute is required',
