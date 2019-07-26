@@ -72,7 +72,7 @@ class UserConfirmationController extends Controller
 	        $user->verify_code = $verify_token;
 	        $user->password = Hash::make($request->input('password'));
 		      $user->save();
-		      return response()->json(['data' =>['success' => true, 'message' => 'New Password Created' 'user' => $user, 'token' => 'Bearer'. $token]], 200);
+		      return response()->json(['data' =>['success' => true, 'message' => 'New Password Created', 'user' => $user, 'token' => 'Bearer'. $token]], 200);
     	 }else{
     	   	return response()->json(['data' =>['error' => true, 'message' => 'Update Already Done Or Invalid Code']], 401);
     	 }
