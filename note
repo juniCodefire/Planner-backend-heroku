@@ -1,0 +1,5 @@
+https://check-host.net/
+
+Step 5 : Goto your hosting provider dashboard and find Cron Job
+
+/usr/local/bin/php /home/your_user_name/public_html/your_website_folder_name/artisan notify:email

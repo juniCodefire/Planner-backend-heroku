@@ -60,7 +60,7 @@ class UserSignInController extends Controller
                                                                           'widthThumb' => 'w_200',
                                                                           'aspectRatio' => 'ar_4:4'
                                                                         ],
-                                                      'token' => 'Bearer'. $token]], 200);
+                                                      'token' => 'Bearer '.$token]], 200);
                 }else{
                      return response()->json(['data' =>['error' => false, 'message' => "Not Confirmed Yet"]], 402);
                 }

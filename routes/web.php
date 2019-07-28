@@ -15,11 +15,11 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-//Post request for regstration
+//Authentication Unauthorize Access
 $router->post('api/signup', 'UserSignUpController@store');
-//Post request for the login
+
 $router->post('api/signin', 'UserSignInController@check');
-//Post request for the login
+
 $router->get('api/tokendestroy', 'TokenDestroyController@tokenDestroy');
 
 $router->get('api/confirmation/{confirmtoken}', 'UserConfirmationController@confirm');
@@ -28,113 +28,126 @@ $router->post('api/verify/email', 'UserVerifyTokenController@validateUser');
 
 $router->put('api/reset/password', 'UserConfirmationController@resetPassword');
 
+//WorkSpaces Authourize Access Users
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
 
-//User Profile Routes
-//Get request to show authourize dashboard
+    $router->get('workspace/request', 'UserWorkSpacesController@request');
 
-$router->group(['prefix' => 'api/'], function () use ($router) {
+    $router->post('workspace/create', 'UserWorkSpacesController@store');
 
-    $router->get('profile', 'ProfileController@index');
+    $router->put('workspace/edit', 'UserWorkSpaceController@update');
 
-    $router->put('profile/edit', 'ProfileController@update');
+    $router->get('workspace', 'UserWorkSpaceController@show');
 
-    $router->delete('profile/delete', 'ProfileController@destroy');
-
-    //Imgae Upload
-
-    $router->post('profile/upload', 'ImagesController@upload');
+    $router->get('worksapce/{id}', 'UserWorkSpaceController@showOne');
 
 });
-
-$router->group(['prefix' => 'api/'], function () use ($router) {
-
-    $router->get('goals', 'GoalsController@index');
-
-    $router->get('goals/{goal_id}', 'GoalsController@show');
-
-    $router->post('goals/create', 'GoalsController@store');
-
-    $router->put('goals/{goal_id}/edit', 'GoalsController@update');
-
-    $router->put('goals/{goal_id}/status', 'GoalsController@updateGoalStatus');
-
-    $router->delete('goals/{goal_id}/delete', 'GoalsController@destroy');
-
-});
-
-$router->group(['prefix' => 'api/goals/'], function () use ($router) {
-
-    $router->get('{goal_id}/tasks', 'GoalsTasksController@index');
-
-    $router->get('{goal_id}/tasks/{task_id}', 'GoalsTasksController@show');
-
-    $router->post('{goal_id}/tasks/create', 'GoalsTasksController@store');
-
-    $router->put('{goal_id}/tasks/{task_id}/edit', 'GoalsTasksController@update');
-
-    $router->put('{goal_id}/tasks/{task_id}/status', 'GoalsTasksController@updateTaskStatus');
-
-    $router->delete('{goal_id}/tasks/{task_id}/delete', 'GoalsTasksController@destroy');
-
-});
-
-$router->group(['prefix' => 'api/'], function () use ($router) {
-
-    $router->get('activities', 'ActivitiesController@index');
-
-    $router->get('count/goals', 'ActivitiesController@goalsCount');
-
-    $router->get('count/tasks', 'ActivitiesController@tasksCount');
-
-    $router->get('count/goal/tasks/{goal_id}', 'ActivitiesController@goalTasksCount');
-
-    $router->get('count/members', 'ActivitiesController@allTeamMemberCount');
-
-    $router->get('count/members/{team_id}', 'ActivitiesController@allSigleTeamMemberCount');
-
-    $router->get('count/assigned/members', 'ActivitiesController@assignedTaskCount');
-
-    $router->get('refresh/chat/status/{member_id}', 'ActivitiesController@refreshChatStatus');
-
-});
-
-$router->group(['prefix' => 'api/teams'], function () use ($router) {
-
-    $router->get('show', 'TeamsController@index');
-
-    $router->get('{team_id}/show', 'TeamsController@showOne');
-
-    $router->post('create', 'TeamsController@storeTeam');
-
-    $router->put('{team_id}/edit', 'TeamsController@updateTeam');
-
-    $router->delete('{team_id}/delete', 'TeamsController@destroy');
-
-});
-
-$router->group(['prefix' => 'api/teams'], function () use ($router) {
-
-    $router->post('members/search', 'TeamMembersController@searchTeamMember');
-
-    $router->get('{team_id}/members/show', 'TeamMembersController@getteamMembers');
-
-    $router->get('show/team/makers', 'TeamMembersController@getTeamMakers');
-
-    $router->post('{team_id}/member/add', 'TeamMembersController@addMember');
-
-    $router->delete('member/{team_member_id}/delete', 'TeamMembersController@destroyTeamMember');
-
-});
-
-$router->group(['prefix' => 'api/'], function () use ($router) {
-
-    $router->put('task/assign', 'AssignTaskController@assignTask');
-
-    $router->put('task/revert', 'AssignTaskController@removeTask');
-
-    $router->get('show/assigned/task/to', 'AssignTaskController@showAssignedTo');
-
-    $router->get('show/assigned/task/from', 'AssignTaskController@showAssignedFrom');
-
-
-});
+//
+// //Get request to show authourize dashboard
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->get('profile', 'ProfileController@index');
+//
+//     $router->put('profile/edit', 'ProfileController@update');
+//
+//     $router->delete('profile/delete', 'ProfileController@destroy');
+//
+//     //Imgae Upload
+//
+//     $router->post('profile/upload', 'ImagesController@upload');
+//
+// });
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->get('goals', 'GoalsController@index');
+//
+//     $router->get('goals/{goal_id}', 'GoalsController@show');
+//
+//     $router->post('goals/create', 'GoalsController@store');
+//
+//     $router->put('goals/{goal_id}/edit', 'GoalsController@update');
+//
+//     $router->put('goals/{goal_id}/status', 'GoalsController@updateGoalStatus');
+//
+//     $router->delete('goals/{goal_id}/delete', 'GoalsController@destroy');
+//
+// });
+//
+// $router->group(['prefix' => 'api/goals/'], function () use ($router) {
+//
+//     $router->get('{goal_id}/tasks', 'GoalsTasksController@index');
+//
+//     $router->get('{goal_id}/tasks/{task_id}', 'GoalsTasksController@show');
+//
+//     $router->post('{goal_id}/tasks/create', 'GoalsTasksController@store');
+//
+//     $router->put('{goal_id}/tasks/{task_id}/edit', 'GoalsTasksController@update');
+//
+//     $router->put('{goal_id}/tasks/{task_id}/status', 'GoalsTasksController@updateTaskStatus');
+//
+//     $router->delete('{goal_id}/tasks/{task_id}/delete', 'GoalsTasksController@destroy');
+//
+// });
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->get('activities', 'ActivitiesController@index');
+//
+//     $router->get('count/goals', 'ActivitiesController@goalsCount');
+//
+//     $router->get('count/tasks', 'ActivitiesController@tasksCount');
+//
+//     $router->get('count/goal/tasks/{goal_id}', 'ActivitiesController@goalTasksCount');
+//
+//     $router->get('count/members', 'ActivitiesController@allTeamMemberCount');
+//
+//     $router->get('count/members/{team_id}', 'ActivitiesController@allSigleTeamMemberCount');
+//
+//     $router->get('count/assigned/members', 'ActivitiesController@assignedTaskCount');
+//
+//     $router->get('refresh/chat/status/{member_id}', 'ActivitiesController@refreshChatStatus');
+//
+// });
+//
+// $router->group(['prefix' => 'api/teams'], function () use ($router) {
+//
+//     $router->get('show', 'TeamsController@index');
+//
+//     $router->get('{team_id}/show', 'TeamsController@showOne');
+//
+//     $router->post('create', 'TeamsController@storeTeam');
+//
+//     $router->put('{team_id}/edit', 'TeamsController@updateTeam');
+//
+//     $router->delete('{team_id}/delete', 'TeamsController@destroy');
+//
+// });
+//
+// $router->group(['prefix' => 'api/teams'], function () use ($router) {
+//
+//     $router->post('members/search', 'TeamMembersController@searchTeamMember');
+//
+//     $router->get('{team_id}/members/show', 'TeamMembersController@getteamMembers');
+//
+//     $router->get('show/team/makers', 'TeamMembersController@getTeamMakers');
+//
+//     $router->post('{team_id}/member/add', 'TeamMembersController@addMember');
+//
+//     $router->delete('member/{team_member_id}/delete', 'TeamMembersController@destroyTeamMember');
+//
+// });
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->put('task/assign', 'AssignTaskController@assignTask');
+//
+//     $router->put('task/revert', 'AssignTaskController@removeTask');
+//
+//     $router->get('show/assigned/task/to', 'AssignTaskController@showAssignedTo');
+//
+//     $router->get('show/assigned/task/from', 'AssignTaskController@showAssignedFrom');
+//
+//
+// });

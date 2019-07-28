@@ -67,7 +67,7 @@ class UserSignUpController extends Controller
 
             } catch (\Exception $e) {
                DB::rollBack();
-               return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again"]], 501);
+               return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again", 'hint' => $e->getMessage()]], 501);
 
             }
 

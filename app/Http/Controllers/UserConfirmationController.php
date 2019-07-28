@@ -46,7 +46,7 @@ class UserConfirmationController extends Controller
                                                           'widthThumb' => 'w_200',
                                                           'aspectRatio' => 'ar_4:4'
                                                         ],
-                                         'token' => $token]], 200);
+                                         'token' =>'Bearer '.$token]]], 200);
 	    	}else{
 				     return response()->json(['data' =>['error' => false, 'message' => 'Invalid Confirmation Token Or Already Confirmed, Try Loging In']], 403);
 	    	}
@@ -72,7 +72,7 @@ class UserConfirmationController extends Controller
 	        $user->verify_code = $verify_token;
 	        $user->password = Hash::make($request->input('password'));
 		      $user->save();
-		      return response()->json(['data' =>['success' => true, 'message' => 'New Password Created', 'user' => $user, 'token' => 'Bearer'. $token]], 200);
+		      return response()->json(['data' =>['success' => true, 'message' => 'New Password Created', 'user' => $user, 'token' =>'Bearer '.$token]]], 200);
     	 }else{
     	   	return response()->json(['data' =>['error' => true, 'message' => 'Update Already Done Or Invalid Code']], 401);
     	 }

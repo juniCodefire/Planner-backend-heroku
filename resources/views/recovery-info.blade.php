@@ -1,4 +1,19 @@
+<!DOCTYPE html>
+<html lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <title>Laravel</title>
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+
+        <!-- Styles -->
+        <style>
+        </style>
+    </head>
+		<body>
 <section style="width: 100%;margin: auto;height:600px; box-shadow: 0 0 10px #e6e6e6; color: #e6e6e6;">
 	<div id="head_1" style="background: #343a40; height: 80px;">
 		<h2 style="margin: 0;padding: 25px; color: #e6e6e6; background: #343a40; font-family:sans-serif;font-weight: bold;">Plannerr</h2>
