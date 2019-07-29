@@ -11,6 +11,10 @@
 
         <!-- Styles -->
         <style>
+          .activation {
+            justify-content: center;
+            align-content: center;
+          }
         </style>
     </head>
 		<body>
@@ -20,47 +24,21 @@
 	</div>
 
 	<div id="box" style="width: 95%; margin: auto; color:#343a40;"><br>
-		<h4>Dear {{$user->name}}</h4>
+		<h4>Hi {{$user->name}}</h4>
 		<div>
 				<div>
 					<p>Thank you for creating a Plannerr account. Please review this email in its entirety as it contains important information.</p>
 				</div>
 
-				<div>
-
-				   <h4>Logging In</h4>
-
-						<p>You can access our webapp Here: <a style="color: black;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com" target="_blank">Open Now</a>
-                        </p>
-
-						<p>You will need your email address and the password you choose during signup to login.</p>
-
-				</div>
-
-				<div>
-
-				   <h4>Confirm Account</h4>
-						<p>Follow this link to activate you account before you can be able to login...</p>
-
-						<a style=" text-decoration: none;padding: 10px;background: #343a40;color: white;font-weight: bold;"href="https://plannerr-fbf4a.firebaseapp.com/onboard/signup.html?confirm_token={{$user->confirm_token}}#workspace-tab" target="_blank">Account Activation</a>
-				</div>
-
-				<div>
-
-						<h4>Getting Support</h4>
-
-						<p>If you need any help or assistance, you can access our support resources below.</p><br>
-
-						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/knowledgebase" target="_blank">Knowledgebase</a></li>
-
-						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/support" target="_blank">Submit a Ticket</a></li>
-
-
-						<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/download" target="_blank">Download App</a></li>
-
-						<br><br>
-						https://plannerr-fbf4a.firebaseapp.com
-				 </div>
+			<div class="activation">
+				   <h4>Activate Account</h4>
+						<a style=" text-decoration: none;padding: 15px;background: #343a40;color: white;font-weight: bold;"href="https://plannerr-fbf4a.firebaseapp.com/onboard/signup.html?confirm_token={{$user->confirm_token}}#workspace-tab" target="_blank">Account Activation</a>
+			</div>
+      <div id="third_block" class="activation">
+          <h4>Getting Support</h4>
+          <p>If this email was not authourize by you, please kindy delete ...</p><br>
+          Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
+      </div>
 		</div>
     </div>
 </section>

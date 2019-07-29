@@ -16,6 +16,11 @@
 							font-weight: bold;
 							font-size: 15px;
 						}
+            .activation {
+              justify-content: center;
+              align-content: center;
+            }
+
         </style>
     </head>
 		<body>
@@ -34,27 +39,15 @@
 									<span class="distint" style="color:dodgerblue;">{{$workspace->title}} ({{$workspace->unique_name}})</span>
 								</p>
 							</div>
-
-							<div>
-
-							   <h4>Follow the link below to Accept or Reject request</h4>
-			           <a style=" text-decoration: none;padding: 10px;background: #343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/signin.html#request" target="_blank">Accept Or Reject</a>
+							<div class="activation">
+							   <h4>Accept or Reject request</h4>
+			           <a style=" text-decoration: none;padding: 15px;background: #343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/signin.html#request" target="_blank">Accept Or Reject</a>
 							</div>
-							<div>
-
-									<h4>Getting Support</h4>
-
-									<p>If you need any help or assistance, you can access our support resources below.</p><br>
-
-									<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/knowledgebase" target="_blank">Knowledgebase</a></li>
-
-									<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/support" target="_blank">Submit a Ticket</a></li>
-
-									<li style="list-style: none;display: inline-block;"><a style=" text-decoration: none;padding: 10px;background:#343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/download" target="_blank">Download App</a></li>
-
-									<br><br>
-									https://plannerr-fbf4a.firebaseapp.com
-							 </div>
+              <div id="third_block" class="activation">
+                  <h4>Getting Support</h4>
+                  <p>If this email was not authourize by you, please kindy delete ...</p><br>
+                  Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
+              </div>
 					</div>
 			    </div>
 			</section>

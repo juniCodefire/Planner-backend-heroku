@@ -11,6 +11,10 @@
 
         <!-- Styles -->
         <style>
+          .activation {
+            justify-content: center;
+            align-content: center;
+          }
         </style>
     </head>
 		<body>
@@ -38,14 +42,11 @@
 
 				</div>
 
-				<div id="third_block">
-
-						<h4>Getting Support</h4>
-
-						<p>If this email was not authourize by you, please kindy delete ...</p><br>
-
-						Regards Plannerr Team.
-				 </div>
+        <div id="third_block" class="activation">
+            <h4>Getting Support</h4>
+            <p>If this email was not authourize by you, please kindy delete ...</p><br>
+            Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
+        </div>
 		</div>
     </div>
 </section>

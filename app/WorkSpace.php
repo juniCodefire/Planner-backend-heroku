@@ -19,7 +19,7 @@ class WorkSpace extends Model implements AuthenticatableContract, AuthorizableCo
      * @var array
      */
     protected $fillable = [
-         'id', 'owner_id', 'title', 'description',
+         'id', 'owner_id', 'title', 'description', 'status',
     ];
 
     /**

@@ -18,18 +18,19 @@ class UserWorkSpacesController extends Controller
 {
    public function request(Request $request, RequestInvite $request_invite) {
      $requester = Auth::user();
+
      //Check if the worksapce title is required and _exist
      $this->validateWorkSpace($request, $i = 0);
-     $check_workspace = WorkSpace::where('owner_id', '!=', Auth::user()->id)
-                                   ->where('title', ucwords($request->input('title')), '|')
+     $check_workspace = WorkSpace::where('title', ucwords($request->input('title')))
+                                   ->where('owner_id', '!=', Auth::user()->id)
                                    ->exists();
-     $check_unique_name = WorkSpace::where('owner_id', '!=', Auth::user()->id)
-                                   ->where('unique_name', $request->input('title'))
+     $check_unique_name = WorkSpace::where('unique_name', $request->input('title'))
+                                   ->where('owner_id', '!=', Auth::user()->id)
                                    ->exists();
     if ($check_workspace || $check_unique_name) {
         $check_unique_name = $request->input('title');
         //Check if the user use the name or the username to send a requested
-          if (stripos($check_unique_name, ' ')) {
+          if (stripos($check_unique_name, " ")) {
             //Return all work sapce with their name and their unique username for the user to choose and send a request
             $choose_worksapce = WorkSpace::where('title', $request->input('title'))->where('status', 'Public')->get();
             return response()->json(['data' => ['success' => true, 'message' => 'Choose an ideal workspace from the list',
@@ -84,10 +85,11 @@ class UserWorkSpacesController extends Controller
      //Insert the worksapce into the Database(Save)
      DB::beginTransaction();
      try {
-        $workspace->title = ucwords($request->input('title'), '|');
+        $workspace->title = ucwords($request->input('title'));
         $workspace->owner_id = Auth::user()->id;
         $workspace->unique_name = $unique_name;
         $workspace->description = $request->input('description');
+        $workspace->status = ucwords($request->input('status'));
         $workspace->save();
 
         DB::commit();
@@ -103,7 +105,7 @@ class UserWorkSpacesController extends Controller
    public function generateUniqueName($request) {
      //Generate a ramdom unique_name for the Worksapce
      $rand = mt_rand(00000, 90000);
-     $value = explode('|', $request->input('title'));
+     $value = explode(" ", $request->input('title'));
      $unique_name = '#'.strtolower(implode($value)).$rand;
      //Check if the unique_name already exist in the workspace table "if yes regenerate a new one"
      $check_unique_name = WorkSpace::where('unique_name', $unique_name)->exists();
@@ -121,7 +123,7 @@ class UserWorkSpacesController extends Controller
 
                'title' => array(
                           'required',
-                          'regex:/(^([|#a-zA-Z]+)(\d+)?$)/u'
+                          'regex:/(^([ #a-zA-Z]+)(\d+)?$)/u'
                         ),
              'description' => 'max:70',
              'status' => 'string'
