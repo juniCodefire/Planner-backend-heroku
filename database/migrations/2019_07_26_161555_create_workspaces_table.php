@@ -17,7 +17,8 @@ class CreateWorkspacesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('owner_id');
             $table->string('title');
-            $table->string('description');
+            $table->string('unique_name');
+            $table->string('description')->default('Description can help improve clarity of worksapce actual purpose!');
             $table->enum('status', array('Public','Private'));
             $table->timestamps();
 

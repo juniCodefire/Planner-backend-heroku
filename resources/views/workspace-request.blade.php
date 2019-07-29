@@ -31,7 +31,7 @@
 								<p> A new request from
 									<span class="distint">{{$requester->name }}</span>  with email
 									<span class="distint">{{ $requester->email }}</span> to join your workspace
-									<span class="distint" style="color:dodgerblue;">{{$workspace->title}}</span>
+									<span class="distint" style="color:dodgerblue;">{{$workspace->title}} ({{$workspace->unique_name}})</span>
 								</p>
 							</div>
 

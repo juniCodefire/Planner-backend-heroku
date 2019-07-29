@@ -31,7 +31,7 @@ $router->put('api/reset/password', 'UserConfirmationController@resetPassword');
 //WorkSpaces Authourize Access Users
 $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
 
-    $router->get('workspace/request', 'UserWorkSpacesController@request');
+    $router->post('workspace/request', 'UserWorkSpacesController@request');
 
     $router->post('workspace/create', 'UserWorkSpacesController@store');
 

@@ -34,7 +34,7 @@ class UserConfirmationController extends Controller
               //Update the user activated
 		    	    $user->status = "on";
 		          $user->save();
-				      return response()->json(['data' =>['success' => true, 'message' => 'Confirmation Successful',
+				      return response()->json(['data' => ['success' => true, 'message' => 'Confirmation Successful',
                                         'user' =>  $user,
                                         'image_link'     => 'http://res.cloudinary.com/getfiledata/image/upload/',
                                          'imageProp'     => [
@@ -46,7 +46,7 @@ class UserConfirmationController extends Controller
                                                           'widthThumb' => 'w_200',
                                                           'aspectRatio' => 'ar_4:4'
                                                         ],
-                                         'token' =>'Bearer '.$token]]], 200);
+                                         'token' => 'Bearer '.$token]], 200);
 	    	}else{
 				     return response()->json(['data' =>['error' => false, 'message' => 'Invalid Confirmation Token Or Already Confirmed, Try Loging In']], 403);
 	    	}
