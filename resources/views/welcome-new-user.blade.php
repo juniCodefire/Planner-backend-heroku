@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Welcome</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -35,8 +35,7 @@
 						<a style=" text-decoration: none;padding: 15px;background: #343a40;color: white;font-weight: bold;"href="https://plannerr-fbf4a.firebaseapp.com/onboard/signup.html?confirm_token={{$user->confirm_token}}#workspace-tab" target="_blank">Account Activation</a>
 			</div>
       <div id="third_block" class="activation">
-          <h4>Getting Support</h4>
-          <p>If this email was not authourize by you, please kindy delete ...</p><br>
+          <p>This email was sent to you because you create a new plannerr account...</p><br>
           Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
       </div>
 		</div>

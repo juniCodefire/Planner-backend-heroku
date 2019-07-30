@@ -7,9 +7,8 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Cache;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class Company extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
 
@@ -19,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'team_permit', 'api_token', 'phone_number', 'verify_code', 'account_type', 'user_image', 'confirm_token', 'status',
+         'id', 'owner_id', 'title', 'description', 'status',
     ];
 
     /**
@@ -28,16 +27,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password', 'api_token', 'confirm_token', 'status', 'verify_code','team_permit',
+
     ];
 
-    public function workspaces() {
-      return $this->hasMany('App\WorkSpace');
+    public function users() {
+
+      return $this->belongsTo('App\User', 'owner_id', 'id');
     }
-    public function company() {
-      return $this->hasMany('App\Company');
-    }
-    public function isOnline() {
-        return Cache::has('useronline'. $this->id);
-    }
+
 }

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Recovery Password</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -43,7 +43,6 @@
 				</div>
 
         <div id="third_block" class="activation">
-            <h4>Getting Support</h4>
             <p>If this email was not authourize by you, please kindy delete ...</p><br>
             Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
         </div>

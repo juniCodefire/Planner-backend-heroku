@@ -35,19 +35,19 @@ class GoalsTasksController extends Controller
 
              $detail = $viewpolicy->userPassage($goal_id);
 
-             if ($detail) {  
+             if ($detail) {
 
-                     $check_tasks = Task::where('goal_id', $goal_id)->exists(); 
+                     $check_tasks = Task::where('goal_id', $goal_id)->exists();
 
                 if ($check_tasks) {
-                     $all_task =  array(); 
-                     $user_tasks = Task::where('goal_id', $goal_id)->get();   
-                     
+                     $all_task =  array();
+                     $user_tasks = Task::where('goal_id', $goal_id)->get();
+
                      foreach ($user_tasks as $user_task) {
 
                               if ($user_task->assigned_id != null) {
                                 $task_member = User::where('id', $user_task->assigned_id)->first();
-                                
+
                                }else{
                                    $task_member = "";
                                }
@@ -76,18 +76,18 @@ class GoalsTasksController extends Controller
     public function show(ViewPolicy $viewpolicy, $goal_id, $task_id) {
 
       $user = Auth::user();
-      
+
       $check_id = Goal::where('id', $goal_id)->exists();
 
       $task_check_id = Task::where('id', $task_id)->exists();
 
      if ($check_id && $task_check_id) {
 
-            $detail = $viewpolicy->userPassage($goal_id); 
+            $detail = $viewpolicy->userPassage($goal_id);
 
-            if ($detail) {      
+            if ($detail) {
 
-                $user_tasks = Task::where('id', $task_id)->where('goal_id', $goal_id)->first();  
+                $user_tasks = Task::where('id', $task_id)->where('goal_id', $goal_id)->first();
 
                 if ($user_tasks !== null) {
 
@@ -100,7 +100,7 @@ class GoalsTasksController extends Controller
             }else{
 
               return response()->json(['data' => [ 'error' => false, 'message' => "Unauthorize Access"]], 401);
-            }        
+            }
          }else{
 
               return response()->json(['data' => [ 'error' => false, 'message' => "Not Found"]], 404);
@@ -111,7 +111,7 @@ class GoalsTasksController extends Controller
      public function store(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, Task $task, $goal_id, Activities $activities) {
 
       $user = Auth::user();
-      $detail = $viewpolicy->userPassage($goal_id); 
+      $detail = $viewpolicy->userPassage($goal_id);
       $goal = Goal::where('id', $goal_id)->exists();
       $now_time =  time();
       if ($goal && $detail) {
@@ -122,9 +122,9 @@ class GoalsTasksController extends Controller
                 'begin_time'  => 'required',
                 'due_time'    => 'required',
                 'due_date'    => 'required'
-            ]); 
+            ]);
 
-        $detail = $viewpolicy->userPassage($goal_id); 
+        $detail = $viewpolicy->userPassage($goal_id);
 
         $begin_time =  date('h:i A', strtotime($request->input('begin_time')));
 
@@ -140,16 +140,16 @@ class GoalsTasksController extends Controller
 
         $goalData = Goal::where('id', $goal_id)->first();
 
-        $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData); 
+        $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData);
 
         if (empty($reminder)) {
           $reminder ="No Reminder";
-        }   
+        }
         if ($taskvalidate) {
 
-           return response()->json(['data' => ['error' => false, 'message' => 'your due date cannot exceed goal due date']], 401);     
-          
-        }      
+           return response()->json(['data' => ['error' => false, 'message' => 'your due date cannot exceed goal due date']], 401);
+
+        }
 
         if ($task_title === $goalData->title) {
 
@@ -170,10 +170,10 @@ class GoalsTasksController extends Controller
               $task->begin_time  = $begin_time;
               $task->begin_date  = $begin_date;
               $task->due_time    = $due_time;
-              $task->due_date    = $due_date;  
-              $task->reminder    = ucwords($reminder); 
+              $task->due_date    = $due_date;
+              $task->reminder    = ucwords($reminder);
               $task->task_status = 0;
-              
+
               $saved = $task->save();
 
                 if ($saved) {
@@ -184,18 +184,18 @@ class GoalsTasksController extends Controller
 
                    return response()->json(['data' => ['success' => true, 'task' => $task]], 201);
                 }else{
-                    return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 419); 
+                    return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 419);
                 }
         }
      }else{
-         return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
-     } 
+         return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401);
+     }
 
     }
 
     public function update(Request $request, ViewPolicy $viewpolicy, TaskPolicy $taskpolicy, $goal_id, $task_id, Activities $activities) {
       $user = Auth::user();
-      $detail = $viewpolicy->userPassage($goal_id);       
+      $detail = $viewpolicy->userPassage($goal_id);
       $goal = Goal::where('id', $goal_id)->exists();
 
       if ($goal && $detail) {
@@ -206,8 +206,8 @@ class GoalsTasksController extends Controller
                 'begin_time'  => 'required',
                 'due_time'    => 'required',
                 'due_date'    => 'required',
-            ]); 
-       
+            ]);
+
         $begin_time =  date('h:i A', strtotime($request->input('begin_time')));
 
         $due_time   = date('h:i A', strtotime($request->input('due_time')));
@@ -220,13 +220,13 @@ class GoalsTasksController extends Controller
 
         $goalData = Goal::where('id', $goal_id)->first();
 
-        $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData); 
+        $taskvalidate = $taskpolicy->taskValidate($due_date, $goalData);
 
         if ($taskvalidate) {
 
-           return response()->json(['data' => ['error' => false, 'message' => 'your due date cannot exceed goal due date']], 401);     
-          
-        }      
+           return response()->json(['data' => ['error' => false, 'message' => 'your due date cannot exceed goal due date']], 401);
+
+        }
 
         if ($task_title === $goalData->title) {
 
@@ -249,14 +249,14 @@ class GoalsTasksController extends Controller
               $update->goal_id     =  $goal_id;
               $update->task_title  =  ucwords($task_title);
               $update->description =  ucfirst($request->input('description'));
-              $update->due_date    =  $due_date;   
+              $update->due_date    =  $due_date;
               $update->begin_time  = $begin_time;
               $update->due_time    = $due_time;
 
                if (!empty($reminder)) {
-                $update->reminder    = ucwords($reminder); 
+                $update->reminder    = ucwords($reminder);
                 }
-              
+
               $saved = $update->save();
 
                 if ($saved) {
@@ -265,18 +265,18 @@ class GoalsTasksController extends Controller
                       $this->activitiesupdate($activities, $info, $user_id);
                    return response()->json(['data' => ['success' => true, 'message' => 'Sccessfully Updated tasks']], 200);
                 }else{
-                    return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401); 
+                    return response()->json(['data' => ['error' => false, 'message' => 'An Error Occured!']], 401);
                 }
      }else{
-         return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
-     } 
+         return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401);
+     }
 
     }
 
    public function updateTaskStatus(Request $request, $goal_id, $task_id, Activities $activities) {
 
-          $user = Auth::user();     
-          $goal = Goal::where('id', $goal_id)->exists();  
+          $user = Auth::user();
+          $goal = Goal::where('id', $goal_id)->exists();
 
           $task_status = $request->input('task_status');
 
@@ -298,43 +298,42 @@ class GoalsTasksController extends Controller
                    $goal->goal_status = 0;
                    $goal->save();
                   }
-            
-             return response()->json(['data' => [ 'success' => true, 'taskCompleted' => 'Task Completed']], 200);
+
+             return response()->json((['data' => [ 'success' => true, 'taskCompleted' => 'Task Completed']], 200);
              }else{
                  return response()->json(['data' => [ 'success' => true, 'message' => 'Invalid Credentials']], 401);
              }
-         
+
           }else{
-              return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
-          } 
+              return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401);
+          }
 
     }
 
   public function destroy(ViewPolicy $viewpolicy, $task_id, $goal_id, Activities $activities) {
       $user = Auth::user();
-      $detail = $viewpolicy->userPassage($goal_id);   
+      $detail = $viewpolicy->userPassage($goal_id);
 
       $goal = Goal::where('id', $goal_id)->exists();
 
       if ($goal && $detail) {
 
-           $check_task = Task::where('id', $task_id)->exists();  
+           $check_task = Task::where('id', $task_id)->exists();
            if ($check_task) {
               $data1 = Task::findOrfail($task_id);
               $data2 = Goal::findOrfail($goal_id);
 
               $user_id = $user->id;
               $info = "A Task—(".$data1->task_title.") of Goal—(".$data2->title.") is deleted";
-              $this->activitiesupdate($activities, $info, $user_id); 
+              $this->activitiesupdate($activities, $info, $user_id);
 
               $data1->delete();
 
               return response()->json(['data' => [ 'success' => true, 'message' => 'deleted' ]], 200);
            }
-
       }else{
 
-         return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401); 
+         return response()->json(['data' => ['error' => false, 'message' => 'Unauthorize Access!']], 401);
       }
   }
    public function activitiesupdate($activities, $info, $user_id) {

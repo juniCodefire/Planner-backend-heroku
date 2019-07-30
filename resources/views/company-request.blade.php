@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>WorkSpace Request</title>
+        <title>Compnay Request</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -33,18 +33,17 @@
 					<h4>Hello {{$requestee->name}}</h4>
 					<div>
 							<div>
-								<p> A new request from
+								<p> You have a new request from
 									<span class="distint">{{$requester->name }}</span>  with email
-									<span class="distint">{{ $requester->email }}</span> to join your workspace
-									<span class="distint" style="color:dodgerblue;">{{$workspace->title}} ({{$workspace->unique_name}})</span>
+									<span class="distint">{{ $requester->email }}</span> to join your company workspaces
+									<span class="distint" style="color:purple;">{{$company->title}} ({{$company->unique_name}})</span>
 								</p>
 							</div>
 							<div class="activation">
-							   <h4>Accept or Reject request</h4>
+							   <h4>Accept or Reject Company Request</h4>
 			           <a style=" text-decoration: none;padding: 15px;background: #343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/signin.html#request" target="_blank">Accept Or Reject</a>
 							</div>
               <div id="third_block" class="activation">
-                  <h4>Getting Support</h4>
                   <p>If this email was not authourize by you, please kindy delete ...</p><br>
                   Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
               </div>

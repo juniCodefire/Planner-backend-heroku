@@ -17,12 +17,14 @@ class CreateRequestsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('requestee_id');
             $table->unsignedInteger('requester_id');
-            $table->unsignedInteger('workspace_id');
+            $table->unsignedInteger('workspace_id')->default(null);
+            $table->unsignedInteger('company_id')->default(null);
             $table->timestamps();
 
             $table->foreign('requestee_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('requester_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 

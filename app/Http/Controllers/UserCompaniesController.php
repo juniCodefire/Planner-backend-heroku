@@ -5,26 +5,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\WorkSpacesRequest;
+use App\Mail\CompanyRequest;
 
 use App\User;
-use App\WorkSpace;
+use App\Company;
 use App\RequestInvite;
 use Illuminate\Support\Facades\DB;
 /**
  *
  */
-class UserWorkSpacesController extends Controller
+class UserCompaniesController extends Controller
 {
    public function request(Request $request, RequestInvite $request_invite) {
      $requester = Auth::user();
 
      //Check if the worksapce title is required and _exist
-     $this->validateWorkSpace($request, $i = 0);
-     $check_workspace = WorkSpace::where('title', ucwords($request->input('title')))
+     $this->validateCompany($request, $i = 0);
+     $check_workspace = Company::where('title', ucwords($request->input('title')))
                                    ->where('owner_id', '!=', Auth::user()->id)
                                    ->exists();
-     $check_unique_name = WorkSpace::where('unique_name', $request->input('title'))
+     $check_unique_name = Company::where('unique_name', $request->input('title'))
                                    ->where('owner_id', '!=', Auth::user()->id)
                                    ->exists();
     if ($check_workspace || $check_unique_name) {
@@ -32,64 +32,64 @@ class UserWorkSpacesController extends Controller
         //Check if the user use the name or the username to send a requested
           if (stripos($check_unique_name, " ")) {
             //Return all work sapce with their name and their unique username for the user to choose and send a request
-            $choose_worksapce = WorkSpace::where('title', $request->input('title'))->where('status', 'Public')->get();
-            return response()->json(['data' => ['success' => true, 'message' => 'Choose an ideal workspace from the list',
-                                                                   'message-2' => 'If the workspace is not found in the list, it means the workspace is private',
-                                                                   'message-3' => 'You can send a message to the worksapce owner to invite you', 'choose_worksapce' => $choose_worksapce]]);
+            $choose_companies = Company::where('title', $request->input('title'))->where('status', 'Public')->get();
+            return response()->json(['data' => ['success' => true, 'message' => 'Choose an ideal company from the list',
+                                                                   'message-2' => 'If the comapany is not found in the list, it means the company is private!',
+                                                                   'message-3' => 'You can contact the company owner to invite you!', 'choose_worksapce' => $choose_companies]]);
           }
          //Here will continue if the username is know!
          //Get the worksapce unique_name
-          $workspace = WorkSpace::where('title', $request->input('title'))->orWhere('unique_name', $request->input('title'))->first();
+          $company = Company::where('title', $request->input('title'))->orWhere('unique_name', $request->input('title'))->first();
 
-          if ($workspace->status === "Public") {
+          if ($company->status === "Public") {
             //Get the owner of Worksapce Data
-            $requestee = $workspace->users()->first();
+            $requestee = $company->users()->first();
 
-            if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('workspace_id', $workspace->id)->exists()) {
+            if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('company_id', $company->id)->exists()) {
                 DB::beginTransaction();
                  try {
                    //Save to a temporary Request table
                    $request_invite->requestee_id = $requestee->id;
                    $request_invite->requester_id = Auth::user()->id;
-                   $request_invite->workspace_id = $workspace->id;
+                   $request_invite->company_id = $company->id;
                    $request_invite->save();
                    //Send a Request mail
-                   Mail::to($requestee->email)->send(new WorkSpacesRequest($requester, $requestee, $workspace));
+                   Mail::to($requestee->email)->send(new CompanyRequest($requester, $requestee, $company));
                    DB::commit();
-                   return response()->json(['data' => ['success' => true, 'message' => 'A request has be sent to worksapce owner!']], 200);
+                   return response()->json(['data' => ['success' => true, 'message' => 'A request has be sent to company owner!']], 200);
                  } catch (\Exception $e) {
                    DB::rollBack();
                    return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again!", 'hint' => $e->getMessage()]], 501);
                  }
-            }return response()->json(['data' => ['success' => true, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 403);
+            }return response()->json(['data' => ['success' => true, 'message' => 'Sorry your request to joining this company have not been confirmed!']], 403);
 
-          }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this is a secured workspace!']], 401);
+          }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this is a secured company, contact the owner!']], 401);
 
-       }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this workspace is not available or not allowed, try using a workspace unique id instead!']], 403);
+       }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this company is not available or not allowed, try using a company unique name instead!']], 403);
 
    }
 
 
 
 
-   public function store(Request $request, WorkSpace $workspace) {
+   public function store(Request $request, Company $company) {
      $user = Auth::user();
      //Validate the input
-     $this->validateWorkSpace($request, $i= 1);
+     $this->validateCompany($request, $i= 1);
      //Recurssive Function to Regenerate Wiorkspace Unique Name
      $unique_name = $this->generateUniqueName($request);
-     //Insert the worksapce into the Database(Save)
+     //Insert the company into the Database(Save)
      DB::beginTransaction();
      try {
-        $workspace->title = ucwords($request->input('title'));
-        $workspace->owner_id = Auth::user()->id;
-        $workspace->unique_name = $unique_name;
-        $workspace->description = $request->input('description');
-        $workspace->status = ucwords($request->input('status'));
-        $workspace->save();
+        $company->title = ucwords($request->input('title'));
+        $company->owner_id = Auth::user()->id;
+        $company->unique_name = $unique_name;
+        $company->description = $request->input('description');
+        $company->status = ucwords($request->input('status'));
+        $company->save();
 
         DB::commit();
-        return response()->json(['data' => ['success' => true, 'message' => 'Successfully Created!', 'new_worksapce' => $workspace ]], 200);
+        return response()->json(['data' => ['success' => true, 'message' => 'Successfully Created!', 'new_company' => $company ]], 200);
      } catch (\Exception $e) {
 
         DB::rollBack();
@@ -104,7 +104,7 @@ class UserWorkSpacesController extends Controller
      $value = explode(" ", $request->input('title'));
      $unique_name = '#'.strtolower(implode($value)).$rand;
      //Check if the unique_name already exist in the workspace table "if yes regenerate a new one"
-     $check_unique_name = WorkSpace::where('unique_name', $unique_name)->exists();
+     $check_unique_name = Company::where('unique_name', $unique_name)->exists();
      if ($check_unique_name) {
         $this->generateUniqueName($request);
      }else{
@@ -113,10 +113,9 @@ class UserWorkSpacesController extends Controller
 
    }
 
-   public function validateWorkSpace($request, $i = 0) {
+   public function validateCompany($request, $i = 0) {
         if($i == 0) {
            $rules = [
-
                'title' => array(
                           'required',
                           'regex:/(^([ #a-zA-Z]+)(\d+)?$)/u'
@@ -124,13 +123,12 @@ class UserWorkSpacesController extends Controller
            ];
          }else {
            $rules = [
-
                'title' => array(
                           'required',
                           'regex:/(^([ a-zA-Z]+)(\d+)?$)/u'
                         ),
-              'description' => 'max:70',
-              'status' => 'required|string'
+             'description' => 'max:70',
+             'status' => 'required|string'
            ];
          }
      $messages = [

@@ -21,6 +21,8 @@ class CreateCompaniesTable extends Migration
             $table->string('description')->default('Description can help improve clarity of Company actual purpose!');
             $table->enum('status', array('Public','Private'));
             $table->timestamps();
+
+            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

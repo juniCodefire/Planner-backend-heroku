@@ -35,11 +35,25 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 
     $router->post('workspace/create', 'UserWorkSpacesController@store');
 
-    $router->put('workspace/edit', 'UserWorkSpaceController@update');
+    $router->put('workspaces/edit', 'UserWorkSpacesController@update');
 
-    $router->get('workspace', 'UserWorkSpaceController@show');
+    $router->get('workspaces', 'UserWorkSpacesController@show');
 
-    $router->get('worksapce/{id}', 'UserWorkSpaceController@showOne');
+    $router->get('worksapce/{id}', 'UserWorkSpacesController@showOne');
+
+});
+//Company Authourize Access Users
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+
+    $router->post('company/request', 'UserCompaniesController@request');
+
+    $router->post('company/create', 'UserCompaniesController@store');
+
+    $router->put('company/edit', 'UserComapaniesController@update');
+
+    $router->get('company', 'UserComapaniesController@show');
+
+    $router->get('compnay/{id}', 'UserComapaniesController@showOne');
 
 });
 //
