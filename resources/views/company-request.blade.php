@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="">
     <head>
@@ -12,22 +15,40 @@
         <!-- Styles -->
         <style>
 						.distint {
-							color: hotpink;
+							color: darkblue;
 							font-weight: bold;
 							font-size: 15px;
 						}
             .activation {
               justify-content: center;
-              align-content: center;
+              align-items: center;
+              text-align: center;
             }
-
-        </style>
-    </head>
-		<body>
-			<section style="width: 100%;margin: auto;height:700px;box-shadow: 0 0 10px #e6e6e6;color: grey;">
-				<div id="head_1" style="background: #343a40; height: 80px;">
-					<h2 style="margin: 0;padding: 25px; color: #e6e6e6; background: #343a40;font-family:sans-serif;font-weight: bold;">Plannerr</h2>
-				</div>
+            .link_out {
+               text-decoration: none;
+               padding: 15px 30px 15px 30px;
+               background: #343a40;
+               width: 100%;
+               height: 10vh;
+               border-radius: 5px;
+               color: white !important;
+               font-weight: bold;
+            }
+            .head_1 {
+              background: #343a40;
+              height: 80px;
+              border-radius: 5px;
+            }
+            .head_1 h2 {
+              margin: 0;padding: 25px; color: #e6e6e6;font-family:sans-serif;font-weight: bold;
+            }
+            </style>
+        </head>
+    		<body>
+    <section style="width: 100%;margin: auto;height:auto; box-shadow: 0 0 10px #e6e6e6; color: #e6e6e6;">
+    	<div class="head_1">
+    		<h2>Plannerr</h2>
+    	</div>
 
 				<div id="box" style="width: 95%; margin: auto; color:#343a40;"><br>
 					<h4>Hello {{$requestee->name}}</h4>
@@ -36,13 +57,15 @@
 								<p> You have a new request from
 									<span class="distint">{{$requester->name }}</span>  with email
 									<span class="distint">{{ $requester->email }}</span> to join your company workspaces
-									<span class="distint" style="color:purple;">{{$company->title}} ({{$company->unique_name}})</span>
+									<span class="distint" style="color:brown;">{{$company->title}} ({{$company->unique_name}})</span>
 								</p>
 							</div>
-							<div class="activation">
-							   <h4>Accept or Reject Company Request</h4>
-			           <a style=" text-decoration: none;padding: 15px;background: #343a40;color: white;font-weight: bold;" href="https://plannerr-fbf4a.firebaseapp.com/onboard/signin.html#request" target="_blank">Accept Or Reject</a>
-							</div>
+              <div>
+                <div class="activation">
+                   <h4>Reply To Company Request</h4>
+                   <a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/signin.html#request" target="_blank">Reply To Request</a>
+                </div>
+              </div>
               <div id="third_block" class="activation">
                   <p>If this email was not authourize by you, please kindy delete ...</p><br>
                   Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com

@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 use App\User;
 
-class TokenDestroyController extends Controller
+class GeneralTokenDestroyController extends Controller
 {
     /**
      * Create a new controller instance.

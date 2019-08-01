@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorkspacesTable extends Migration
+class CreateWorkspacestomembersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateWorkspacesTable extends Migration
      */
     public function up()
     {
-        Schema::create('workspaces', function (Blueprint $table) {
+        Schema::create('workspacestomembers', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_id');
-            $tbale->unsignedInteger('company_id')->default(null);
-            $table->string('title');
-            $table->string('unique_name');
-            $table->string('description')->default('Description can help improve clarity of workspace actual purpose!');
-            $table->enum('status', array('Public','Private'));
+            $table->unsignedInteger('member_id');
+            $table->unsignedInteger('workspace_id');
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('member_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
         });
     }
 
@@ -34,6 +33,6 @@ class CreateWorkspacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('workspaces');
+        Schema::dropIfExists('workspacestomembers');
     }
 }

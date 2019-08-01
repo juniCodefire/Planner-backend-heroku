@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class WorkSpace extends Model implements AuthenticatableContract, AuthorizableContract
+class companyCollaborateWorkSpaces extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
 
-    protected $table = "workspaces";
+    protected $table = "companycollaborateworkspaces";
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-         'id', 'owner_id', 'title', 'description', 'status',
+         'id', 'company_id', 'workspace_id',
     ];
 
     /**
@@ -34,11 +34,6 @@ class WorkSpace extends Model implements AuthenticatableContract, AuthorizableCo
     public function users() {
 
       return $this->belongsTo('App\User', 'owner_id', 'id');
-    }
-
-    public function companies() {
-
-      return $this->belongsTo('App\Company', 'company_id', 'id');
     }
 
 }

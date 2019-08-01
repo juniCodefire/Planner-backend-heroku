@@ -5,10 +5,6 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
-use Illuminate\Support\Facades\DB;
-use App\User;
-use App\Http\Controllers\TokenDestroyController;
-
 class Kernel extends ConsoleKernel
 {
     /**

@@ -32,10 +32,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     public function workspaces() {
-      return $this->hasMany('App\WorkSpace');
+      return $this->hasMany('App\WorkSpace', 'owner_id', 'id');
     }
     public function company() {
-      return $this->hasMany('App\Company');
+      return $this->hasMany('App\Company', 'owner_id', 'id');
     }
     public function isOnline() {
         return Cache::has('useronline'. $this->id);

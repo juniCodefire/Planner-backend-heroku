@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\User;
-use App\Http\Controllers\TokenDestroyController;
+use App\Http\Controllers\GeneralTokenDestroyController;
 
 class TokenReset extends Command
 {
@@ -28,7 +28,7 @@ class TokenReset extends Command
      *
      * @return void
      */
-    public function __construct(User $user, TokenDestroyController $token_reset)
+    public function __construct(User $user, GeneralTokenDestroyController $token_reset)
     {
         parent::__construct();
 

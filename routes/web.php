@@ -20,7 +20,7 @@ $router->post('api/signup', 'UserSignUpController@store');
 
 $router->post('api/signin', 'UserSignInController@check');
 
-$router->get('api/tokendestroy', 'TokenDestroyController@tokenDestroy');
+$router->get('api/tokendestroy', 'GeneralTokenDestroyController@tokenDestroy');
 
 $router->get('api/confirmation/{confirmtoken}', 'UserConfirmationController@confirm');
 

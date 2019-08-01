@@ -16,6 +16,17 @@ use Illuminate\Support\Facades\DB;
  */
 class UserWorkSpacesController extends Controller
 {
+
+    public function show() {
+      $user = Auth::user();
+      $workspaces = WorkSpace::where('owner_id', $user->id)
+                              ->with('companies')
+                              ->with('users')
+                              ->get();
+      return response()->json(['data' => ['success' => true , 'message' => 'Workspaces Successfully', 'workspaces' => $workspaces]], 200);
+    }
+
+
    public function request(Request $request, RequestInvite $request_invite) {
      $requester = Auth::user();
 
