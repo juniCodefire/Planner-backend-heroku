@@ -72,11 +72,11 @@ class UserWorkSpacesController extends Controller
                    DB::rollBack();
                    return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again!", 'hint' => $e->getMessage()]], 501);
                  }
-            }return response()->json(['data' => ['success' => true, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 403);
+            }return response()->json(['data' => ['error' => false, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 403);
 
-          }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this is a secured workspace!']], 401);
+          }return response()->json(['data' => ['error' => false, 'message' => 'Sorry this is a secured workspace!']], 401);
 
-       }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this workspace is not available or not allowed, try using a workspace unique id instead!']], 403);
+       }return response()->json(['data' => ['error' => false, 'message' => 'Sorry this workspace is not available or not allowed, try using a workspace unique id instead!']], 403);
 
    }
 
