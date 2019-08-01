@@ -36,30 +36,31 @@
         </style>
     </head>
 		<body>
-<section style="width: 100%;margin: auto;height:auto; box-shadow: 0 0 10px #e6e6e6; color: #e6e6e6;">
-	<div class="head_1">
-		<h2>Plannerr</h2>
-	</div>
+      <section style="width: 100%;margin: auto;height:auto; box-shadow: 0 0 10px #e6e6e6; color: #e6e6e6;">
+      	<div class="head_1">
+      		<h2>Plannerr</h2>
+      	</div>
 
-	<div id="box" style="width: 95%; margin: auto; color:#343a40;"><br>
-		<h4>Dear {{$user->name}}</h4>
-		<div>
-				<div id="first_block">
-					<p>You are getting this email because you have requested for the resetting of your forgotting password.</p>
-				</div>
+      	<div id="box" style="width: 95%; margin: auto; color:#343a40;"><br>
+      		<h4>Dear {{$user->name}}</h4>
+      		<div>
+      				<div id="first_block">
+      					<p>You are getting this email because you have requested for the resetting of your forgotting password.</p>
+      				</div>
 
-  			<div class="activation">
-  				   <h4>Password Reset</h4>
-             <p>Click the button below to get a new password...</p>
-  						<a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?email={{$user->email}}&verify_code={{$user->verify_code}}" target="_blank">
-                Change Password</a>
-  			</div>
+        			<div class="activation">
+        				   <h4>Password Reset</h4>
+                   <p>Click the button below to get a new password...</p>
+        						<a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?email={{$user->email}}&verify_code={{$user->verify_code}}" target="_blank">
+                      Change Password</a>
+        			</div>
 
-        <div id="third_block" class="activation">
-            <p>If this email was not authourize by you, please kindy delete ...</p><br>
-            Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
-        </div>
-		</div>
-    </div>
-</section>
+              <div id="third_block" class="activation">
+                  <p>If this email was not authourize by you, please kindy delete ...</p><br>
+                  Regards Plannerr Team. https://plannerr-fbf4a.firebaseapp.com
+              </div>
+      		</div>
+          </div>
+      </section>
+    </body>
 </html>
