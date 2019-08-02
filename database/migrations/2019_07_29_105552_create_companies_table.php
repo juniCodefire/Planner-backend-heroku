@@ -20,6 +20,7 @@ class CreateCompaniesTable extends Migration
             $table->string('unique_name');
             $table->string('industry')->default(null);
             $table->string('role')->default(null);
+            $table->string('wallpaper')->default(null);
             $table->string('description')->default('Description can help improve clarity of Company actual purpose!');
             $table->enum('status', array('Public','Private'));
             $table->timestamps();

@@ -140,6 +140,7 @@ class UserWorkSpacesController extends Controller
                           'required',
                           'regex:/(^([ a-zA-Z]+)(\d+)?$)/u'
                         ),
+              'role' => 'string',
               'description' => 'max:70',
               'status' => 'required|string'
            ];

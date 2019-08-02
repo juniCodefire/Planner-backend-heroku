@@ -128,6 +128,14 @@ class UserCompaniesController extends Controller
                           'required',
                           'regex:/(^([ a-zA-Z]+)(\d+)?$)/u'
                         ),
+             'industry' => array(
+                        'required',
+                        'string'
+                        ),
+             'role' =>  array(
+                        'required',
+                        'string'
+                        ),
              'description' => 'max:70',
              'status' => 'required|string'
            ];
