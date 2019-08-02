@@ -19,6 +19,7 @@ class CreateWorkspacestomembersTable extends Migration
             $table->unsignedInteger('owner_id');
             $table->unsignedInteger('member_id');
             $table->unsignedInteger('workspace_id');
+            $table->string('role');
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');

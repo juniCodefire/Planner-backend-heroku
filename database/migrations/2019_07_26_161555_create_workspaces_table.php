@@ -19,6 +19,7 @@ class CreateWorkspacesTable extends Migration
             $tbale->unsignedInteger('company_id')->default(null);
             $table->string('title');
             $table->string('unique_name');
+            $table->string('role')->default('admin');
             $table->string('description')->default('Description can help improve clarity of workspace actual purpose!');
             $table->enum('status', array('Public','Private'));
             $table->timestamps();
