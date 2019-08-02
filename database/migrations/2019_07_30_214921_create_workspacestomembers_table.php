@@ -13,6 +13,7 @@ class CreateWorkspacestomembersTable extends Migration
      */
     public function up()
     {
+      //This when a workspace have a member
         Schema::create('workspacestomembers', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_id');

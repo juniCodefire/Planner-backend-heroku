@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompaniestomembersTable extends Migration
+class CreateCompaniestoworkspacesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,7 @@ class CreateCompaniestomembersTable extends Migration
      */
     public function up()
     {
+        //Ths is when a company have a workspace
         Schema::create('companiestoworkspaces', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_id');
