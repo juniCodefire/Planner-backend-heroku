@@ -85,6 +85,8 @@ class UserCompaniesController extends Controller
         $company->title = ucwords($request->input('title'));
         $company->owner_id = Auth::user()->id;
         $company->unique_name = $unique_name;
+        $company->industry = ucwords($request->input('industry'));
+        $company->role = ucwords($request->input('role'));
         $company->description = $request->input('description');
         $company->status = ucwords($request->input('status'));
         $company->save();
@@ -128,16 +130,16 @@ class UserCompaniesController extends Controller
                           'required',
                           'regex:/(^([ a-zA-Z]+)(\d+)?$)/u'
                         ),
-             'industry' => array(
-                        'required',
-                        'string'
-                        ),
-             'role' =>  array(
-                        'required',
-                        'string'
-                        ),
-             'description' => 'max:70',
-             'status' => 'required|string'
+               'industry' => array(
+                          'required',
+                          'string'
+                          ),
+               'role' =>  array(
+                          'required',
+                          'string'
+                          ),
+               'description' => 'max:70',
+               'status' => 'required|string'
            ];
          }
      $messages = [
