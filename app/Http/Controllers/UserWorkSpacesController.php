@@ -136,7 +136,7 @@ class UserWorkSpacesController extends Controller
          }else {
            $rules = [
 
-               'title' => array(
+              'title' => array(
                           'required',
                           'regex:/(^([ a-zA-Z]+)(\d+)?$)/u'
                         ),
