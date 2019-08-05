@@ -46,7 +46,7 @@ class UserWorkSpacesController extends Controller
             $choose_worksapces = WorkSpace::where('title', $request->input('title'))->where('status', 'Public')->get();
             return response()->json(['data' => ['success' => true, 'message' => 'Choose an ideal workspace from the list',
                                                                    'message-2' => 'If the workspace is not found in the list, it means the workspace is private',
-                                                                   'message-3' => 'You can send a message to the worksapce owner to invite you', 'choose_workspaces' => $choose_workspaces]]);
+                                                                   'message-3' => 'You can send a message to the worksapce owner to invite you', 'choose_workspace' => $choose_workspace]]);
           }
          //Here will continue if the username is know!
          //Get the worksapce unique_name
