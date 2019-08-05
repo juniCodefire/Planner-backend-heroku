@@ -72,7 +72,7 @@ class UserWorkSpacesController extends Controller
                    DB::rollBack();
                    return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again!", 'hint' => $e->getMessage()]], 501);
                  }
-            }return response()->json(['data' => ['error' => false, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 403);
+            }return response()->json(['data' => ['error' => false, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 501);
 
           }return response()->json(['data' => ['error' => false, 'message' => 'Sorry this is a secured workspace!']], 401);
 
@@ -100,7 +100,7 @@ class UserWorkSpacesController extends Controller
         $workspace->save();
 
         DB::commit();
-        return response()->json(['data' => ['success' => true, 'message' => 'Successfully Created!', 'new_worksapce' => $workspace ]], 200);
+        return response()->json(['data' => ['success' => true, 'message' => 'Successfully Created!', 'new_workspace' => $workspace ]], 200);
      } catch (\Exception $e) {
 
         DB::rollBack();
