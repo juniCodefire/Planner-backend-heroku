@@ -142,6 +142,7 @@ class UserWorkSpacesController extends Controller
                         ),
               'role' => 'string',
               'description' => 'max:70',
+              'wallpaper' => 'required',
               'status' => 'required|string'
            ];
          }

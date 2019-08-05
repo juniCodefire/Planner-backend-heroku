@@ -18,7 +18,7 @@ class Company extends Model implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $fillable = [
-         'id', 'owner_id', 'title', 'description', 'status',
+         'id', 'owner_id', 'title', 'description', 'status', 'industry', 'role', 'wallpaper',
     ];
 
     /**

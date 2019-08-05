@@ -138,6 +138,7 @@ class UserCompaniesController extends Controller
                           'required',
                           'string'
                           ),
+               'wallpaper' => 'required',
                'description' => 'max:70',
                'status' => 'required|string'
            ];

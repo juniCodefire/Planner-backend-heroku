@@ -20,7 +20,7 @@ class CreateWorkspacesTable extends Migration
             $table->string('title');
             $table->string('unique_name');
             $table->string('role')->default('admin');
-            $table->string('wallpaper')->default(null);
+            $table->string('wallpaper')->default('grey');
             $table->string('description')->default('Description can help improve clarity of workspace actual purpose!');
             $table->enum('status', array('Public','Private'));
             $table->timestamps();
