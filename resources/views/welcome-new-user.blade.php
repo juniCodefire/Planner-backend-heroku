@@ -51,7 +51,7 @@
 
       			<div class="activation">
       				   <h4>Activate Account</h4>
-      						<a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/signup.html?confirm_token={{$user->confirm_token}}#workspace-tab" target="_blank">Account Activation</a>
+      						<a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/get_started.html?confirm_token={{$user->confirm_token}}#workspace-tab" target="_blank">Account Activation</a>
       			</div>
             <div id="third_block" class="activation">
                 <p>This email was sent to you because you create a new plannerr account...</p><br>
