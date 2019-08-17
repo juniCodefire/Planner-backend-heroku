@@ -33,8 +33,8 @@ class UserCompaniesController extends Controller
         //Check if the user use the name or the username to send a requested
           if (stripos($check_unique_name, " ")) {
             //Return all work sapce with their name and their unique username for the user to choose and send a request
-            $choose_companies = Company::where('title', $request->input('title'))->where('status', 'Public')->get();
-            return response()->json(['data' => ['success' => true, 'message' => 'Choose an ideal company from the list',
+            $choose_companies = Company::where('title', $request->input('title'))->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
+            return response()->json(['data' => ['success' => true, 'key' => '1', 'message' => 'Choose an ideal company from the list',
                                                                    'message-2' => 'If the comapany is not found in the list, it means the company is private!',
                                                                    'message-3' => 'You can contact the company owner to invite you!', 'choose_worksapce' => $choose_companies]]);
           }
@@ -57,7 +57,7 @@ class UserCompaniesController extends Controller
                    //Send a Request mail
                    Mail::to($requestee->email)->send(new CompanyRequest($requester, $requestee, $company));
                    DB::commit();
-                   return response()->json(['data' => ['success' => true, 'message' => 'A request has be sent to company owner!']], 200);
+                   return response()->json(['data' => ['success' => true, 'key' => '2', 'message' => 'A request has be sent to company owner!']], 200);
                  } catch (\Exception $e) {
                    DB::rollBack();
                    return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again!", 'hint' => $e->getMessage()]], 501);
@@ -79,7 +79,11 @@ class UserCompaniesController extends Controller
      $this->validateCompany($request, $i= 1);
      //Recurssive Function to Regenerate Wiorkspace Unique Name
      $unique_name = $this->generateUniqueName($request);
+     $description = $request->input('description');
      //Insert the company into the Database(Save)
+     if ($description  == '') {
+       $description  = 'Description can help improve clarity of Company actual purpose!';
+     }
      DB::beginTransaction();
      try {
         $company->title = ucwords($request->input('title'));
@@ -87,7 +91,8 @@ class UserCompaniesController extends Controller
         $company->unique_name = $unique_name;
         $company->industry = ucwords($request->input('industry'));
         $company->role = ucwords($request->input('role'));
-        $company->description = $request->input('description');
+        $company->wallpaper = ucwords($request->input('wallpaper'));
+        $company->description = ucwords($description);
         $company->status = ucwords($request->input('status'));
         $company->save();
 
@@ -139,7 +144,7 @@ class UserCompaniesController extends Controller
                           'string'
                           ),
                'wallpaper' => 'required',
-               'description' => 'max:70',
+               'description' => 'max:150',
                'status' => 'required|string'
            ];
          }

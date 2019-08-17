@@ -47,11 +47,11 @@ class UserWorkSpacesController extends Controller
       //Check if the user use the name or the username to send a requested
       if (stripos($check_unique_name, " ")) {
         //Return all work sapce with their name and their unique username for the user to choose and send a request
-        $choose_workspace = WorkSpace::where('title', $request->input('title'))->where('status', 'Public')->get();
+        $choose_workspace = WorkSpace::where('title', $request->input('title'))->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
         return response()->json(['data' => [
           'success' => true, 'key' => '1', 'message' => 'Choose an ideal workspace from the list',
           'message-2' => 'If the workspace is not found in the list, it means the workspace is private',
-          'message-3' => 'You can send a message to the worksapce owner to invite you', 'choose_workspace' => $choose_workspace
+          'message-3' => 'You can send a message to the workspace owner to invite you', 'choose_workspace' => $choose_workspace
         ]]);
       }
       //Here will continue if the username is know!
@@ -73,7 +73,7 @@ class UserWorkSpacesController extends Controller
             //Send a Request mail
             Mail::to($requestee->email)->send(new WorkSpacesRequest($requester, $requestee, $workspace));
             DB::commit();
-            return response()->json(['data' => ['success' => true, 'key' => '1',  'message' => 'A request has be sent to worksapce owner!']], 200);
+            return response()->json(['data' => ['success' => true, 'key' => '2',  'message' => 'A request has be sent to worksapce owner!']], 200);
           } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['data' => ['error' => false, 'message' => "Sending email failed , try again!", 'hint' => $e->getMessage()]], 501);
@@ -102,7 +102,9 @@ class UserWorkSpacesController extends Controller
       $workspace->title = ucwords($request->input('title'));
       $workspace->owner_id = Auth::user()->id;
       $workspace->unique_name = $unique_name;
-      $workspace->description = $request->input('description');
+      $workspace->role = ucwords($request->input('role'));
+      $workspace->wallpaper = $request->input('wallpaper');
+      $workspace->description = ucwords($request->input('description'));
       $workspace->status = ucwords($request->input('status'));
       $workspace->save();
 
@@ -148,7 +150,7 @@ class UserWorkSpacesController extends Controller
           'regex:/(^([ a-zA-Z]+)(\d+)?$)/u'
         ),
         'role' => 'string',
-        'description' => 'max:70',
+        'description' => 'max:150',
         'wallpaper' => 'required',
         'status' => 'required|string'
       ];
