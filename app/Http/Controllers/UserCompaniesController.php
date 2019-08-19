@@ -36,7 +36,7 @@ class UserCompaniesController extends Controller
             $choose_companies = Company::where('title', $request->input('title'))->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
             return response()->json(['data' => ['success' => true, 'key' => '1', 'message' => 'Choose an ideal company from the list',
                                                                    'message-2' => 'If the comapany is not found in the list, it means the company is private!',
-                                                                   'message-3' => 'You can contact the company owner to invite you!', 'choose_worksapce' => $choose_companies]]);
+                                                                   'message-3' => 'You can contact the company owner to invite you!', 'choose_company' => $choose_companies]]);
           }
          //Here will continue if the username is know!
          //Get the worksapce unique_name
