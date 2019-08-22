@@ -18,7 +18,7 @@ class UserCategoriesController extends Controller
     public function show($id) {
 	    $category = Category::find($id);
 		    if ($category ) {
-		    	$category = Category::with('interest')->get();
+		    	$category = Category::with('interests')->first();
 		    	return response()->json(['message' => 'Category and its interests', 'category' => $category,], 200);
 		    }else {
 		        return response()->json(['message' => 'Error or not found'], 404);
@@ -28,19 +28,4 @@ class UserCategoriesController extends Controller
     $categories = Category::with('interests')->get();
     return response()->json(['message' => 'All categories and interest', 'categories' => $categories], 200);
     }
-	public function create(Request $request, Category $category) {
-		$this->validate($request, [
-        	'title'    => 'required',
-        ]);
-        	DB::beginTransaction();
-        try {
-        	$category->title = $request->input('title');
-			$category->save();
-			DB::commit();
-	   		return response()->json(['message' => "Category Created", 'category' => $category], 201);
-        } catch (\Exception $e) {
-        	DB::rollBack();
-	    	return response()->json(['message' => "Error creating category, try again", 'error_hint' => $e->getMessage()], 401);
-        }
-	}
 }
