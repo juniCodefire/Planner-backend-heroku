@@ -28,28 +28,29 @@ class AdminInterestController extends Controller
 		        return response()->json(['message' => 'Error or not found'], 404);
 		    }
     }
-    public function showAll(Category $category) {
+    public function showAll( $category) {
     $categories = Category::with('interests')->get();
     return response()->json(['message' => 'All categories and interest', 'categories' => $categories], 200);
     }
-	public function create(Request $request, Category $category) {
+	public function create(Request $request, Interest $category, $id) {
 		$this->validate($request, [
         	'title'    => 'required',
         ]);
         	DB::beginTransaction();
         try {
-        	$category->title = $request->input('title');
-			$category->save();
+        	$interest->title = $request->input('title');
+        	$interest->category_id = $id;
+			$interest->save();
 			DB::commit();
-	   		return response()->json(['message' => "Category Created", 'category' => $category], 201);
+	   		return response()->json(['message' => "Interest Created", 'category' => $category], 201);
         } catch (\Exception $e) {
         	DB::rollBack();
-	    	return response()->json(['message' => "Error creating category, try again", 'error_hint' => $e->getMessage()], 401);
+	    	return response()->json(['message' => "Error creating interest, try again", 'error_hint' => $e->getMessage()], 401);
         }
 	}
 	public function update(Request $request, $id) {
 
-		$edit = Category::find($id);
+		$edit = Interest::find($id);
 
 		if ($edit) {
 				$this->validate($request, [
@@ -60,7 +61,7 @@ class AdminInterestController extends Controller
 	        	$edit->title = $request->input('title');
 				$edit->save();
 				DB::commit();
-		   		return response()->json(['message' => "Category Updated" , 'category' => $edit], 200);
+		   		return response()->json(['message' => "Interest Updated" , 'category' => $edit], 200);
 	        } catch (\Exception $e) {
 	        	DB::rollBack();
 		    	return response()->json(['message' => "Update Error, try again", 'error_hint' => $e->getMessage()], 401);
@@ -68,13 +69,13 @@ class AdminInterestController extends Controller
 		}else {
 				return response()->json(['message' => "Not Found"], 404);
 		}
-		
 	}
+
 	public function delete($id) {
-		$del_category = Category::find($id);
-		if ($del_category) {
-			$del_category->delete();
-			return response()->json(['message' => 'Category deleted'], 200);
+		$del = Interest::find($id);
+		if ($del) {
+			$del->delete();
+			return response()->json(['message' => 'Interest deleted'], 200);
 		}
 	}
 }
