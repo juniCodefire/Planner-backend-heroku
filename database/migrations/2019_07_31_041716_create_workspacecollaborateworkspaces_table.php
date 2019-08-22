@@ -15,12 +15,12 @@ class CreateWorkspacecollaborateworkspacesTable extends Migration
     {
         Schema::create('workspacecollaborateworkspaces', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('initiator_workspace_id');
-            $table->unsignedInteger('initiatee_workspace_id');
+            $table->unsignedInteger('initiator_ws_id');
+            $table->unsignedInteger('initiatee_ws_id');
             $table->timestamps();
 
-            $table->foreign('initiator_workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
-            $table->foreign('initiatee_workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
+            $table->foreign('initiator_ws_id')->references('id')->on('workspaces')->onDelete('cascade');
+            $table->foreign('initiatee_ws_id')->references('id')->on('workspaces')->onDelete('cascade');
         });
     }
 

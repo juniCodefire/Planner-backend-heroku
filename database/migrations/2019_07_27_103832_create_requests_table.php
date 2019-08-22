@@ -13,12 +13,12 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requestinvites', function (Blueprint $table) {
+        Schema::create('requests', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('requestee_id');
             $table->unsignedInteger('requester_id');
-            $table->unsignedInteger('workspace_id')->default(null);
-            $table->unsignedInteger('company_id')->default(null);
+            $table->unsignedInteger('workspace_id');
+            $table->unsignedInteger('company_id');
             $table->timestamps();
 
             $table->foreign('requestee_id')->references('id')->on('users')->onDelete('cascade');

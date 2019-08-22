@@ -16,7 +16,7 @@ class CreateWorkspacesTable extends Migration
         Schema::create('workspaces', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_id');
-            $tbale->unsignedInteger('company_id')->default(null);
+            $table->unsignedInteger('company_id')->default(null);
             $table->string('title');
             $table->string('unique_name');
             $table->string('role')->default('admin');

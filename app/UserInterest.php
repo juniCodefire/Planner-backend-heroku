@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class RequestInvite extends Model implements AuthenticatableContract, AuthorizableContract
+class UserInterest extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
-    protected $table = "requestinvites";
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-         'id', 'requestee_id', 'requester_id',
+         'id', 'owner_id', 'category_id', 'Interest_id',
     ];
 
     /**
@@ -27,7 +27,6 @@ class RequestInvite extends Model implements AuthenticatableContract, Authorizab
      * @var array
      */
     protected $hidden = [
-
     ];
 
 }

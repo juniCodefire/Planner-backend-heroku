@@ -14,6 +14,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+//Authorization For Admin
+$router->post('api/admin/signin', 'AdminSignInController@check');
 
 //Authentication Unauthorize Access
 $router->post('api/signup', 'UserSignUpController@store');
@@ -55,6 +57,32 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 
     $router->get('compnay/{id}', 'UserComapaniesController@showOne');
 
+});
+//categories
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+
+    $router->post('category/create', 'AdminCategoriesController@create');
+
+    $router->get('category/all', 'AdminCategoriesController@showAll');
+
+    $router->get('category/{id}', 'AdminCategoriesController@show');
+
+    $router->put('category/edit/{id}', 'AdminCategoriesController@update');
+
+    $router->delete('category/delete/{id}', 'AdminCategoriesController@destroy');
+});
+//interest
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+
+    $router->post('interest/create', 'AdminInterestController@create');
+
+    $router->get('category/all', 'AdminCategoriesController@showAll');
+
+    $router->get('category/{id}', 'AdminCategoriesController@show');
+
+    $router->put('category/edit/{id}', 'AdminCategoriesController@update');
+
+    $router->delete('category/delete/{id}', 'AdminCategoriesController@destroy');
 });
 //
 // //Get request to show authourize dashboard
