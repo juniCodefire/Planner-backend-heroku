@@ -41,13 +41,13 @@ class AdminSignInController extends Controller
         if ($admin === null) {
         	return response()->json(['data' =>['error' => false, 'message' => 'Not found']], 404);
         }
-     //Get the user token from the database
-      $token = $admin->api_token;
      //Check if password match
         if (Hash::check($password, $admin->password)) {
                     $admin->verify_code = $verify_token;
                     $admin->api_token = $update_token;
                     $admin->save();
+                         //Get the user token from the database
+                    $token = $admin->api_token;
                     return response()->json(['data' =>['success' => true, 'user' => $admin,
                                         'image_link'    => 'http://res.cloudinary.com/getfiledata/image/upload/',
                                         'imageProp'     => [

@@ -37,11 +37,11 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 
     $router->post('workspace/create', 'UserWorkSpacesController@store');
 
-    $router->put('workspaces/edit', 'UserWorkSpacesController@update');
+    $router->put('workspace/edit', 'UserWorkSpacesController@update');
 
     $router->get('workspaces', 'UserWorkSpacesController@show');
 
-    $router->get('worksapce/{id}', 'UserWorkSpacesController@showOne');
+    $router->get('workspace/{id}', 'UserWorkSpacesController@showOne');
 
 });
 //Company Authourize Access Users
@@ -55,7 +55,7 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 
     $router->get('company', 'UserComapaniesController@show');
 
-    $router->get('compnay/{id}', 'UserComapaniesController@showOne');
+    $router->get('company/{id}', 'UserComapaniesController@showOne');
 
 });
 //categories
@@ -63,9 +63,13 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 
     $router->post('category/create', 'AdminCategoriesController@create');
 
-    $router->get('category/all', 'AdminCategoriesController@showAll');
+    $router->get('categories', 'AdminCategoriesController@showAll');
+
+    $router->get('user/categories', 'UserCategoriesController@showAll');
 
     $router->get('category/{id}', 'AdminCategoriesController@show');
+
+    $router->get('user/category/{id}', 'UserCategoriesController@show');
 
     $router->put('category/edit/{id}', 'AdminCategoriesController@update');
 
@@ -75,14 +79,6 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
 
     $router->post('interest/create', 'AdminInterestController@create');
-
-    $router->get('category/all', 'AdminCategoriesController@showAll');
-
-    $router->get('category/{id}', 'AdminCategoriesController@show');
-
-    $router->put('category/edit/{id}', 'AdminCategoriesController@update');
-
-    $router->delete('category/delete/{id}', 'AdminCategoriesController@destroy');
 });
 //
 // //Get request to show authourize dashboard

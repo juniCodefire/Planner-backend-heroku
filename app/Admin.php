@@ -28,7 +28,7 @@ class Admin extends Model implements AuthenticatableContract, AuthorizableContra
      * @var array
      */
     protected $hidden = [
-        'password', 'api_token', 'confirm_token', 'status', 'verify_code',
+        'password', 'api_token',
     ];
 
 }

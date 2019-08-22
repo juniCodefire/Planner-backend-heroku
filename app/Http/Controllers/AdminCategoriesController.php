@@ -21,8 +21,8 @@ class AdminCategoriesController extends Controller
     }
     public function show($id) {
 	    $category = Category::find($id);
-		    if ($category ) {
-		    	$category = Category::with('interest')->get();
+		    if ($category) {
+		    	$category = Category::with('interests')->first();
 		    	return response()->json(['message' => 'Category and its interests', 'category' => $category,], 200);
 		    }else {
 		        return response()->json(['message' => 'Error or not found'], 404);

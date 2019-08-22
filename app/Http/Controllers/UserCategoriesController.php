@@ -5,20 +5,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-use App\Admin;
-use App\Interest;
+use App\User;
+use App\Category;
 use Illuminate\Support\Facades\DB;
 /**
  *
  */
 
-class AdminInterestController extends Controller
+class UserCategoriesController extends Controller
 {
 //This permits who is an admin
-	public function __construct()
-    {
-        $this->middleware('admin.only');
-    }
     public function show($id) {
 	    $category = Category::find($id);
 		    if ($category ) {
@@ -46,35 +42,5 @@ class AdminInterestController extends Controller
         	DB::rollBack();
 	    	return response()->json(['message' => "Error creating category, try again", 'error_hint' => $e->getMessage()], 401);
         }
-	}
-	public function update(Request $request, $id) {
-
-		$edit = Category::find($id);
-
-		if ($edit) {
-				$this->validate($request, [
-	        	'title'    => 'required',
-	        ]);
-	       		 DB::beginTransaction();
-	        try {
-	        	$edit->title = $request->input('title');
-				$edit->save();
-				DB::commit();
-		   		return response()->json(['message' => "Category Updated" , 'category' => $edit], 200);
-	        } catch (\Exception $e) {
-	        	DB::rollBack();
-		    	return response()->json(['message' => "Update Error, try again", 'error_hint' => $e->getMessage()], 401);
-	        }
-		}else {
-				return response()->json(['message' => "Not Found"], 404);
-		}
-		
-	}
-	public function delete($id) {
-		$del_category = Category::find($id);
-		if ($del_category) {
-			$del_category->delete();
-			return response()->json(['message' => 'Category deleted'], 200);
-		}
 	}
 }
