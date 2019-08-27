@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 class RequestInvite extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
-    protected $table = "requests";
+    protected $table = "requestinvites";
     /**
      * The attributes that are mass assignable.
      *
