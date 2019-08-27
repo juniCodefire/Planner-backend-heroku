@@ -10,7 +10,6 @@ use App\Mail\WorkSpacesRequest;
 
 use App\User;
 use App\WorkSpace;
-use App\Request;
 use Illuminate\Support\Facades\DB;
 
 /**

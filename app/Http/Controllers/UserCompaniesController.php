@@ -9,7 +9,6 @@ use App\Mail\CompanyRequest;
 
 use App\User;
 use App\Company;
-use App\Request;
 use Illuminate\Support\Facades\DB;
 /**
  *
