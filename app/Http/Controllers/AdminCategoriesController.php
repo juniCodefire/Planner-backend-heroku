@@ -44,7 +44,7 @@ class AdminCategoriesController extends Controller
 	   		return response()->json(['message' => "Category Created", 'category' => $category], 201);
         } catch (\Exception $e) {
         	DB::rollBack();
-	    	return response()->json(['message' => "Error creating category, try again", 'error_hint' => $e->getMessage()], 401);
+	    	return response()->json(['message' => "Error: category already exists or you can try again", 'error_hint' => $e->getMessage()], 401);
         }
 	}
 	public function update(Request $request, $id) {
@@ -53,7 +53,7 @@ class AdminCategoriesController extends Controller
 
 		if ($edit) {
 				$this->validate($request, [
-	        	'title'    => 'required',
+	        	'title'    => 'required|unique:categories',
 	        ]);
 	       		 DB::beginTransaction();
 	        try {
@@ -70,11 +70,13 @@ class AdminCategoriesController extends Controller
 		}
 		
 	}
-	public function delete($id) {
+	public function destroy($id) {
 		$del_category = Category::find($id);
 		if ($del_category) {
 			$del_category->delete();
 			return response()->json(['message' => 'Category deleted'], 200);
+		}else  {
+			return response()->json(['message' => 'Error Not Found'], 404);
 		}
 	}
 }

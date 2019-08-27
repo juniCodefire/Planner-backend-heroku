@@ -40,4 +40,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function isOnline() {
         return Cache::has('useronline'. $this->id);
     }
+
+     public function interest()
+    {
+        return $this->belongsToMany('App\Interest', 'user_interests', 'owner_id', 'interest_id');
+    }
 }

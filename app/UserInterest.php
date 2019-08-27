@@ -29,4 +29,7 @@ class UserInterest extends Model implements AuthenticatableContract, Authorizabl
     protected $hidden = [
     ];
 
+    public function interests() {
+      return $this->hasMany('App\Interest', 'category_id', 'category_id');
+    }
 }

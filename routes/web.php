@@ -60,26 +60,38 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 });
 //categories
 $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
-
+//Admin 
     $router->post('category/create', 'AdminCategoriesController@create');
 
     $router->get('categories', 'AdminCategoriesController@showAll');
 
-    $router->get('user/categories', 'UserCategoriesController@showAll');
-
     $router->get('category/{id}', 'AdminCategoriesController@show');
 
-    $router->get('user/category/{id}', 'UserCategoriesController@show');
 
     $router->put('category/edit/{id}', 'AdminCategoriesController@update');
 
     $router->delete('category/delete/{id}', 'AdminCategoriesController@destroy');
+//User
+
+    $router->get('user/categories', 'UserCategoriesController@showAll');
+
+    $router->get('user/category/{id}', 'UserCategoriesController@show');
+
 });
 //interest
 $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+//Admin
 
-    $router->post('interest/create', 'AdminInterestController@create');
+    $router->post('interest/create/{category_id}', 'AdminInterestController@create');
+
+    $router->put('interest/edit/{category_id}/{id}', 'AdminInterestController@update');
+
+    $router->delete('interest/delete/{id}', 'AdminInterestController@destroy');
+//User
+    $router->post('interest/select', 'UserInterestController@select');
 });
+
+
 //
 // //Get request to show authourize dashboard
 //

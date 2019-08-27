@@ -19,36 +19,23 @@ class AdminInterestController extends Controller
     {
         $this->middleware('admin.only');
     }
-    public function show($id) {
-	    $category = Category::find($id);
-		    if ($category ) {
-		    	$category = Category::with('interest')->get();
-		    	return response()->json(['message' => 'Category and its interests', 'category' => $category,], 200);
-		    }else {
-		        return response()->json(['message' => 'Error or not found'], 404);
-		    }
-    }
-    public function showAll( $category) {
-    $categories = Category::with('interests')->get();
-    return response()->json(['message' => 'All categories and interest', 'categories' => $categories], 200);
-    }
-	public function create(Request $request, Interest $category, $id) {
+	public function create(Request $request, Interest $interest, $category_id) {
 		$this->validate($request, [
-        	'title'    => 'required',
+        	'title'    => 'required|unique:interests',
         ]);
         	DB::beginTransaction();
         try {
         	$interest->title = $request->input('title');
-        	$interest->category_id = $id;
+        	$interest->category_id = $category_id;
 			$interest->save();
 			DB::commit();
-	   		return response()->json(['message' => "Interest Created", 'category' => $category], 201);
+	   		return response()->json(['message' => "Interest Created", 'interest' => $interest], 201);
         } catch (\Exception $e) {
         	DB::rollBack();
-	    	return response()->json(['message' => "Error creating interest, try again", 'error_hint' => $e->getMessage()], 401);
+	    	return response()->json(['message' => "Error: interest already exists or you can try again", 'error_hint' => $e->getMessage()], 401);
         }
 	}
-	public function update(Request $request, $id) {
+	public function update(Request $request, $category_id, $id) {
 
 		$edit = Interest::find($id);
 
@@ -71,11 +58,13 @@ class AdminInterestController extends Controller
 		}
 	}
 
-	public function delete($id) {
+	public function destroy($id) {
 		$del = Interest::find($id);
 		if ($del) {
 			$del->delete();
 			return response()->json(['message' => 'Interest deleted'], 200);
+		}else  {
+			return response()->json(['message' => 'Error Not Found'], 404);
 		}
 	}
 }
