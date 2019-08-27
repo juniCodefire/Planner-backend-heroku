@@ -13,7 +13,7 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('requestinvites', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('requestee_id');
             $table->unsignedInteger('requester_id');
