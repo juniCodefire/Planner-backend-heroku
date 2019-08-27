@@ -9,6 +9,7 @@ use App\Mail\CompanyRequest;
 
 use App\User;
 use App\Company;
+use App\RequestInvite;
 use Illuminate\Support\Facades\DB;
 /**
  *
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class UserCompaniesController extends Controller
 {
 
-  public function request(Request $request, Request $request_invite) {
+  public function request(Request $request, RequestInvite $request_invite) {
      $requester = Auth::user();
 
      //Check if the worksapce title is required and _exist

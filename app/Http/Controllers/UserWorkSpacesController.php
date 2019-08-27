@@ -10,6 +10,7 @@ use App\Mail\WorkSpacesRequest;
 
 use App\User;
 use App\WorkSpace;
+use App\RequestInvite;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -29,7 +30,7 @@ class UserWorkSpacesController extends Controller
   }
 
 
-  public function request(Request $request, Request $request_invite)
+  public function request(Request $request, RequestInvite $request_invite)
   {
     $requester = Auth::user();
 
