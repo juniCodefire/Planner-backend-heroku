@@ -19,7 +19,7 @@ class CreateProjectsTable extends Migration
             $table->unsignedInteger('company_id')->nullable();
             $table->unsignedInteger('workspace_id');
             $table->string('title');
-            $table->string('description')->nullable();
+            $table->string('description')->default('Write a simple detail about you project for clarity...');
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');

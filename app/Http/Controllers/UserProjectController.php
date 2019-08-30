@@ -63,11 +63,43 @@ class UserProjectController extends Controller
 		}
 
 	}
-	public function update() {
+	public function update(Request $request, Project $project, $id) {
+		$user = Auth::user();
+		$this->validateRequest($request);
+		$edit_project = Project::find($id);
+		if ($edit_project) {
+			if (empty($request->input('description'))) {
+				$description = 'Write a simple detail about you project for clarity...';
+			}
+			try{
+			   if (Auth::user()->id === $edit_project->owner_id) {
+					$edit_project->title = $request->input('title');
+					$edit_project->description = $description;
+					$edit_project->save();
+					return response()->json(['success' => true, 'message' => 'Edited Succesfully', 'project' => $edit_project], 200);
+				}else {
+					return response()->json(['success' => true, 'message' => 'Unauthorize'], 401);
+				}
+			}catch(\Exception $e) {
+				return response()->json(['success' => true, 'message' => 'An Error Occurred', 'hint' => $e->getMessage()], 500);
+			}
+		}else {
+			return response()->json(['success' => true, 'message' => 'Project Not found'], 404);
+		}
 
 	}
-	public function destroy() {
-
+	public function destroy($id) {
+		$del_project = Project::find($id);
+		if ($del_project) {
+			if (Auth::user()->id === $del_project->owner_id) {
+				$del_project->delete();
+				return response()->json(['error' => true, 'message' => 'Project deleted'], 200);
+			}else {
+				return response()->json(['error' => true, 'message' => 'Unauthorize'], 401);
+			}
+		}else {
+			return response()->json(['error' => true, 'message' => 'An error occured, please try agian'], 500);
+		}
 	}
 
 	public function validateRequest($request) {
