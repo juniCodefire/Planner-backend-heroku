@@ -10,6 +10,7 @@ use App\Mail\WorkSpacesRequest;
 
 use App\User;
 use App\WorkSpace;
+use App\Company;
 use App\RequestInvite;
 use Illuminate\Support\Facades\DB;
 
@@ -102,7 +103,12 @@ class UserWorkSpacesController extends Controller
       $workspace->title = ucwords($request->input('title'));
       $workspace->owner_id = Auth::user()->id;
       if ($company_id != '0') {
-         $workspace->company_id = (int)$company_id;
+         $check_company = Company::where('id', $company_id)->where('owner_id', Auth::user()->id)->exists();
+         if ($check_company) {
+            $workspace->company_id = (int)$company_id;
+         }else {
+            return response()->json(['message' => 'Company does not exist'], 404);
+         }
       }
       $workspace->unique_name = $unique_name;
       $workspace->role = ucwords($request->input('role'));

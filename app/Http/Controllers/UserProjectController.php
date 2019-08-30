@@ -39,7 +39,12 @@ class UserProjectController extends Controller
 				$project->owner_id = Auth::user()->id;
 				$project->workspace_id = (int)$workspace_id;
 				if ($company_id != '0') {
-					$project->company_id = (int)$company_id;
+					 $check_company = Company::where('id', $company_id)->where('owner_id', Auth::user()->id)->exists();
+			         if ($check_company) {
+			            $project->company_id = (int)$company_id;
+			         }else {
+			            return response()->json(['message' => 'Company does not exist'], 404);
+			         }
 				}
 				$project->title = $request->input('title');
 				$project->description = $description;
