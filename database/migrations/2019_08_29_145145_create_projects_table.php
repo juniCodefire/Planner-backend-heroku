@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorkspacesTable extends Migration
+class CreateProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,18 @@ class CreateWorkspacesTable extends Migration
      */
     public function up()
     {
-        Schema::create('workspaces', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('owner_id');
             $table->unsignedInteger('company_id')->nullable();
+            $table->unsignedInteger('workspace_id');
             $table->string('title');
-            $table->string('unique_name');
-            $table->string('role')->default('admin');
-            $table->string('wallpaper')->default('grey');
-            $table->string('description')->default('Description can help improve clarity of workspace actual purpose!');
-            $table->enum('status', array('Public','Private'));
+            $table->string('description')->nullable();
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('comapany_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
@@ -37,6 +35,6 @@ class CreateWorkspacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('workspaces');
+        Schema::dropIfExists('projects');
     }
 }

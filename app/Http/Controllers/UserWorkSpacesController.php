@@ -89,7 +89,7 @@ class UserWorkSpacesController extends Controller
 
 
 
-  public function store(Request $request, WorkSpace $workspace)
+  public function store(Request $request, WorkSpace $workspace, $company_id = '0')
   {
     $user = Auth::user();
     //Validate the input
@@ -101,6 +101,9 @@ class UserWorkSpacesController extends Controller
     try {
       $workspace->title = ucwords($request->input('title'));
       $workspace->owner_id = Auth::user()->id;
+      if ($company_id != '0') {
+         $workspace->company_id = (int)$company_id;
+      }
       $workspace->unique_name = $unique_name;
       $workspace->role = ucwords($request->input('role'));
       $workspace->wallpaper = $request->input('wallpaper');

@@ -1,4 +1,4 @@
-<?php
+->default(null)<?php
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,10 +15,10 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requestinvites', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('requestee_id');
-            $table->unsignedInteger('requester_id');
-            $table->unsignedInteger('workspace_id');
-            $table->unsignedInteger('company_id');
+            $table->unsignedInteger('requestee_id')->nullable();
+            $table->unsignedInteger('requester_id')->nullable();
+            $table->unsignedInteger('workspace_id')->nullable();
+            $table->unsignedInteger('company_id')->nullable();
             $table->timestamps();
 
             $table->foreign('requestee_id')->references('id')->on('users')->onDelete('cascade');

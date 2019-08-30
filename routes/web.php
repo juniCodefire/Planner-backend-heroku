@@ -35,7 +35,7 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 
     $router->post('workspace/request', 'UserWorkSpacesController@request');
 
-    $router->post('workspace/create', 'UserWorkSpacesController@store');
+    $router->post('workspace/{company_id}/create', 'UserWorkSpacesController@store');
 
     $router->put('workspace/edit', 'UserWorkSpacesController@update');
 
@@ -91,6 +91,18 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
     $router->post('interest/select', 'UserInterestController@select');
 });
 
+//Projects Routes
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->get('projects', 'UserProjectController@showAll');
+
+    $router->get('project/{workspace_id}/{company_id}/{id}', 'UserProjectController@showOne');
+
+    $router->post('project/{workspace_id}/{company_id}/create', 'UserProjectController@create');
+
+    $router->put('project/{id}/edit', 'UserProjectController@update');
+
+    $router->delete('project/{id}/delete',  'UserProjectController@destroy');
+});
 
 //
 // //Get request to show authourize dashboard
