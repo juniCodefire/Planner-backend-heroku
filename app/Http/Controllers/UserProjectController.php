@@ -34,6 +34,8 @@ class UserProjectController extends Controller
 				DB::beginTransaction();
 				if (empty($request->input('description'))) {
 					$description = 'Write a simple detail about you project for clarity...';
+				}else {
+					$description = $request->input('description');
 				}
 				try{
 				$project->owner_id = Auth::user()->id;
@@ -69,7 +71,9 @@ class UserProjectController extends Controller
 		$edit_project = Project::find($id);
 		if ($edit_project) {
 			if (empty($request->input('description'))) {
-				$description = 'Write a simple detail about you project for clarity...';
+					$description = 'Write a simple detail about you project for clarity...';
+			}else {
+				$description = $request->input('description');
 			}
 			try{
 			   if (Auth::user()->id === $edit_project->owner_id) {
