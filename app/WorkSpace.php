@@ -41,4 +41,8 @@ class WorkSpace extends Model implements AuthenticatableContract, AuthorizableCo
       return $this->belongsTo('App\Company', 'company_id', 'id');
     }
 
+    public function projects() {
+
+      return $this->belongsTo('App\Projects', 'projects_id', 'id');
+    }
 }

@@ -19,7 +19,7 @@ class CreateAdminsTable extends Migration
             $table->string('username')->default('plannrradmin');
             $table->string('email')->unique()->default('plannrradmin@plannrr.com');
             $table->string('wallpaper')->default('user.jpg');
-            $table->string('password');
+            $table->string('password')->default('$2y$10$EmayIQjgVXvl3dqDcLw.x.E7jrACvscQlydgngBgN4v/t5NegtLTK');
             $table->string('verify_code', 80)
             ->unique()
             ->nullable()

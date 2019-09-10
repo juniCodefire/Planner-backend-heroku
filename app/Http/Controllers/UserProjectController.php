@@ -20,8 +20,14 @@ class UserProjectController extends Controller
 
 
 	}
-	public function showOne() {
-
+	public function showOne($workspace_id) {
+		$user = Auth::user();
+		$project = Project::where('workspace_id', $workspace_id)->get();
+		if ($project) {	
+			return response()->json(['success' => true, 'project' => $project]); 
+		}else {
+			return response()->json(['error' => true, 'message' => 'Projeect'], 404);
+		}
 	}
 	public function create(Request $request, Project $project, $workspace_id, $company_id = '0') {
 		$user = Auth::user();

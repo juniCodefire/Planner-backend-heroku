@@ -60,7 +60,7 @@ class UserCompaniesController extends Controller
                    return response()->json(['data' => ['success' => true, 'key' => '2', 'message' => 'A request has be sent to company owner!']], 200);
                  } catch (\Exception $e) {
                    DB::rollBack();
-                   return response()->json(['data' =>['error' => false, 'message' => "Sending email failed , try again!", 'hint' => $e->getMessage()]], 501);
+                   return response()->json(['data' => ['error' => false, 'message' => "Sending invite Request failed , try again!", 'hint' => $e->getMessage()]], 500)
                  }
             }return response()->json(['data' => ['success' => true, 'message' => 'Sorry your request to joining this company have not been confirmed!']], 403);
 

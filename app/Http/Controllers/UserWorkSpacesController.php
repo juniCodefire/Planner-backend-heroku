@@ -10,6 +10,7 @@ use App\Mail\WorkSpacesRequest;
 
 use App\User;
 use App\WorkSpace;
+use App\WorkSpaceToMembers;
 use App\Company;
 use App\RequestInvite;
 use Illuminate\Support\Facades\DB;
@@ -26,8 +27,19 @@ class UserWorkSpacesController extends Controller
     $workspaces = WorkSpace::where('owner_id', $user->id)
       ->with('companies')
       ->with('users')
+      ->with('projects')
       ->get();
-    return response()->json(['data' => ['success' => true, 'message' => 'Workspaces Successfully', 'workspaces' => $workspaces]], 200);
+    $attached_workspaces = WorkSpaceToMembers::where('member_id', $user->id)
+      ->with('workspace_id')
+      ->with('companies')
+      ->with('users')
+      ->with('projects')
+      ->get();
+      if($workspaces || $attached_workspaces) {
+          return response()->json(['data' => ['success' => true, 'message' => 'Workspaces Successfully', 'workspaces' => $workspaces, 'attached_workspaces' => $attached_workspaces]], 200);
+      }else {
+          return response()->json(['data' => ['error' => true, 'message' => 'User does not belong to any']], 404);
+      }
   }
 
 
@@ -77,7 +89,7 @@ class UserWorkSpacesController extends Controller
             return response()->json(['data' => ['success' => true, 'key' => '2',  'message' => 'A request has be sent to worksapce owner!']], 200);
           } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['data' => ['error' => false, 'message' => "Sending email failed , try again!", 'hint' => $e->getMessage()]], 501);
+            return response()->json(['data' => ['error' => false, 'message' => "Sending invite Request failed , try again!", 'hint' => $e->getMessage()]], 500);
           }
         }
         return response()->json(['data' => ['error' => false, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 501);

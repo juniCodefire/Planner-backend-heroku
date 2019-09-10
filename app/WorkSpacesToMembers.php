@@ -36,4 +36,15 @@ class WorkSpaceToMembers extends Model implements AuthenticatableContract, Autho
       return $this->belongsTo('App\User', 'owner_id', 'id');
     }
 
+    public function companies() {
+
+      return $this->belongsTo('App\Company', 'company_id', 'id');
+    }
+
+    public function projects() {
+
+      return $this->belongsTo('App\WorkSpace', 'projects_id', 'id');
+    }
+}
+
 }

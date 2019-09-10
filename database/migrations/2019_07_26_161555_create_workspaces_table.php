@@ -17,6 +17,7 @@ class CreateWorkspacesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('owner_id');
             $table->unsignedInteger('company_id')->nullable();
+            $table->unsignedInteger('projects')->nullable();
             $table->string('title');
             $table->string('unique_name');
             $table->string('role')->default('admin');
@@ -26,7 +27,7 @@ class CreateWorkspacesTable extends Migration
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('comapany_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 

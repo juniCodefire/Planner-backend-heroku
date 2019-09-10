@@ -104,6 +104,10 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
     $router->delete('project/{id}/delete',  'UserProjectController@destroy');
 });
 
+//Add Member Routes
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->post('add/member/{workspace_id}/{company_id}/{member_id}', 'UserWorkSpaceMemberController@addMember');
+});
 //
 // //Get request to show authourize dashboard
 //
