@@ -17,14 +17,15 @@
           text-align: center;
         }
         .link_out {
-           text-decoration: none;
-           padding: 15px 30px 15px 30px;
-           background: #343a40;
-           width: 100%;
-           height: 10vh;
-           color: white !important;
-           font-weight: bold;
-        }
+                text-decoration: none;
+                padding: 15px 50px 15px 50px;
+                background: #343a40;
+                width: 100%;
+                height: 10vh;
+                border-radius: 5px;
+                color: white !important;
+                font-weight: bold;
+             }
         .head_1 {
           background: #343a40;
           height: 80px;
@@ -49,8 +50,7 @@
       				</div>
 
         			<div class="activation">
-        				   <h4>Password Reset</h4>
-                   <p>Click the button below to get a new password...</p>
+                   <p>Click the button below to get a new password...</p><br>
         						<a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/confirmation-code.html?email={{$user->email}}&verify_code={{$user->verify_code}}" target="_blank">
                       Change Password</a>
         			</div>

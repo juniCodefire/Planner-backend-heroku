@@ -24,16 +24,17 @@
               align-items: center;
               text-align: center;
             }
-            .link_out {
-               text-decoration: none;
-               padding: 15px 30px 15px 30px;
-               background: #343a40;
-               width: 100%;
-               height: 10vh;
-               border-radius: 5px;
-               color: white !important;
-               font-weight: bold;
-            }
+           .link_out {
+                text-decoration: none;
+                padding: 15px 50px 15px 50px;
+                margin-top: 20px;
+                background: #343a40;
+                width: 100%;
+                height: 10vh;
+                border-radius: 5px;
+                color: white !important;
+                font-weight: bold;
+             }
             .head_1 {
               background: #343a40;
               height: 80px;
@@ -57,12 +58,12 @@
       								<p> You have a new request from
       									<span class="distint">{{$requester->name }}</span>  with email
       									<span class="distint">{{ $requester->email }}</span> to join your company workspaces
-      									<span class="distint" style="color:brown;">{{$company->title}} ({{$company->unique_name}})</span>
+      									<span class="distint" style="color:brown;">Title: {{$company->title}} (Unique Name: {{$company->unique_name}})</span>
       								</p>
       							</div>
                     <div>
                       <div class="activation">
-                         <h4>Reply To Company Request</h4>
+                         <br>
                          <a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/signin.html#request" target="_blank">Reply To Request</a>
                       </div>
                     </div>

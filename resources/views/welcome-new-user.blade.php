@@ -17,14 +17,15 @@
           text-align: center;
         }
         .link_out {
-           text-decoration: none;
-           padding: 15px 30px 15px 30px;
-           background: #343a40;
-           width: 100%;
-           height: 10vh;
-           color: white !important;
-           font-weight: bold;
-        }
+                text-decoration: none;
+                padding: 15px 50px 15px 50px;
+                background: #343a40;
+                width: 100%;
+                height: 10vh;
+                border-radius: 5px;
+                color: white !important;
+                font-weight: bold;
+             }
         .head_1 {
           background: #343a40;
           height: 80px;
@@ -50,7 +51,7 @@
       				</div>
 
       			<div class="activation">
-      				   <h4>Activate Account</h4>
+               <br>
       						<a class="link_out" href="https://plannerr-fbf4a.firebaseapp.com/onboard/get_started.html?confirm_token={{$user->confirm_token}}#workspace-tab" target="_blank">Account Activation</a>
       			</div>
             <div id="third_block" class="activation">

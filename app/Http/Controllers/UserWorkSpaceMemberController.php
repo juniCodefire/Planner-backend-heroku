@@ -25,7 +25,7 @@ class UserWorkSpaceMemberController extends Controller
   public function addMember(Request $request, RequestInvite $request_invite, $workspace_id, $company_id, $member_id)
   {
         $requester = Auth::user();
-        $workspace = WorkSpace::where('id', $workspace_id)->first();
+        $workspace = WorkSpace::where('id', $workspace_id)->where('owner_id', Auth::user()->id)->first();
         if ($workspace) {
            DB::beginTransaction();
             try {
@@ -49,12 +49,16 @@ class UserWorkSpaceMemberController extends Controller
                  $request_invite->company_id = $company_id;
                  $company = Company::where('id', $company_id)->first();
               }else {
-                $request_invite->company_id = $company_id;
                 $company=null;
               }
               $request_invite->save();
               //Send a Request mail 
-              Mail::to($requestee->email)->send(new MemberRequest($requester, $requestee, $workspace, $company));
+              if ($requestee) {
+                Mail::to($requestee->email)->send(new MemberRequest($requester, $requestee, $workspace, $company));
+              }else {
+                // dd(json_decode($requestee));
+                Mail::to($email)->send(new MemberRequest($requester, $requestee=null, $workspace, $company));
+              }
               DB::commit();
 
               return response()->json(['data' => ['success' => true, 'message' => 'A request has be sent to workspace owner!']], 200);
@@ -63,7 +67,7 @@ class UserWorkSpaceMemberController extends Controller
               return response()->json(['data' => ['error' => false, 'message' => "Sending invite Request failed , try again!", 'hint' => $e->getMessage()]], 500);
             }
         }else {
-            return response()->json(['error' => true, 'message' => 'Workspace not found']);
+            return response()->json(['error' => true, 'message' => 'Unauthorize Workspace Owner or Workspace not found']);
         }
        
   }

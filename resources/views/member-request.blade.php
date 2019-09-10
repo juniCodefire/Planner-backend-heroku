@@ -23,10 +23,11 @@
              }
              .link_out {
                 text-decoration: none;
-                padding: 15px 30px 15px 30px;
+                padding: 15px 50px 15px 50px;
                 background: #343a40;
                 width: 100%;
                 height: 10vh;
+                border-radius: 5px;
                 color: white !important;
                 font-weight: bold;
              }
@@ -48,21 +49,25 @@
 
 
 				<div id="box" style="width: 95%; margin: auto; color:#343a40;"><br>
+          @if ($requestee != null)
 					<h4>Hello {{$requestee->name}}</h4>
+          @else
+          <h4>Hello Friend</h4>
+          @endif
 					<div>
 							<div>
 								<p> A new request from
 									<span class="distint">{{$requester->name }}</span>  with email
 									<span class="distint">{{ $requester->email }}</span> to join his workspace
-									<span class="distint" style="color:dodgerblue;">{{$workspace->title}} ({{$workspace->unique_name}})</span>
+									<span class="distint" style="color:dodgerblue;"><br>Title: {{$workspace->title}} (Unique Name: {{$workspace->unique_name}})</span>
                   @if ($company != null)
                   attached to company
-                  <span class="distint" style="color:hotpink;">{{$company->title}} ({{$company->unique_name}})</span>
+                  <span class="distint" style="color:hotpink;">Title: {{$company->title}} (Unique Name: {{$company->unique_name}})</span>
                   @endif
 								</p>
 							</div>
   							<div class="activation1">
-  							   <h4>Reply To Request</h4>
+                   <br>
   			           <a class="link_out"
                     href="https://plannerr-fbf4a.firebaseapp.com/onboard/signin.html#request" target="_blank">Reply To Request</a>
   							</div>

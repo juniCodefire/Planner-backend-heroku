@@ -108,6 +108,10 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
     $router->post('add/member/{workspace_id}/{company_id}/{member_id}', 'UserWorkSpaceMemberController@addMember');
 });
+//Search plannerr Generally
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->post('search/table/?{search_param}', 'UserWorkSpaceMemberController@addMember');
+});
 //
 // //Get request to show authourize dashboard
 //

@@ -16,9 +16,9 @@ class CreateRequestInvitesTable extends Migration
         Schema::create('requestinvites', function (Blueprint $table) {
             $table->increments('id');
             $table->string('requestee_id')->nullable();
-            $table->string('requester_id')->nullable();
-            $table->string('workspace_id')->nullable();
-            $table->string('company_id')->nullable();
+            $table->unsignedInteger('requester_id')->nullable();
+            $table->unsignedInteger('workspace_id')->nullable();
+            $table->unsignedInteger('company_id')->nullable();
             $table->timestamps();
         });
     }
