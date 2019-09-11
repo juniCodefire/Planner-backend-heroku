@@ -50,7 +50,6 @@ class UserWorkSpacesController extends Controller
     //Check if the worksapce title is required and _exist
     $this->validateWorkSpace($request, $i = 0);
     $title = $request->input('title');
-      // dd(stripos($title, "#") );
       //Check if the user use the name or the username to send a requested
       if (stripos($title, "#")  === false) {
         $title = ucwords($title);

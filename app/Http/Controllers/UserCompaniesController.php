@@ -20,18 +20,11 @@ class UserCompaniesController extends Controller
   public function request(Request $request, RequestInvite $request_invite) {
      $requester = Auth::user();
 
-     //Check if the worksapce title is required and _exist
      $this->validateCompany($request, $i = 0);
-     $check_workspace = Company::where('title', ucwords($request->input('title')))
-                                   ->where('owner_id', '!=', Auth::user()->id)
-                                   ->exists();
-     $check_unique_name = Company::where('unique_name', $request->input('title'))
-                                   ->where('owner_id', '!=', Auth::user()->id)
-                                   ->exists();
-    if ($check_workspace || $check_unique_name) {
-        $title = $request->input('title');
+     $title = $request->input('title');
         //Check if the user use the name or the username to send a requested
-          if (stripos($title, " ")) {
+          if (stripos($title, "#") === false) {
+            $title = ucwords($title);
             //Return all work sapce with their name and their unique username for the user to choose and send a request
             $choose_companies = Company::where('title', 'like', "%{$title}%")->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
             return response()->json(['data' => ['success' => true, 'key' => '1', 'message' => 'Choose an ideal company from the list',
@@ -40,34 +33,34 @@ class UserCompaniesController extends Controller
           }
          //Here will continue if the username is know!
          //Get the worksapce unique_name
-          $company = Company::where('title', $request->input('title'))->orWhere('unique_name', $request->input('title'))->first();
-
-          if ($company->status === "Public") {
-            //Get the owner of Worksapce Data
-            $requestee = $company->users()->first();
-
-            if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('company_id', $company->id)->exists()) {
-                DB::beginTransaction();
-                 try {
-                   //Save to a temporary Request table
-                   $request_invite->requestee_id = $requestee->id;
-                   $request_invite->requester_id = Auth::user()->id;
-                   $request_invite->company_id = $company->id;
-                   $request_invite->save();
-                   //Send a Request mail
-                   Mail::to($requestee->email)->send(new CompanyRequest($requester, $requestee, $company));
-                   DB::commit();
-                   return response()->json(['data' => ['success' => true, 'key' => '2', 'message' => 'A request has be sent to company owner!']], 200);
-                 } catch (\Exception $e) {
-                   DB::rollBack();
-                   return response()->json(['data' => ['error' => false, 'message' => "Sending invite Request failed , try again!", 'hint' => $e->getMessage()]], 500);
-                 }
-            }return response()->json(['data' => ['success' => true, 'message' => 'Sorry your request to joining this company have not been confirmed!']], 403);
-
-          }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this is a secured company, contact the owner!']], 401);
-
-       }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this company is not available or not allowed, try using a company unique name instead!']], 403);
-
+          $company = Company::where('unique_name', $title)->where('owner_id', '!=', Auth::user()->id)->first();
+          if($company) {
+            if ($company->status === "Public") {
+              //Get the owner of Worksapce Data
+              $requestee = $company->users()->first();
+  
+              if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('company_id', $company->id)->exists()) {
+                  DB::beginTransaction();
+                   try {
+                     //Save to a temporary Request table
+                     $request_invite->requestee_id = $requestee->id;
+                     $request_invite->requester_id = Auth::user()->id;
+                     $request_invite->company_id = $company->id;
+                     $request_invite->save();
+                     //Send a Request mail
+                     Mail::to($requestee->email)->send(new CompanyRequest($requester, $requestee, $company));
+                     DB::commit();
+                     return response()->json(['data' => ['success' => true, 'key' => '2', 'message' => 'A request has be sent to company owner!']], 200);
+                   } catch (\Exception $e) {
+                     DB::rollBack();
+                     return response()->json(['data' => ['error' => false, 'message' => "Sending invite Request failed , try again!", 'hint' => $e->getMessage()]], 500);
+                   }
+              }return response()->json(['data' => ['success' => true, 'message' => 'Sorry your request to joining this company have not been confirmed!']], 403);
+  
+            }return response()->json(['data' => ['success' => true, 'message' => 'Sorry this is a secured company, contact the owner!']], 401);
+          }else {
+            return response()->json(['data' => ['error' => false, 'message' => 'Sorry, joining this company is not permited for you!']], 401);
+          }
    }
 
 
