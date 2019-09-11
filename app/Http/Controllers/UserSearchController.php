@@ -52,34 +52,28 @@ class UserSearchController extends Controller
             
         }else if ($table == 'w') {
           $table = 'Workspace';
-          // $search_result = DB::table('users')
-          //     ->whereExists(function ($query) {
-          //         $query->select(DB::raw(1))
-          //               ->from('workspaces')
-          //               ->whereRaw('workspaces.owner_id = users.id');
-          //     })
-          //   ->get();
-            // $search_result = User::whereExists(
-            //   function($query) {  
-            //     $query->from('workspacestomembers')
-            //           ->where('owner_id', '2');
-            //   })->get();        
-
-          // $search_result = WorkSpace::where('title', 'LIKE',  "%{$modify_name}%")
-          //                             ->whereExists(function($query) {
-          //                               $query->select(DB::raw(1))
-          //                                       ->from('workspacestomembers')
-          //                                       ->where('owner_id', Auth::user()->id);
-          //                               })
-          //                             ->get();
-
           $users_workspaces =  WorkSpaceToMember::where('owner_id', Auth::user()->id)
                                                     ->orWhere('member_id', Auth::user()->id)
                                                     ->pluck('workspace_id');
-          $search_result = WorkSpace::whereIn('id', $users_workspaces)->get();
+          if(!$users_workspaces) {
+            return response()->json(['error' => true, 'message' => 'No workspaces found'], 500);
+          }else {
+            $search_result = WorkSpace::whereIn('id', $users_workspaces)->get();
+          }
 
         }else if ($table == 'c') {
           $table = 'Company';
+            $users_company =  WorkSpaceToMember::where('owner_id', Auth::user()->id)
+                                                    ->orWhere('member_id', Auth::user()->id)
+                                                    ->pluck('company_id');
+            if(!$users_company) {
+              return response()->json(['error' => true, 'message' => 'No company found'], 500);
+            }else {
+              $search_result = Company::whereIn('id', $users_company)
+                                  ->with('workspaces')
+                                  ->get();
+            }
+
           $search_result = Company::where('status', 'Public')->where('title', 'LIKE',  "%{$modify_name}%")->get();
         }else if ($table == 'p') {
           $table = 'Project';

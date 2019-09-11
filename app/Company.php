@@ -33,6 +33,9 @@ class Company extends Model implements AuthenticatableContract, AuthorizableCont
     public function users() {
 
       return $this->belongsTo('App\User', 'owner_id', 'id');
+    }  
+    public function company() {
+      return $this->hasMany('App\Workspace', 'company_id', 'id');
     }
 
 }

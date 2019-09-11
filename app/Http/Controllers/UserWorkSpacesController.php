@@ -60,7 +60,7 @@ class UserWorkSpacesController extends Controller
       //Check if the user use the name or the username to send a requested
       if (stripos($check_unique_name, " ")) {
         //Return all work sapce with their name and their unique username for the user to choose and send a request
-        $choose_workspace = WorkSpace::where('title', $request->input('title'))->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
+        $choose_workspace = WorkSpace::where('title', 'like', "%{$request->input('title')}%")->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
         return response()->json(['data' => [
           'success' => true, 'key' => '1', 'message' => 'Choose an ideal workspace from the list',
           'message-2' => 'If the workspace is not found in the list, it means the workspace is private',
