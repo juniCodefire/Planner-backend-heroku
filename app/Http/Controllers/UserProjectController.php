@@ -56,6 +56,8 @@ class UserProjectController extends Controller
 				}
 				$project->title = $request->input('title');
 				$project->description = $description;
+				//Get statuz from workspace
+				$project->status = $check_workspace_exist_1->status;
 				$project->save();
 				DB::commit();
 				  return response()->json(['success' => true, 'message' => 'Project Created', 'project' => $project], 201);

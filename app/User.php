@@ -45,4 +45,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->belongsToMany('App\Interest', 'user_interests', 'owner_id', 'interest_id');
     }
+    public function workspaceToMember()
+    {
+        return $this->belongsTo(WorkSpacesToMember::class);
+    }
 }
