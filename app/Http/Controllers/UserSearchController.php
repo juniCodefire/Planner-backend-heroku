@@ -58,7 +58,9 @@ class UserSearchController extends Controller
           if(!$users_workspaces) {
             return response()->json(['error' => true, 'message' => 'No workspaces found'], 500);
           }else {
-            $search_result = WorkSpace::whereIn('id', $users_workspaces)->get();
+            $search_result = WorkSpace::where('title', 'LIKE', "%{$modify_name}%")
+                                            ->orWhere('username', 'LIKE', "%{$modify_username}%")
+                                            ->whereIn('id', $users_workspaces)->get();
           }
 
         }else if ($table == 'c') {
@@ -73,8 +75,6 @@ class UserSearchController extends Controller
                                   ->with('workspaces')
                                   ->get();
             }
-
-          $search_result = Company::where('status', 'Public')->where('title', 'LIKE',  "%{$modify_name}%")->get();
         }else if ($table == 'p') {
           $table = 'Project';
           $search_result = Project::where('status', 'Public')->where('title', 'LIKE',  "%{$modify_name}%")->get();

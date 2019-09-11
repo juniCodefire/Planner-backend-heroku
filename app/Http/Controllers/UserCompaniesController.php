@@ -29,11 +29,11 @@ class UserCompaniesController extends Controller
                                    ->where('owner_id', '!=', Auth::user()->id)
                                    ->exists();
     if ($check_workspace || $check_unique_name) {
-        $check_unique_name = $request->input('title');
+        $title = $request->input('title');
         //Check if the user use the name or the username to send a requested
-          if (stripos($check_unique_name, " ")) {
+          if (stripos($title, " ")) {
             //Return all work sapce with their name and their unique username for the user to choose and send a request
-            $choose_companies = Company::where('title', 'like', "%{$request->input('title')}%")->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
+            $choose_companies = Company::where('title', 'like', "%{$title}%")->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
             return response()->json(['data' => ['success' => true, 'key' => '1', 'message' => 'Choose an ideal company from the list',
                                                                    'message-2' => 'If the comapany is not found in the list, it means the company is private!',
                                                                    'message-3' => 'You can contact the company owner to invite you!', 'choose_company' => $choose_companies]]);

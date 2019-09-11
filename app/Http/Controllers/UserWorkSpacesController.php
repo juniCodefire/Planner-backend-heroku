@@ -49,18 +49,13 @@ class UserWorkSpacesController extends Controller
 
     //Check if the worksapce title is required and _exist
     $this->validateWorkSpace($request, $i = 0);
-    $check_workspace = WorkSpace::where('title', ucwords($request->input('title')))
-      ->where('owner_id', '!=', Auth::user()->id)
-      ->exists();
-    $check_unique_name = WorkSpace::where('unique_name', $request->input('title'))
-      ->where('owner_id', '!=', Auth::user()->id)
-      ->exists();
-    if ($check_workspace || $check_unique_name) {
-      $check_unique_name = $request->input('title');
+    $title = $request->input('title');
+      // dd(stripos($title, "#") );
       //Check if the user use the name or the username to send a requested
-      if (stripos($check_unique_name, " ")) {
+      if (stripos($title, "#")  === false) {
+        $title = ucwords($title);
         //Return all work sapce with their name and their unique username for the user to choose and send a request
-        $choose_workspace = WorkSpace::where('title', 'like', "%{$request->input('title')}%")->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
+        $choose_workspace = WorkSpace::where('title', 'like', "%{$title}%")->where('owner_id', '!=', Auth::user()->id)->where('status', 'Public')->get();
         return response()->json(['data' => [
           'success' => true, 'key' => '1', 'message' => 'Choose an ideal workspace from the list',
           'message-2' => 'If the workspace is not found in the list, it means the workspace is private',
@@ -69,34 +64,35 @@ class UserWorkSpacesController extends Controller
       }
       //Here will continue if the username is know!
       //Get the worksapce unique_name
-      $workspace = WorkSpace::where('title', $request->input('title'))->orWhere('unique_name', $request->input('title'))->first();
-
-      if ($workspace->status === "Public") {
-        //Get the owner of Worksapce Data
-        $requestee = $workspace->users()->first();
-
-        if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('workspace_id', $workspace->id)->exists()) {
-          DB::beginTransaction();
-          try {
-            //Save to a temporary Request table
-            $request_invite->requestee_id = $requestee->id;
-            $request_invite->requester_id = Auth::user()->id;
-            $request_invite->workspace_id = $workspace->id;
-            $request_invite->save();
-            //Send a Request mail
-            Mail::to($requestee->email)->send(new WorkSpacesRequest($requester, $requestee, $workspace));
-            DB::commit();
-            return response()->json(['data' => ['success' => true, 'key' => '2',  'message' => 'A request has be sent to worksapce owner!']], 200);
-          } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['data' => ['error' => false, 'message' => "Sending invite Request failed , try again!", 'hint' => $e->getMessage()]], 500);
+      $workspace = WorkSpace::where('unique_name', $title)->where('owner_id', '!=', Auth::user()->id)->first();
+      if($workspace) {
+        if ($workspace->status === "Public") {
+          //Get the owner of Worksapce Data
+          $requestee = $workspace->users()->first();
+  
+          if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('workspace_id', $workspace->id)->exists()) {
+            DB::beginTransaction();
+            try {
+              //Save to a temporary Request table
+              $request_invite->requestee_id = $requestee->id;
+              $request_invite->requester_id = Auth::user()->id;
+              $request_invite->workspace_id = $workspace->id;
+              $request_invite->save();
+              //Send a Request mail
+              Mail::to($requestee->email)->send(new WorkSpacesRequest($requester, $requestee, $workspace));
+              DB::commit();
+              return response()->json(['data' => ['success' => true, 'key' => '2',  'message' => 'A request has be sent to worksapce owner!']], 200);
+            } catch (\Exception $e) {
+              DB::rollBack();
+              return response()->json(['data' => ['error' => false, 'message' => "Sending invite Request failed , try again!", 'hint' => $e->getMessage()]], 500);
+            }
           }
+          return response()->json(['data' => ['error' => false, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 501);
         }
-        return response()->json(['data' => ['error' => false, 'message' => 'Sorry your invitation to joining this workspace have not been confirmed!']], 501);
+        return response()->json(['data' => ['error' => false, 'message' => 'Sorry this is a secured workspace!']], 401);
+      }else  {
+        return response()->json(['data' => ['error' => false, 'message' => 'Sorry this workspace is not allowed for you!']], 401);
       }
-      return response()->json(['data' => ['error' => false, 'message' => 'Sorry this is a secured workspace!']], 401);
-    }
-    return response()->json(['data' => ['error' => false, 'message' => 'Sorry this workspace is not available or not allowed, try using a workspace unique id instead!']], 403);
   }
 
 
