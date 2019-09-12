@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\User;
 use App\WorkSpace;
 use App\WorkSpacesToMember;
+use App\CompanyToMember;
 use App\Company;
 use App\WorkSpaceToMember;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +39,7 @@ class UserSearchController extends Controller
 
         $modify_name = ucwords($query);
         $modify_username = "@".lcfirst($query);
+        $modify_unique_name = "#".lcfirst($query);
         $modify_email = lcfirst($query);
         
         if($table == 'u') { 
@@ -52,28 +54,35 @@ class UserSearchController extends Controller
             
         }else if ($table == 'w') {
           $table = 'Workspace';
-          $users_workspaces =  WorkSpaceToMember::where('owner_id', Auth::user()->id)
+          $users_workspaces =  WorkSpaceToMember::where('owner_id', Auth::user()->id)        
                                                     ->orWhere('member_id', Auth::user()->id)
                                                     ->pluck('workspace_id');
           if(!$users_workspaces) {
             return response()->json(['error' => true, 'message' => 'No workspaces found'], 500);
           }else {
-            $search_result = WorkSpace::where('title', 'LIKE', "%{$modify_name}%")
-                                            ->orWhere('username', 'LIKE', "%{$modify_username}%")
-                                            ->whereIn('id', $users_workspaces)->get();
-          }
+            $search_result = WorkSpace::whereIn('id', $users_workspaces)    
+                                        ->where(function ($query) use ($modify_name, $modify_unique_name) {
+                                          $query->where('title', 'LIKE', "%{$modify_name}%")
+                                                 ->orWhere('unique_name', 'LIKE', "%{$modify_unique_name}%");
+                                        })
+                                        ->get();
+      }
 
         }else if ($table == 'c') {
-          $table = 'Company';
-            $users_company =  WorkSpaceToMember::where('owner_id', Auth::user()->id)
-                                                    ->orWhere('member_id', Auth::user()->id)
+          $table = 'Company';                            
+            $users_company =  CompanyToMember::where('owner_id', Auth::user()->id)
+                                                             ->orWhere('member_id', Auth::user()->id)
                                                     ->pluck('company_id');
             if(!$users_company) {
               return response()->json(['error' => true, 'message' => 'No company found'], 500);
             }else {
-              $search_result = Company::whereIn('id', $users_company)
-                                  ->with('workspaces')
-                                  ->get();
+
+              $search_result = Company::whereIn('id', $users_company)    
+                                        ->where(function ($query) use ($modify_name, $modify_unique_name) {
+                                          $query->where('title', 'LIKE', "%{$modify_name}%")
+                                                 ->orWhere('unique_name', 'LIKE', "%{$modify_unique_name}%");
+                                        })
+                                        ->get();
             }
         }else if ($table == 'p') {
           $table = 'Project';

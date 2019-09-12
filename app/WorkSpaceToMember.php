@@ -31,11 +31,14 @@ class WorkSpaceToMember extends Model implements AuthenticatableContract, Author
 
     ];
 
-    public function users() {
+    public function owner() {
 
       return $this->belongsTo('App\User', 'owner_id', 'id');
     }
+    public function members() {
 
+      return $this->belongsTo('App\User', 'member_id', 'id');
+    }
     public function companies() {
 
       return $this->belongsTo('App\Company', 'company_id', 'id');

@@ -27,7 +27,7 @@ class Company extends Model implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $hidden = [
-
+      'role', 
     ];
 
     public function users() {
