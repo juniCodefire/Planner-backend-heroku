@@ -10,7 +10,7 @@ use App\Mail\WorkSpacesRequest;
 
 use App\User;
 use App\WorkSpace;
-use App\WorkSpaceToMembers;
+use App\WorkSpaceToMember;
 use App\Company;
 use App\RequestInvite;
 use Illuminate\Support\Facades\DB;
@@ -26,13 +26,13 @@ class UserWorkSpacesController extends Controller
     $user = Auth::user();
     $workspaces = WorkSpace::where('owner_id', $user->id)
       ->with('companies')
-      ->with('users')
+      ->with('owner')
       ->with('projects')
       ->get();
-    $attached_workspaces = WorkSpaceToMembers::where('member_id', $user->id)
-      ->with('workspace_id')
+    $attached_workspaces = WorkSpaceToMember::where('member_id', $user->id)
+      ->with('workspace')
       ->with('companies')
-      ->with('users')
+      ->with('owner')
       ->with('projects')
       ->get();
       if($workspaces || $attached_workspaces) {

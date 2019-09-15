@@ -31,7 +31,7 @@ class WorkSpace extends Model implements AuthenticatableContract, AuthorizableCo
 
     ];
 
-    public function users() {
+    public function owner() {
 
       return $this->belongsTo('App\User', 'owner_id', 'id');
     }
@@ -43,6 +43,6 @@ class WorkSpace extends Model implements AuthenticatableContract, AuthorizableCo
 
     public function projects() {
 
-      return $this->belongsTo('App\Projects', 'projects_id', 'id');
+      return $this->hasMany('App\Project', 'workspace_id', 'id');
     }
 }

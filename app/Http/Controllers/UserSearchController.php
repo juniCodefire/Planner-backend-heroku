@@ -12,6 +12,7 @@ use App\WorkSpace;
 use App\WorkSpacesToMember;
 use App\CompanyToMember;
 use App\Company;
+use App\Project;
 use App\WorkSpaceToMember;
 use Illuminate\Support\Facades\DB;
 
@@ -71,7 +72,7 @@ class UserSearchController extends Controller
         }else if ($table == 'c') {
           $table = 'Company';                            
             $users_company =  CompanyToMember::where('owner_id', Auth::user()->id)
-                                                             ->orWhere('member_id', Auth::user()->id)
+                                                    ->orWhere('member_id', Auth::user()->id)
                                                     ->pluck('company_id');
             if(!$users_company) {
               return response()->json(['error' => true, 'message' => 'No company found'], 500);
@@ -86,6 +87,20 @@ class UserSearchController extends Controller
             }
         }else if ($table == 'p') {
           $table = 'Project';
+          $users_company =  CompanyToMember::where('owner_id', Auth::user()->id)
+                                    ->orWhere('member_id', Auth::user()->id)
+                                    ->pluck('company_id');
+          if(!$users_company) {
+             return response()->json(['error' => true, 'message' => 'No company found'], 500);
+          }else {
+
+          $search_result = Company::whereIn('id', $users_company)    
+          ->where(function ($query) use ($modify_name, $modify_unique_name) {
+          $query->where('title', 'LIKE', "%{$modify_name}%")
+          ->orWhere('unique_name', 'LIKE', "%{$modify_unique_name}%");
+          })
+          ->get();
+          }
           $search_result = Project::where('status', 'Public')->where('title', 'LIKE',  "%{$modify_name}%")->get();
         }else {
           return response()->json(['error' => true, 'message' => 'An error occured'], 500);

@@ -17,7 +17,6 @@ class CreateWorkspacesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('owner_id');
             $table->unsignedInteger('company_id')->nullable();
-            $table->unsignedInteger('projects')->nullable();
             $table->string('title');
             $table->string('unique_name');
             $table->string('role')->default('admin');

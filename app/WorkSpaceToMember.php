@@ -46,6 +46,10 @@ class WorkSpaceToMember extends Model implements AuthenticatableContract, Author
 
     public function projects() {
 
-      return $this->belongsTo('App\WorkSpace', 'projects_id', 'id');
+      return $this->hasMany('App\Project', 'workspace_id', 'id');
+    }
+    public function workspace() {
+
+      return $this->belongsTo('App\WorkSpace', 'workspace_id', 'id');
     }
 }
