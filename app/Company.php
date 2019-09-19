@@ -30,7 +30,7 @@ class Company extends Model implements AuthenticatableContract, AuthorizableCont
       'role', 
     ];
 
-    public function users() {
+    public function owner() {
 
       return $this->belongsTo('App\User', 'owner_id', 'id');
     }  

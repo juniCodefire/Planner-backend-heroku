@@ -37,7 +37,7 @@ class UserCompaniesController extends Controller
           if($company) {
             if ($company->status === "Public") {
               //Get the owner of Worksapce Data
-              $requestee = $company->users()->first();
+              $requestee = $company->owner()->first();
   
               if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('company_id', $company->id)->exists()) {
                   DB::beginTransaction();

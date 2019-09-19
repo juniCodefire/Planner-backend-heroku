@@ -67,7 +67,7 @@ class UserWorkSpacesController extends Controller
       if($workspace) {
         if ($workspace->status === "Public") {
           //Get the owner of Worksapce Data
-          $requestee = $workspace->users()->first();
+          $requestee = $workspace->owner()->first();
   
           if (!RequestInvite::where('requestee_id', $requestee->id)->where('requester_id', Auth::user()->id)->where('workspace_id', $workspace->id)->exists()) {
             DB::beginTransaction();
