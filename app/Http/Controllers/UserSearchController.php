@@ -101,7 +101,7 @@ class UserSearchController extends Controller
           })
           ->get();
           }
-          $search_result = Project::where('status', 'Public')->where('title', 'LIKE',  "%{$modify_name}%")->get();
+          $search_result = Project::where('title', 'LIKE',  "%{$modify_name}%")->get();
         }else {
           return response()->json(['error' => true, 'message' => 'An error occured'], 500);
         }
