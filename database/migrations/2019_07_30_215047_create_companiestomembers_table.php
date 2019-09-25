@@ -16,11 +16,11 @@ class CreateCompaniestomembersTable extends Migration
         //Ths is when a company have a workspace
         Schema::create('companiestomembers', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('owner_id');
-            $table->unsignedInteger('member_id');
-            $table->unsignedInteger('company_id');
-            $table->string('role')->default('Member');
-            $table->enum('privilege', array('Super Admin','Admin', 'Member'));
+            $table->unsignedInteger('owner_id')
+            $table->unsignedInteger('member_id')
+            $table->unsignedInteger('company_id')
+            $table->string('role')->default('Member')
+            $table->enum('privilege', array('Super Admin','Admin', 'Member'))->default('Member');
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');

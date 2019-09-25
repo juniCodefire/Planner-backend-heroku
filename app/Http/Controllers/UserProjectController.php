@@ -90,13 +90,13 @@ class UserProjectController extends Controller
 					$edit_project->save();
 					return response()->json(['success' => true, 'message' => 'Edited Succesfully', 'project' => $edit_project], 200);
 				}else {
-					return response()->json(['success' => true, 'message' => 'Unauthorize'], 401);
+					return response()->json(['error' => true, 'message' => 'Unauthorize'], 401);
 				}
 			}catch(\Exception $e) {
-				return response()->json(['success' => true, 'message' => 'An Error Occurred', 'hint' => $e->getMessage()], 500);
+				return response()->json(['error' => true, 'message' => 'An Error Occurred', 'hint' => $e->getMessage()], 500);
 			}
 		}else {
-			return response()->json(['success' => true, 'message' => 'Project Not found'], 404);
+			return response()->json(['error' => true, 'message' => 'Project Not found'], 404);
 		}
 
 	}
@@ -105,7 +105,7 @@ class UserProjectController extends Controller
 		if ($del_project) {
 			if (Auth::user()->id === $del_project->owner_id) {
 				$del_project->delete();
-				return response()->json(['error' => true, 'message' => 'Project deleted'], 200);
+				return response()->json(['success' => true, 'message' => 'Project deleted'], 200);
 			}else {
 				return response()->json(['error' => true, 'message' => 'Unauthorize'], 401);
 			}

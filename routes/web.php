@@ -112,6 +112,19 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
 $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
     $router->get('search', 'UserSearchController@search');
 });
+//Milestone crud action
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->post('milestone/{project_id}/{assigned_id}/create', 'UserMileStoneController@store');
+
+    $router->get('milestone/{project_id}/{milestone_id}/show/one', 'UserMileStoneController@showOne');
+
+    $router->get('milestone/{project_id}/{milestone_id}/show/all', 'UserMileStoneController@showAll');
+
+    $router->put('milestone/{milestone_id}/{assigned_id}/edit', 'UserMileStoneController@update');
+
+    $router->delete('milestone/{milestone_id}/delete', 'UserMileStoneController@destroy');
+});
+
 //
 // //Get request to show authourize dashboard
 //
