@@ -117,8 +117,8 @@ class UserMileStoneController extends Controller
 	public function validateRequest($request) {
 
 		$rules = [
- 		  'title' =>   'required',
- 		  'description' => 'min:5'
+ 		  'title' =>   'required|unique:milestones',
+ 		  'description' => 'required|min:5'
 		];
 
 		$messages = [

@@ -125,6 +125,23 @@ $router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($r
     $router->delete('milestone/{milestone_id}/delete', 'UserMileStoneController@destroy');
 });
 
+//Task crud action
+$router->group(['middleware' => 'auth', 'prefix' => 'api/task/'], function () use ($router) {
+    $router->post('{milestone_id}/create', 'UserTaskController@store');
+
+    $router->get('{id}/one', 'UserTaskController@showOne');
+
+    $router->get('all', 'UserTaskController@showAll');
+
+    $router->put('{id}/edit', 'UserTaskController@update');
+
+    $router->delete('{id}/delete', 'UserTaskController@destroy');
+});
+
+//Request
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->get('request', 'UserRequestController@index');
+});
 //
 // //Get request to show authourize dashboard
 //
