@@ -31,7 +31,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password', 'api_token', 'confirm_token', 'status', 'verify_code','team_permit',
     ];
 
+    public function workspaces() {
+      return $this->hasMany('App\WorkSpace', 'owner_id', 'id');
+    }
+    public function company() {
+      return $this->hasMany('App\Company', 'owner_id', 'id');
+    }
     public function isOnline() {
         return Cache::has('useronline'. $this->id);
+    }
+
+     public function interest()
+    {
+        return $this->belongsToMany('App\Interest', 'user_interests', 'owner_id', 'interest_id');
+    }
+    public function workspaceToMember()
+    {
+        return $this->belongsTo(WorkSpacesToMember::class);
     }
 }

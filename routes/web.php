@@ -14,128 +14,240 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+//Authorization For Admin
+$router->post('api/admin/signin', 'AdminSignInController@check');
 
-//Post request for regstration
-$router->post('api/register', 'RegistrationController@store');
-//Post request for the login
-$router->post('api/login', 'LoginController@login');
-//Post request for the login
-$router->get('api/tokendestroy', 'TokenDestroyController@tokenDestroy');
+//Authentication Unauthorize Access
+$router->post('api/signup', 'UserSignUpController@store');
 
-$router->get('api/confirmation/{token}', 'ConfirmationController@confirmUser');
+$router->post('api/signin', 'UserSignInController@check');
 
-$router->post('api/verify/email', 'VerifyTokenController@validateUser');
+$router->get('api/tokendestroy', 'GeneralTokenDestroyController@tokenDestroy');
 
-$router->put('api/reset/password', 'ConfirmationController@resetPassword');
+$router->get('api/confirmation/{confirmtoken}', 'UserConfirmationController@confirm');
 
+$router->post('api/verify/email', 'UserVerifyTokenController@validateUser');
 
-//User Profile Routes
-//Get request to show authourize dashboard
+$router->put('api/reset/password', 'UserConfirmationController@resetPassword');
 
-$router->group(['prefix' => 'api/'], function () use ($router) {
+//WorkSpaces Authourize Access Users
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
 
-    $router->get('profile', 'ProfileController@index');
+    $router->post('workspace/request', 'UserWorkSpacesController@request');
 
-    $router->put('profile/edit', 'ProfileController@update');
+    $router->post('workspace/{company_id}/create', 'UserWorkSpacesController@store');
 
-    $router->delete('profile/delete', 'ProfileController@destroy');
+    $router->put('workspace/edit', 'UserWorkSpacesController@update');
 
-    //Imgae Upload
+    $router->get('workspaces', 'UserWorkSpacesController@show');
 
-    $router->post('profile/upload', 'ImagesController@upload');
-
-});
-
-$router->group(['prefix' => 'api/'], function () use ($router) {
-
-    $router->get('goals', 'GoalsController@index');
-
-    $router->get('goals/{goal_id}', 'GoalsController@show');
-
-    $router->post('goals/create', 'GoalsController@store');
-
-    $router->put('goals/{goal_id}/edit', 'GoalsController@update');
-
-    $router->put('goals/{goal_id}/status', 'GoalsController@updateGoalStatus');
-
-    $router->delete('goals/{goal_id}/delete', 'GoalsController@destroy');
+    $router->get('workspace/{id}', 'UserWorkSpacesController@showOne');
 
 });
+//Company Authourize Access Users
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
 
-$router->group(['prefix' => 'api/goals/'], function () use ($router) {
+    $router->post('company/request', 'UserCompaniesController@request');
 
-    $router->get('{goal_id}/tasks', 'GoalsTasksController@index');
+    $router->post('company/create', 'UserCompaniesController@store');
 
-    $router->get('{goal_id}/tasks/{task_id}', 'GoalsTasksController@show');
+    $router->put('company/edit', 'UserComapaniesController@update');
 
-    $router->post('{goal_id}/tasks/create', 'GoalsTasksController@store');
+    $router->get('company', 'UserComapaniesController@show');
 
-    $router->put('{goal_id}/tasks/{task_id}/edit', 'GoalsTasksController@update');
-
-    $router->put('{goal_id}/tasks/{task_id}/status', 'GoalsTasksController@updateTaskStatus');
-
-    $router->delete('{goal_id}/tasks/{task_id}/delete', 'GoalsTasksController@destroy');
+    $router->get('company/{id}', 'UserComapaniesController@showOne');
 
 });
+//categories
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+//Admin 
+    $router->post('category/create', 'AdminCategoriesController@create');
 
-$router->group(['prefix' => 'api/'], function () use ($router) {
+    $router->get('categories', 'AdminCategoriesController@showAll');
 
-    $router->get('activities', 'ActivitiesController@index');
+    $router->get('category/{id}', 'AdminCategoriesController@show');
 
-    $router->get('count/goals', 'ActivitiesController@goalsCount');
 
-    $router->get('count/tasks', 'ActivitiesController@tasksCount');
+    $router->put('category/edit/{id}', 'AdminCategoriesController@update');
 
-    $router->get('count/goal/tasks/{goal_id}', 'ActivitiesController@goalTasksCount');
+    $router->delete('category/delete/{id}', 'AdminCategoriesController@destroy');
+//User
 
-    $router->get('count/members', 'ActivitiesController@allTeamMemberCount');
+    $router->get('user/categories', 'UserCategoriesController@showAll');
 
-    $router->get('count/members/{team_id}', 'ActivitiesController@allSigleTeamMemberCount');
-    
-    $router->get('count/assigned/members', 'ActivitiesController@assignedTaskCount');
-
-    $router->get('refresh/chat/status/{member_id}', 'ActivitiesController@refreshChatStatus');
-
-});
-
-$router->group(['prefix' => 'api/teams'], function () use ($router) {
-
-    $router->get('show', 'TeamsController@index');
-
-    $router->get('{team_id}/show', 'TeamsController@showOne');
-
-    $router->post('create', 'TeamsController@storeTeam');
-
-    $router->put('{team_id}/edit', 'TeamsController@updateTeam');
-
-    $router->delete('{team_id}/delete', 'TeamsController@destroy');
+    $router->get('user/category/{id}', 'UserCategoriesController@show');
 
 });
+//interest
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+//Admin
 
-$router->group(['prefix' => 'api/teams'], function () use ($router) {
+    $router->post('interest/create/{category_id}', 'AdminInterestController@create');
 
-    $router->post('members/search', 'TeamMembersController@searchTeamMember');
+    $router->put('interest/edit/{category_id}/{id}', 'AdminInterestController@update');
 
-    $router->get('{team_id}/members/show', 'TeamMembersController@getteamMembers');
-
-    $router->get('show/team/makers', 'TeamMembersController@getTeamMakers');
-
-    $router->post('{team_id}/member/add', 'TeamMembersController@addMember');
-
-    $router->delete('member/{team_member_id}/delete', 'TeamMembersController@destroyTeamMember');
-
+    $router->delete('interest/delete/{id}', 'AdminInterestController@destroy');
+//User
+    $router->post('interest/select', 'UserInterestController@select');
 });
 
-$router->group(['prefix' => 'api/'], function () use ($router) {
+//Projects Routes
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->get('projects', 'UserProjectController@showAll');
 
-    $router->put('task/assign', 'AssignTaskController@assignTask');
+    $router->get('project/{workspace_id}/{company_id}/{id}', 'UserProjectController@showOne');
 
-    $router->put('task/revert', 'AssignTaskController@removeTask');
+    $router->post('project/{workspace_id}/{company_id}/create', 'UserProjectController@create');
 
-    $router->get('show/assigned/task/to', 'AssignTaskController@showAssignedTo');
+    $router->put('project/{id}/edit', 'UserProjectController@update');
 
-    $router->get('show/assigned/task/from', 'AssignTaskController@showAssignedFrom');
-
-
+    $router->delete('project/{id}/delete',  'UserProjectController@destroy');
 });
 
+//Add Member Routes
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->post('add/member/{workspace_id}/{company_id}/{member_id}', 'UserWorkSpaceMemberController@addMember');
+});
+//Search plannerr Generally
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->get('search', 'UserSearchController@search');
+});
+//Milestone crud action
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->post('milestone/{project_id}/{assigned_id}/create', 'UserMileStoneController@store');
+
+    $router->get('milestone/{project_id}/{milestone_id}/show/one', 'UserMileStoneController@showOne');
+
+    $router->get('milestone/{project_id}/{milestone_id}/show/all', 'UserMileStoneController@showAll');
+
+    $router->put('milestone/{milestone_id}/{assigned_id}/edit', 'UserMileStoneController@update');
+
+    $router->delete('milestone/{milestone_id}/delete', 'UserMileStoneController@destroy');
+});
+
+//Task crud action
+$router->group(['middleware' => 'auth', 'prefix' => 'api/task/'], function () use ($router) {
+    $router->post('{milestone_id}/create', 'UserTaskController@store');
+
+    $router->get('{id}/one', 'UserTaskController@showOne');
+
+    $router->get('all', 'UserTaskController@showAll');
+
+    $router->put('{id}/edit', 'UserTaskController@update');
+
+    $router->delete('{id}/delete', 'UserTaskController@destroy');
+});
+
+//Request
+$router->group(['middleware' => 'auth', 'prefix' => 'api/'], function () use ($router) {
+    $router->get('request', 'UserRequestController@index');
+});
+//
+// //Get request to show authourize dashboard
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->get('profile', 'ProfileController@index');
+//
+//     $router->put('profile/edit', 'ProfileController@update');
+//
+//     $router->delete('profile/delete', 'ProfileController@destroy');
+//
+//     //Imgae Upload
+//
+//     $router->post('profile/upload', 'ImagesController@upload');
+//
+// });
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->get('goals', 'GoalsController@index');
+//
+//     $router->get('goals/{goal_id}', 'GoalsController@show');
+//
+//     $router->post('goals/create', 'GoalsController@store');
+//
+//     $router->put('goals/{goal_id}/edit', 'GoalsController@update');
+//
+//     $router->put('goals/{goal_id}/status', 'GoalsController@updateGoalStatus');
+//
+//     $router->delete('goals/{goal_id}/delete', 'GoalsController@destroy');
+//
+// });
+//
+// $router->group(['prefix' => 'api/goals/'], function () use ($router) {
+//
+//     $router->get('{goal_id}/tasks', 'GoalsTasksController@index');
+//
+//     $router->get('{goal_id}/tasks/{task_id}', 'GoalsTasksController@show');
+//
+//     $router->post('{goal_id}/tasks/create', 'GoalsTasksController@store');
+//
+//     $router->put('{goal_id}/tasks/{task_id}/edit', 'GoalsTasksController@update');
+//
+//     $router->put('{goal_id}/tasks/{task_id}/status', 'GoalsTasksController@updateTaskStatus');
+//
+//     $router->delete('{goal_id}/tasks/{task_id}/delete', 'GoalsTasksController@destroy');
+//
+// });
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->get('activities', 'ActivitiesController@index');
+//
+//     $router->get('count/goals', 'ActivitiesController@goalsCount');
+//
+//     $router->get('count/tasks', 'ActivitiesController@tasksCount');
+//
+//     $router->get('count/goal/tasks/{goal_id}', 'ActivitiesController@goalTasksCount');
+//
+//     $router->get('count/members', 'ActivitiesController@allTeamMemberCount');
+//
+//     $router->get('count/members/{team_id}', 'ActivitiesController@allSigleTeamMemberCount');
+//
+//     $router->get('count/assigned/members', 'ActivitiesController@assignedTaskCount');
+//
+//     $router->get('refresh/chat/status/{member_id}', 'ActivitiesController@refreshChatStatus');
+//
+// });
+//
+// $router->group(['prefix' => 'api/teams'], function () use ($router) {
+//
+//     $router->get('show', 'TeamsController@index');
+//
+//     $router->get('{team_id}/show', 'TeamsController@showOne');
+//
+//     $router->post('create', 'TeamsController@storeTeam');
+//
+//     $router->put('{team_id}/edit', 'TeamsController@updateTeam');
+//
+//     $router->delete('{team_id}/delete', 'TeamsController@destroy');
+//
+// });
+//
+// $router->group(['prefix' => 'api/teams'], function () use ($router) {
+//
+//     $router->post('members/search', 'TeamMembersController@searchTeamMember');
+//
+//     $router->get('{team_id}/members/show', 'TeamMembersController@getteamMembers');
+//
+//     $router->get('show/team/makers', 'TeamMembersController@getTeamMakers');
+//
+//     $router->post('{team_id}/member/add', 'TeamMembersController@addMember');
+//
+//     $router->delete('member/{team_member_id}/delete', 'TeamMembersController@destroyTeamMember');
+//
+// });
+//
+// $router->group(['prefix' => 'api/'], function () use ($router) {
+//
+//     $router->put('task/assign', 'AssignTaskController@assignTask');
+//
+//     $router->put('task/revert', 'AssignTaskController@removeTask');
+//
+//     $router->get('show/assigned/task/to', 'AssignTaskController@showAssignedTo');
+//
+//     $router->get('show/assigned/task/from', 'AssignTaskController@showAssignedFrom');
+//
+//
+// });

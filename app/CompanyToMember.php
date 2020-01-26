@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class Task extends Model implements AuthenticatableContract, AuthorizableContract
+class CompanyToMember extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
 
+    protected $table = "companiestomembers";
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-         'owner_id', 'milestone_id', 'title', 'description', 'due_time', 'due_date', 'reminder', 'completed',
+         'id', 'owner_id', 'member_id', 'company_id',
     ];
 
     /**
@@ -27,16 +28,16 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-    ];
 
+    ];
 
     public function owner() {
 
       return $this->belongsTo('App\User', 'owner_id', 'id');
     }
+    public function members() {
 
-    public function milestone() {
-        return $this->belongsTo(Milestone::class);
+      return $this->belongsTo('App\User', 'member_id', 'id');
     }
-    
+
 }

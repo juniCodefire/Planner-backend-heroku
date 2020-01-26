@@ -57,10 +57,10 @@ class ImagesController extends Controller
 	        			    try {
 	        					$cloudder = Cloudder::upload($request->file('user_image')->getRealPath());
 	        				} catch (Exception $e) {
-	        					
+
 	        					return response()->json(['data' => ['error' => false, 'message' => 'Try again']], 401);
 	        				}
-		                 
+
 
 				    if ($cloudder) {
 				    	//Request the image info from api and save to db
@@ -85,7 +85,7 @@ class ImagesController extends Controller
 				    }else{
 				    	return response()->json(['data' => ['error'=>false, 'message' => 'There was an error']], 401);
 				    }
-				    
+
 				}else{
 					return response()->json(['data' => ['error'=> false, 'message' => 'Invalid format(Use jpg,jpeg,png)!']], 400);
 				}

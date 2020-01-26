@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateAdminsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->string('phone_number');
-            $table->enum('team_permit', array('hide','show'));
-            $table->string('user_image')->default(null);
-            $table->string('password');
+            $table->string('username')->default('plannrradmin');
+            $table->string('email')->unique()->default('plannrradmin@plannrr.com');
+            $table->string('wallpaper')->default('user.jpg');
+            $table->string('password')->default('$2y$10$EmayIQjgVXvl3dqDcLw.x.E7jrACvscQlydgngBgN4v/t5NegtLTK');
             $table->string('verify_code', 80)
             ->unique()
             ->nullable()
@@ -30,11 +28,6 @@ class CreateUsersTable extends Migration
             ->unique()
             ->nullable()
             ->default(null);
-            $table->string('confirm_token', 80)
-            ->unique()
-            ->nullable()
-            ->default(null);
-            $table->enum('status', array('off','on'));
             $table->timestamps();
         });
     }
@@ -46,6 +39,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('admins');
     }
 }

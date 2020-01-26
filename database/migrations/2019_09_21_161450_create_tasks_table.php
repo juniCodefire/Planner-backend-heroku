@@ -15,20 +15,14 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('goal_id');
-            $table->string('owner_id');
-            $table->string('assigned_id')->nullable();
-            $table->string('task_title');
-            $table->string('description');
-            $table->string('begin_time');
-            $table->string('begin_date');
-            $table->string('due_time');
-            $table->string('due_date');
-            $table->string('reminder');
-            $table->boolean('task_status')->default(false);
+            $table->unsignedInteger('milestone_id');
+            $table->unsignedInteger('owner_id');
+            $table->string('title');
+            $table->string('description')->default('Description can help improve clarity of task actual purpose...');
             $table->timestamps();
 
-            $table->foreign('goal_id')->references('id')->on('goals')->onDelete('cascade');
+            $table->foreign('milestone_id')->references('id')->on('milestones')->onDelete('cascade');
+            $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
         });
     }
 

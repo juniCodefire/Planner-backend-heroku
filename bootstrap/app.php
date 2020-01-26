@@ -77,6 +77,7 @@ $app->singleton(
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
+    'admin.only' => App\Http\Middleware\AdminOnlyMiddleware::class,
 ]);
 
 $app->middleware([

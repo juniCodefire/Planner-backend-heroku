@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class Task extends Model implements AuthenticatableContract, AuthorizableContract
+class Interest extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
 
@@ -18,7 +18,7 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-         'owner_id', 'milestone_id', 'title', 'description', 'due_time', 'due_date', 'reminder', 'completed',
+         'id', 'category_id', 'title',
     ];
 
     /**
@@ -29,14 +29,4 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
     ];
 
-
-    public function owner() {
-
-      return $this->belongsTo('App\User', 'owner_id', 'id');
-    }
-
-    public function milestone() {
-        return $this->belongsTo(Milestone::class);
-    }
-    
 }

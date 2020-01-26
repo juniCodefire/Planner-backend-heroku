@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class Task extends Model implements AuthenticatableContract, AuthorizableContract
+class WorkSpaceCollaborateWorkSpace extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
 
+    protected $table = "workspacetoWorkspaces";
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-         'owner_id', 'milestone_id', 'title', 'description', 'due_time', 'due_date', 'reminder', 'completed',
+         'id', 'collaborator_initiator_workspace_id', 'collaborator_initiatee_workspace_id',
     ];
 
     /**
@@ -27,16 +28,14 @@ class Task extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
+
     ];
 
-
-    public function owner() {
-
-      return $this->belongsTo('App\User', 'owner_id', 'id');
-    }
-
-    public function milestone() {
-        return $this->belongsTo(Milestone::class);
+    public function collaborator_initiator_workspaces() {
+      return $this->belongsTo('App\Comapany', 'collaborator_initiator_workspace_id', 'id');
     }
     
+    public function collaborator_initiatee_workspaces() {
+      return $this->belongsTo('App\Comapany', 'collaborator_initiatee_workspace_id', 'id');
+    }
 }

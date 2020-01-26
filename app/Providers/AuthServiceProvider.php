@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\User;
+use App\Admin;
 use App\Goal;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -37,16 +38,14 @@ class AuthServiceProvider extends ServiceProvider
                 return User::where('api_token', $request->input('api_token'))->first();
 
             }elseif ($request->header('Authorization')) {
-
-                $bearer = $request->header("Authorization");
-
-                //exploade to an array
-
-                $explode_bearer = explode(" ", $bearer);
-
-                $token = $explode_bearer[1];
-
-                return User::where('api_token', $token)->first();
+                $token = $this->formatToken($request->header('Authorization'));
+                    $user_check = User::where('api_token', $token)->first();
+                    $admin_check = Admin::where('api_token', $token)->first();
+                    if ($user_check) {
+                        return $user_check;
+                    }else if ($admin_check) {
+                        return $admin_check;
+                    }
             }
         });
 
@@ -54,5 +53,11 @@ class AuthServiceProvider extends ServiceProvider
         //     return $user->id === $goal->owner_id;
         // });
        
+    }
+    
+    public function formatToken($bearer) {
+        //exploade to an array
+        $explode_bearer = explode(" ", $bearer);
+        return $token = $explode_bearer[1];
     }
 }
